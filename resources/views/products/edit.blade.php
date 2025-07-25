@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Edit Product</h1>
+    <h1>Editar Producto</h1>
 
     @if ($errors->any())
         <div>
@@ -17,13 +17,13 @@
         @csrf
         @method('PUT')
 
-        <label>Name:</label>
+        <label>Nombre:</label>
         <input type="text" name="name" value="{{ old('name', $product->name) }}"><br>
 
-        <label>Description:</label>
+        <label>Descripción:</label>
         <input type="text" name="description" value="{{ old('description', $product->description) }}"><br>
 
-        <button type="submit" id="update">Update</button>
+        <button type="submit" id="update">Actualizar</button>
     </form>
 @endsection
 

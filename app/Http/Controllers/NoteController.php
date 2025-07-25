@@ -36,7 +36,7 @@ class NoteController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Note created successfully.',
+            'message' => 'Nota creada con exito.',
         ]);
     }
 
@@ -53,6 +53,13 @@ class NoteController extends Controller
             'data' => $notes,
         ]);
     }
+
+    public function show($id)
+    {
+        $note = Note::find($id);
+        return view('notes.show', compact('note'));
+    }
+
 
     public function edit($id)
     {
@@ -76,7 +83,12 @@ class NoteController extends Controller
         $note->completed = $request->completed;
         $note->save();
 
-        return redirect()->route('notes.index')->with('success', 'Note created successfully.');
+        return response()->json([
+                'status' => 'success',
+                'message' => 'Nota actualizada con exito.',
+            ]);
+
+        //return redirect()->route('notes.index')->with('success', 'Note created successfully.');
     }
 
     public function destroy($id)
@@ -84,6 +96,11 @@ class NoteController extends Controller
         $note = Note::find($id);
         $note->delete();
 
-        return redirect()->route('notes.index')->with('success', 'Note deleted successfully.');
+        return response()->json([
+                'status' => 'success',
+                'message' => 'Nota eliminada con exito.',
+            ]);
+
+        //return redirect()->route('notes.index')->with('success', 'Note deleted successfully.');
     }
 }

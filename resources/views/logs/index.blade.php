@@ -1,36 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Notas</h1>
-    <a href="{{ route('notes.create') }}">Crear Nota</a> |
-    <a href="{{ route('notes.view.notes') }}">Lista de Notas</a>
+    <h1>Logs del sistema</h1>
 
-    @if (session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
-
-    <table>
+    <table border="1">
         <thead>
         <tr>
-            <th>Título</th>
-            <th>Contenido</th>
-            <th>Completado</th>
+            <th>ID</th>
+            <th>Fecha</th>
             <th>Acción</th>
+            <th>Usuario</th>
+            <th>IP</th>
+            <th>Ver</th>
         </tr>
         </thead>
         <tbody>
-        @foreach ($notes as $note)
-            <tr id="{!! $note->id !!}">
-                <td>{{ $note->title }}</td>
-                <td>{{ $note->contents }}</td>
-                <td>{{ $note->completed ? 'Si' : 'No' }}</td>
-                <td>
-                    <a href="{{ route('notes.edit', $note) }}">Editar</a>
-                    <button data-id="{!! $note->id !!}"
-                            data-url="{!! route('notes.destroy', $note->id) !!}"
-                            type="button" id="delete">Eliminar</button>
-
-                </td>
+        @foreach ($logs as $log)
+            <tr id="{{ $log->id }}">
+                <td>{{ $log->id }}</td>
+                <td>{{ $log->created_at->format('d-m-Y H:i:s') }}</td>
+                <td>{{ $log->action }}</td>
+                <td>{{ $log->name_user }}</td>
+                <td>{{ $log->ip }}</td>
+                <td><a href="{{ route('logs.details', $log->id) }}">Ver</a></td>
             </tr>
         @endforeach
         </tbody>
@@ -43,11 +35,10 @@
                 evento.preventDefault();
                 let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
                 let url = $(this).data('url')
-
                 if(confirm('Estas seguro')) {
                     $.ajax({
                         url: url,
-                        method: 'DELETE',
+                        method: 'GET',
                         headers: {
                             'X-CSRF-TOKEN': '{!!  csrf_token() !!}'
                         },
@@ -66,4 +57,3 @@
         });
     </script>
 @endsection
-

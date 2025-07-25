@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
@@ -14,4 +15,12 @@ class Customer extends Model
         'birth_date',
         'identity_document',
     ];
+
+    protected $hidden = ['birth_date'];
+    protected $appends = ['formatted_birth_date'];
+
+    public function getFormattedBirthDateAttribute()
+    {
+        return Carbon::parse($this->birth_date)->format('d-m-Y');
+    }
 }

@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Product List</h1>
-    <a href="{{ route('products.create') }}">Create New</a>
+    <h1>Producto</h1>
+    <a href="{{ route('products.create') }}">Crear Producto</a> |
+    <a href="{{ route('products.view.products') }}">Lista de Productos</a>
 
     @if (session('success'))
         <p>{{ session('success') }}</p>
@@ -11,9 +12,9 @@
     <table>
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acción</th>
         </tr>
         </thead>
         <tbody>
@@ -22,30 +23,32 @@
                 <td>{{ $product->name }}</td>
                 <td> {{ $product->description }}</td>
                 <td>
-                    <a href="{{ route('products.edit', $product) }}">Edit</a>
-                    <form id="form_product" action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button data-id="{!! $product->id !!}" id="delete" >Delete</button>
-                    </form>
+                    <a href="{{ route('products.edit', $product) }}">Editar</a>
+                    <button data-id="{!! $product->id !!}"
+                            data-url="{!! route('products.destroy', $product->id) !!}"
+                            type="button" id="delete" >Eliminar</button>
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
 @endsection
+
 @section('scripts')
     <script>
         $(document).ready(function() {
             $('#delete').on('click', function(evento) {
                 evento.preventDefault();
-                let id = $(this).attr('data-id')
+                let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
+                let url = $(this).data('url')
 
-                if(confirm('Are you sure?')) {
+                if(confirm('Estas seguro')) {
                     $.ajax({
-                        url: $('#form_product').attr('action'),
-                        method: $('#form_product').attr('method'),
-                        data: $('#form_product').serialize(),
+                        url: url,
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{!!  csrf_token() !!}'
+                        },
                         success: function(response) {
                             if(response.status === 'success'){
                                 alert(response.message);
@@ -57,9 +60,6 @@
                         }
                     });
                 }
-
-                /**/
-
             })
         });
     </script>

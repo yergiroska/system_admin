@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Log;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -34,7 +36,34 @@ class CustomerController extends Controller
         $customer->identity_document = $request->identity_document;
         $customer->save();
 
-        return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
+        $log = new Log();
+        $log->action = 'crear usuario';
+        $log->detail = $customer->toJson();
+        $log->ip = '1111';
+        $log->user_id = auth()->user()->id;
+        $log->save();
+
+       return response()->json([
+           'status' => 'success',
+           //'data' => $customer,
+           'message' => 'Cliente creado con exito',
+       ]);
+
+        //return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
+    }
+
+    public function viewCustomers()
+    {
+        return view('customers.view_customers');
+    }
+
+    public function listCustomers(): JsonResponse
+    {
+        $customers = Customer::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $customers,
+        ]);
     }
 
     public function edit($id)
@@ -61,7 +90,12 @@ class CustomerController extends Controller
         $customer->identity_document = $request->identity_document;
         $customer->save();
 
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cliente actualizado con exito',
+        ]);
+
+        //return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 
     public function destroy($id)
@@ -69,6 +103,11 @@ class CustomerController extends Controller
         $customer = Customer::find($id);
         $customer->delete();
 
-        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
+        return response()->json([
+                'status' => 'success',
+                'message' => 'Cliente eliminado con exito',
+            ]);
+
+        //return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
 }

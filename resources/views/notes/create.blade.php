@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Create Note</h1>
+    <h1>Craer Nota</h1>
 
     @if ($errors->any())
         <div>
@@ -16,18 +16,18 @@
     <form action="{{ route('notes.store') }}" id="form_note" method="POST">
         @csrf
 
-        <label>Title:</label>
+        <label>Título:</label>
         <input type="text" id="title" name="title" value="{{ old('title') }}"><br>
 
-        <label>Content:</label>
+        <label>Contenido:</label>
         <input type="text" id="contents" name="contents" value="{{ old('contents') }}"><br>
 
-        <label>Completed:</label>
+        <label>Completado:</label>
         <!--<input type="checkbox" id="completed" name="completed" value="{{ old('completed') }}"><br>-->
         <input type="hidden" name="completed" value="0"> <!-- Este se enviará siempre -->
         <input type="checkbox" id="completed" name="completed" value="1"> <!-- Este solo si está seleccionado -->
 
-        <button type="submit" id="saved">Save</button>
+        <button type="submit" id="saved">Guardar</button>
     </form>
 @endsection
 
@@ -42,7 +42,7 @@
                     data: $('#form_note').serialize(),
                     success: function(response) {
                         if(response.status === 'success'){
-                            alert('Registro existoso');
+                            alert('Registro exitoso');
                         }
                     },
                     error: function(xhr) {

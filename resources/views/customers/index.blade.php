@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Customer List</h1>
-<a href="{{ route('customers.create') }}">Create New</a>
+<h1>Clientes</h1>
+<a href="{{ route('customers.create') }}">Crear Cliente</a> |
+<a href="{{ route('customers.view.customers') }}">Lista de Clientes</a>
 
 @if (session('success'))
     <p>{{ session('success') }}</p>
@@ -11,31 +12,63 @@
 <table>
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Last Name</th>
-        <th>Birth Date</th>
-        <th>ID</th>
-        <th>Actions</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Fecha de Nacimiento</th>
+        <th>DNI</th>
+        <th>Acción</th>
     </tr>
     </thead>
     <tbody>
     @foreach ($customers as $customer)
-        <tr>
+        <tr id="{!! $customer->id !!}">
             <td>{{ $customer->first_name }}</td>
             <td>{{ $customer->last_name }}</td>
-            <td>{{ $customer->birth_date }}</td>
+            <td>{{ $customer->formatted_birth_date }}</td>
             <td>{{ $customer->identity_document }}</td>
             <td>
-                <a href="{{ route('customers.edit', $customer) }}">Edit</a>
-                <form action="{{ route('customers.destroy', $customer) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button onclick="return confirm('Are you sure?')">Delete</button>
-                </form>
+                <a href="{{ route('customers.edit', $customer) }}">Editar</a>
+                <button data-id="{!! $customer->id !!}"
+                        data-url="{!! route('customers.destroy', $customer->id) !!}"
+                        type="button"
+                        id="delete"
+                >Eliminar</button>
+
             </td>
         </tr>
     @endforeach
     </tbody>
 </table>
 @endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#delete').on('click', function(evento) {
+                evento.preventDefault();
+                let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
+                let url = $(this).data('url')
+                if(confirm('Estas seguro')) {
+                    $.ajax({
+                        url: url,
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{!!  csrf_token() !!}'
+                        },
+                        success: function(response) {
+                            if(response.status === 'success'){
+                                alert(response.message);
+                                $('tr#'+id).remove()
+                            }
+                        },
+                        error: function(xhr) {
+                            // Manejar errores
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+@endsection
+
 

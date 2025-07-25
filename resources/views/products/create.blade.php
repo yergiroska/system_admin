@@ -16,10 +16,10 @@
     <form action="{{ route('products.store') }}" id="form_product" method="POST">
         @csrf
 
-        <label>Name:</label>
+        <label>Nombre:</label>
         <input type="text" id="name" name="name" value="{{ old('name') }}"><br>
 
-        <label>Description:</label>
+        <label>Descripcón:</label>
         <input type="text" id="description" name="description" value="{{ old('description') }}"><br>
 
         <button type="submit" id="saved">Save</button>
@@ -37,7 +37,7 @@
                     data: $('#form_product').serialize(),
                     success: function(response) {
                         if(response.status === 'success'){
-                            alert('Registro existoso');
+                            alert('Registro exitoso');
                         }
                     },
                     error: function(xhr) {
