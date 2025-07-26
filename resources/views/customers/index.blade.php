@@ -31,7 +31,7 @@
                 <button data-id="{!! $customer->id !!}"
                         data-url="{!! route('customers.destroy', $customer->id) !!}"
                         type="button"
-                        id="delete"
+                        class="delete"
                 >Eliminar</button>
 
             </td>
@@ -44,9 +44,9 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('#delete').on('click', function(evento) {
+            $('.delete').on('click', function(evento) {
                 evento.preventDefault();
-                let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
+                let id = $(this).attr('data-id') // esta y la de abajo hacen lo mismo
                 let url = $(this).data('url')
                 if(confirm('Estas seguro')) {
                     $.ajax({

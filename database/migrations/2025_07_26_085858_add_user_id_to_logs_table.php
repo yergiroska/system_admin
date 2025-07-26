@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('logs', function (Blueprint $table) {
-            $table->integer('user_id')->nullable()->after('ip');
+            // Añadir la columna user_id como unsignedBigInteger
+            $table->unsignedBigInteger('user_id')->after('id');
+
+            // Crear la foreign key constraint
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade'); // Elimina los logs si se borra el usuario
         });
     }
 
@@ -22,6 +29,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('logs', function (Blueprint $table) {
+            // Eliminar la foreign key primero
+            $table->dropForeign(['user_id']);
+
+            // Eliminar la columna
             $table->dropColumn('user_id');
         });
     }

@@ -47,10 +47,20 @@ class NoteController extends Controller
 
     public function listNotes(): JsonResponse
     {
-        $notes = Note::all();
+        $notas = Note::all();
+        $notes = [];
+        foreach ($notas as $note) {
+            $notes[] = [
+                'id' => $note->id,
+                'title' => $note->title,
+                'contents' => $note->contents,
+                'completed' => (bool)$note->completed,
+                'url_detail' => route('notes.show', $note->id),
+            ];
+        }
         return response()->json([
             'status' => 'success',
-            'data' => $notes,
+            'data' =>  $notes,
         ]);
     }
 

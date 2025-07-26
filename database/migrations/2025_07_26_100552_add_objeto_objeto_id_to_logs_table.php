@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('logs', function (Blueprint $table) {
-            $table->integer('user_id')->nullable()->after('ip');
+            $table->string('objeto')->nullable()->after('action');
+            $table->integer('objeto_id')->nullable()->after('objeto');
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('logs', function (Blueprint $table) {
-            $table->dropColumn('user_id');
+            $table->dropColumn('objeto');
+            $table->dropColumn('objeto_id');
         });
     }
 };

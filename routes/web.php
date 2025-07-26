@@ -59,7 +59,7 @@ Route::prefix('notes')->name('notes.')->group(function () {
     Route::get('/{id}/edit', [NoteController::class, 'edit'])->name('edit');    // Formulario editar
     Route::put('/{id}', [NoteController::class, 'update'])->name('update');     // Actualizar
     Route::delete('/{id}/delete', [NoteController::class, 'destroy'])->name('destroy'); // Eliminar
-    Route::get('/{id}', [NoteController::class, 'show'])->name('notes.show');
+    Route::get('/{id}', [NoteController::class, 'show'])->name('show');
 });
 
 

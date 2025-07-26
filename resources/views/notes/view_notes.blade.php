@@ -27,16 +27,13 @@
                 success: function (response) {
                     let notes = response.data
                     let $tr;
-                    let $tr='';
                     for (const note of notes) {
                         $tr += '<tr>';
                         $tr += '<td>'+note.id+'</td>';
                         $tr += '<td>'+note.title+'</td>';
                         $tr += '<td>'+note.contents+'</td>';
-                        $tr += '<td>' + (note.completed ? 'Yes' : 'No') + '</td>';
-                        //$tr += '<td>'+note.completed+'</td>';
                         $tr += '<td>' + (note.completed ? 'Si' : 'No') + '</td>';
-                        $tr += '<td><a href="/notes/' + note.id + '">Ver</a></td>';
+                        $tr += '<td><a href="' + note.url_detail + '">Ver</a></td>';
                         $tr += '</tr>';
                     }
                     $('.notes').append($tr)

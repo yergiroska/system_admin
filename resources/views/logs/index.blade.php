@@ -9,7 +9,11 @@
             <th>ID</th>
             <th>Fecha</th>
             <th>Acción</th>
+            <th>Objeto</th>
+            <th>Objeto ID</th>
             <th>Usuario</th>
+            <th>Usuario 2</th>
+            <th>Usuario 3</th>
             <th>IP</th>
             <th>Ver</th>
         </tr>
@@ -20,7 +24,11 @@
                 <td>{{ $log->id }}</td>
                 <td>{{ $log->created_at->format('d-m-Y H:i:s') }}</td>
                 <td>{{ $log->action }}</td>
+                <td>{{ $log->objeto }}</td>
+                <td>{{ $log->objeto_id }}</td>
                 <td>{{ $log->name_user }}</td>
+                <td>{{ $log->user->name }}</td>
+                <td>{{ $log->usuario->name }}</td>
                 <td>{{ $log->ip }}</td>
                 <td><a href="{{ route('logs.details', $log->id) }}">Ver</a></td>
             </tr>

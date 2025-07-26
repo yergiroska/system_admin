@@ -37,7 +37,9 @@ class CustomerController extends Controller
         $customer->save();
 
         $log = new Log();
-        $log->action = 'crear usuario';
+        $log->action = 'CREAR';
+        $log->objeto = 'customers';
+        $log->objeto_id =  $customer->id;
         $log->detail = $customer->toJson();
         $log->ip = '1111';
         $log->user_id = auth()->user()->id;
@@ -101,6 +103,16 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::find($id);
+
+        $log = new Log();
+        $log->action = 'ELIMINAR';
+        $log->objeto = 'customers';
+        $log->objeto_id =  $customer->id;
+        $log->detail = $customer->toJson();
+        $log->ip = '1111';
+        $log->user_id = auth()->user()->id;
+        $log->save();
+
         $customer->delete();
 
         return response()->json([
