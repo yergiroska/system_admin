@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Crear Producto</h1>
+    <h1>Editar Empresa</h1>
 
     @if ($errors->any())
         <div>
@@ -13,30 +13,31 @@
         </div>
     @endif
 
-    <form action="{{ route('products.store') }}" id="form_product" method="POST">
+    <form action="{{ route('companies.update', $company) }}" id="form_company" method="POST">
         @csrf
+        @method('PUT')
 
         <label>Nombre:</label>
-        <input type="text" id="name" name="name" value="{{ old('name') }}"><br>
-        <label>Descripcón:</label>
-        <!--<input type="text" id="description" name="description" value="{{ old('description') }}"><br>-->
-        <textarea id="description" name="description" value="{{ old('description') }}"></textarea><br>
-        <button type="submit" id="saved">Guardar</button>
+        <input type="text" name="name" value="{{ old('name', $company->name) }}"><br>
+
+        <label>Descripción:</label>
+        <textarea name="description">{{ old('description', $company->description) }}</textarea><br>
+        <button type="submit" id="update">Actualizar</button>
     </form>
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('#saved').on('click', function(evento) {
+            $('#update').on('click', function(evento) {
                 evento.preventDefault();
                 $.ajax({
-                    url: $('#form_product').attr('action'),
-                    method: $('#form_product').attr('method'),
-                    data: $('#form_product').serialize(),
+                    url: $('#form_company').attr('action'),
+                    method: $('#form_company').attr('method'),
+                    data: $('#form_company').serialize(),
                     success: function(response) {
                         if(response.status === 'success'){
-                            alert('Registro exitoso');
+                            alert(response.message);
                         }
                     },
                     error: function(xhr) {

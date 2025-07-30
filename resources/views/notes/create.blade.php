@@ -20,7 +20,7 @@
         <input type="text" id="title" name="title" value="{{ old('title') }}"><br>
 
         <label>Contenido:</label>
-        <input type="text" id="contents" name="contents" value="{{ old('contents') }}"><br>
+        <textarea id="contents" name="contents" value="{{ old('contents') }}"></textarea><br>
 
         <label>Completado:</label>
         <!--<input type="checkbox" id="completed" name="completed" value="{{ old('completed') }}"><br>-->

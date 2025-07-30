@@ -1,25 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Crear Producto</h1>
+    <h1>Crear Empresa</h1>
 
-    @if ($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    @if($errors->any())
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     @endif
 
-    <form action="{{ route('products.store') }}" id="form_product" method="POST">
+    <form action="{{ route('companies.store') }}" id="form_company" method="POST">
         @csrf
-
         <label>Nombre:</label>
-        <input type="text" id="name" name="name" value="{{ old('name') }}"><br>
-        <label>Descripcón:</label>
-        <!--<input type="text" id="description" name="description" value="{{ old('description') }}"><br>-->
+        <input type="text" name="name" value="{{ old('name') }}"><br>
+        <label>Descripción:</label>
         <textarea id="description" name="description" value="{{ old('description') }}"></textarea><br>
         <button type="submit" id="saved">Guardar</button>
     </form>
@@ -31,9 +27,9 @@
             $('#saved').on('click', function(evento) {
                 evento.preventDefault();
                 $.ajax({
-                    url: $('#form_product').attr('action'),
-                    method: $('#form_product').attr('method'),
-                    data: $('#form_product').serialize(),
+                    url: $('#form_company').attr('action'),
+                    method: $('#form_company').attr('method'),
+                    data: $('#form_company').serialize(),
                     success: function(response) {
                         if(response.status === 'success'){
                             alert('Registro exitoso');

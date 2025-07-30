@@ -10,8 +10,10 @@ class NoteController extends Controller
 {
     public function index()
     {
-        $notes = Note::all();
-        return view('notes.index', compact('notes'));
+        $note = Note::all();
+        return view('notes.index', [
+            'note' => $note
+        ]);
     }
 
     public function create()
@@ -67,7 +69,9 @@ class NoteController extends Controller
     public function show($id)
     {
         $note = Note::find($id);
-        return view('notes.show', compact('note'));
+        return view('notes.show', [
+            'note' => $note
+        ]);
     }
 
 

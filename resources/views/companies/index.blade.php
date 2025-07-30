@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Producto</h1>
-    <a href="{{ route('products.create') }}">Crear Producto</a> |
-    <a href="{{ route('products.view.products') }}">Lista de Productos</a>
+    <h1>Lista de Empresas</h1>
+    <a href="{{ route('companies.create') }}">Crear Empresa</a> |
+    <a href="{{ route('companies.create') }}">Lista de Empresas</a>
 
     @if (session('success'))
         <p>{{ session('success') }}</p>
@@ -18,15 +18,15 @@
         </tr>
         </thead>
         <tbody>
-        @foreach ($products as $product)
-            <tr id="{!! $product->id !!}">
-                <td>{{ $product->name }}</td>
-                <td> {{ $product->description }}</td>
-                <td>
-                    <a href="{{ route('products.edit', $product) }}">Editar</a>
-                    <button data-id="{!! $product->id !!}"
-                            data-url="{!! route('products.destroy', $product->id) !!}"
-                            type="button" class="delete" >Eliminar</button>
+        @foreach ($companies as $company)
+            <tr id="{!! $company->id !!}">
+                <td>{{ $company->name }}</td>
+                <td> {{ $company->description }}</td>
+               <td>
+                    <a href="{{ route('companies.edit', $company) }}">Editar</a>
+                   <button data-id="{!! $company->id !!}"
+                           data-url="{!! route('companies.destroy', $company->id) !!}"
+                           type="button" id="delete" >Eliminar</button>
                 </td>
             </tr>
         @endforeach
@@ -37,7 +37,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('.delete').on('click', function(evento) {
+            $('#delete').on('click', function(evento) {
                 evento.preventDefault();
                 let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
                 let url = $(this).data('url')
@@ -64,5 +64,3 @@
         });
     </script>
 @endsection
-
-

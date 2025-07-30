@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach ($notes as $note)
+        @foreach ($note as $note)
             <tr id="{!! $note->id !!}">
                 <td>{{ $note->title }}</td>
                 <td>{{ $note->contents }}</td>
