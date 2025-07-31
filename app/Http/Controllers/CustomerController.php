@@ -12,8 +12,12 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return view('customers.index', compact('customers'));
+        return view('customers.index', [
+            'customers' => $customers
+        ]);
     }
+
+
 
     public function create()
     {
@@ -107,7 +111,7 @@ class CustomerController extends Controller
         $log = new Log();
         $log->action = 'ELIMINAR';
         $log->objeto = 'customers';
-        $log->objeto_id =  $customer->id;
+        $log->objeto_id =  $id;
         $log->detail = $customer->toJson();
         $log->ip = '1111';
         $log->user_id = auth()->user()->id;

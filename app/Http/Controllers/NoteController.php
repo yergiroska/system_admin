@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Note;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,6 +36,15 @@ class NoteController extends Controller
         //$note->completed = $request->completed;
         $note->completed =  $request->completed === '1' ? 1 : 0;
         $note->save();
+
+        $log = new Log();
+        $log->action = 'CREAR';
+        $log->objeto = 'Notes';
+        $log->objeto_id =  $note->id;
+        $log->detail = $note->toJson();
+        $log->ip = '3333';
+        $log->user_id = auth()->user()->id;
+        $log->save();
 
         return response()->json([
             'status' => 'success',
@@ -74,7 +84,6 @@ class NoteController extends Controller
         ]);
     }
 
-
     public function edit($id)
     {
         $note = Note::find($id);
@@ -108,6 +117,16 @@ class NoteController extends Controller
     public function destroy($id)
     {
         $note = Note::find($id);
+
+        $log = new Log();
+        $log->action = 'ELIMINAR';
+        $log->objeto = 'Notes';
+        $log->objeto_id =  $note->id;
+        $log->detail = $note->toJson();
+        $log->ip = '3333';
+        $log->user_id = auth()->user()->id;
+        $log->save();
+
         $note->delete();
 
         return response()->json([

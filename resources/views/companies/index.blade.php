@@ -3,7 +3,7 @@
 @section('content')
     <h1>Lista de Empresas</h1>
     <a href="{{ route('companies.create') }}">Crear Empresa</a> |
-    <a href="{{ route('companies.create') }}">Lista de Empresas</a>
+    <a href="{{ route('companies.view.companies') }}">Lista de Empresas</a>
 
     @if (session('success'))
         <p>{{ session('success') }}</p>
@@ -26,7 +26,7 @@
                     <a href="{{ route('companies.edit', $company) }}">Editar</a>
                    <button data-id="{!! $company->id !!}"
                            data-url="{!! route('companies.destroy', $company->id) !!}"
-                           type="button" id="delete" >Eliminar</button>
+                           type="button" class="delete" >Eliminar</button>
                 </td>
             </tr>
         @endforeach
@@ -37,7 +37,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('#delete').on('click', function(evento) {
+            $('.delete').on('click', function(evento) {
                 evento.preventDefault();
                 let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
                 let url = $(this).data('url')

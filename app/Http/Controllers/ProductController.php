@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,7 +12,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('products.index', compact('products'));
+        return view('products.index', [
+            'products' => $products
+        ]);
     }
 
     public function create()
@@ -31,6 +34,15 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->save();
+
+        $log = new Log();
+        $log->action = 'CREAR';
+        $log->objeto = 'Productos';
+        $log->objeto_id =  $product->id;
+        $log->detail = $product->toJson();
+        $log->ip = '2222';
+        $log->user_id = auth()->user()->id;
+        $log->save();
 
         return response()->json([
             'status' => 'success',
@@ -76,18 +88,28 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Product updated successfully.',
+            'message' => 'Producto actualizado con exito.',
         ]);
     }
 
     public function destroy($id)
     {
         $product = Product::find($id);
+
+        $log = new Log();
+        $log->action = 'ELIMINAR';
+        $log->objeto = 'Productos';
+        $log->objeto_id =  $product->id;
+        $log->detail = $product->toJson();
+        $log->ip = '2222';
+        $log->user_id = auth()->user()->id;
+        $log->save();
+
         $product->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Product updated successfully.',
+            'message' => 'Producto eliminado con exito.',
         ]);
     }
 }

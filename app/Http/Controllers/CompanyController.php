@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Log;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -32,6 +34,15 @@ class CompanyController extends Controller
         $company->description = $request->description;
         $company->save();
 
+        $log = new Log();
+        $log->action = 'CREAR';
+        $log->objeto = 'Empresas';
+        $log->objeto_id =  $company->id;
+        $log->detail = $company->toJson();
+        $log->ip = '4444';
+        $log->user_id = auth()->user()->id;
+        $log->save();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Empresa creada con exito.',
@@ -42,15 +53,46 @@ class CompanyController extends Controller
         return redirect()->route('companies.index')->with('success', 'Empresa creada exitosamente.');*/
     }
 
+    public function viewCompanies()
+    {
+        return view('companies.view_companies');
+    }
+
+    public function listCompanies(): JsonResponse
+    {
+        $compania = Company::all();
+        $companies = [];
+        foreach ($compania as $company) {
+            $companies[] = [
+                'id' => $company->id,
+                'name' => $company->name,
+                'description' => $company->description,
+                'url_detail' => route('companies.show', $company->id),
+            ];
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $companies,
+        ]);
+    }
+
+    public function show($id)
+    {
+        $company = Company::find($id);
+        return view('companies.show', [
+            'company' => $company,
+        ]);
+    }
+
     public function edit($id)
     {
-        $company = Company::findOrFail($id);
+        $company = Company::find($id);
         return view('companies.edit', [
             'company' => $company
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -76,6 +118,16 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = Company::find($id);
+
+        $log = new Log();
+        $log->action = 'ELIMINAR';
+        $log->objeto = 'Empresas';
+        $log->objeto_id =  $company->id;
+        $log->detail = $company->toJson();
+        $log->ip = '4444';
+        $log->user_id = auth()->user()->id;
+        $log->save();
+
         $company->delete();
 
         return response()->json([

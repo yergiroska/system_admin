@@ -81,11 +81,14 @@ Route::prefix('logs')->name('logs.')->group(function () {
 /***Route de Company***/
 Route::prefix('companies')->name('companies.')->group(function () {
     Route::get('/', [CompanyController::class, 'index'])->name('index');
+    Route::get('/list', [CompanyController::class, 'listCompanies'])->name('lists');           // Listar
     Route::get('/create', [CompanyController::class, 'create'])->name('create');    // Formulario crear
     Route::post('/save', [CompanyController::class, 'store'])->name('store');
+    Route::get('/view', [CompanyController::class, 'viewCompanies'])->name('view.companies');  // Listar
     Route::get('/{id}/edit', [CompanyController::class, 'edit'])->name('edit');
     Route::put('/{id}', [CompanyController::class, 'update'])->name('update');
     Route::delete('/{id}/delete', [CompanyController::class, 'destroy'])->name('destroy');
+    Route::get('/{id}', [CompanyController::class, 'show'])->name('show');
 });
 
 

@@ -28,7 +28,7 @@
                     <a href="{{ route('notes.edit', $note) }}">Editar</a>
                     <button data-id="{!! $note->id !!}"
                             data-url="{!! route('notes.destroy', $note->id) !!}"
-                            type="button" id="delete">Eliminar</button>
+                            type="button" class="delete">Eliminar</button>
 
                 </td>
             </tr>
@@ -39,7 +39,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('#delete').on('click', function(evento) {
+            $('.delete').on('click', function(evento) {
                 evento.preventDefault();
                 let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
                 let url = $(this).data('url')
