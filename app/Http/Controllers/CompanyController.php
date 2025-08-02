@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $companies = Company::all();
@@ -136,6 +141,10 @@ class CompanyController extends Controller
         ]);
 
         //return redirect()->route('companies.index')->with('success', 'Empresa eliminada.');
+    }
+
+    private function middleware(string $string)
+    {
     }
 
 }

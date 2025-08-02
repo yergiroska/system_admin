@@ -6,6 +6,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserLoginController;
 use Illuminate\Support\Facades\Route;
 
 /***Route de la Vista inicio***/
@@ -91,4 +93,13 @@ Route::prefix('companies')->name('companies.')->group(function () {
     Route::get('/{id}', [CompanyController::class, 'show'])->name('show');
 });
 
+/***Route de Users***/
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('index');
+});
+
+/***Route de UsersLogins***/
+Route::prefix('users-logins')->name('user_login.')->group(function () {
+    Route::get('/{id}/details', [UserLoginController::class, 'details'])->name('details');
+});
 

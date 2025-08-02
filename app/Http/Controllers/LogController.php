@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class LogController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $logs = Log::latest()->get();
@@ -21,5 +26,9 @@ class LogController extends Controller
             'log' => $log,
             'details' => $details
         ]);
+    }
+
+    private function middleware(string $string)
+    {
     }
 }

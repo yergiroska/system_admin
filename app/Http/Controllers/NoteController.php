@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $note = Note::all();
@@ -135,5 +140,9 @@ class NoteController extends Controller
             ]);
 
         //return redirect()->route('notes.index')->with('success', 'Note deleted successfully.');
+    }
+
+    private function middleware(string $string)
+    {
     }
 }

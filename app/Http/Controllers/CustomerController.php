@@ -9,15 +9,20 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+
+    }
     public function index()
     {
+        if(!auth()->user()){
+            return redirect()->route('login');
+        }
         $customers = Customer::all();
         return view('customers.index', [
             'customers' => $customers
         ]);
     }
-
-
 
     public function create()
     {
