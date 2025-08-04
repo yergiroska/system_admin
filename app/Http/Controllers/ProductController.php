@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +25,10 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('products.create');
+        $companies = Company::all();
+        return view('products.create', [
+            'companies' => $companies,
+        ]);
     }
 
     public function store(Request $request)
@@ -39,6 +43,8 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->save();
+
+        $product->companies()->attach($request->companies ?? []);
 
         $log = new Log();
         $log->action = 'CREAR';
@@ -73,8 +79,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::find($id);
+        $companies = Company::all();
         return view('products.edit', [
-            'product' => $product
+            'product' => $product,
+            'companies' => $companies,
         ]);
     }
 
@@ -90,6 +98,8 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->save();
+
+        $product->companies()->sync($request->companies ?? []);
 
         return response()->json([
             'status' => 'success',

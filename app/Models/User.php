@@ -46,6 +46,11 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Define a one-to-many relationship with the Log model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function logs()
     {
         return $this->hasMany(Log::class);

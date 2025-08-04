@@ -17,6 +17,7 @@
         <input type="text" name="name" value="{{ old('name') }}"><br>
         <label>Descripción:</label>
         <textarea id="description" name="description" value="{{ old('description') }}"></textarea><br>
+        @include('inc.products')
         <button type="submit" id="saved">Guardar</button>
     </form>
 @endsection

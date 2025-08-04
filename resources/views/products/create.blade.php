@@ -21,6 +21,9 @@
         <label>Descripcón:</label>
         <!--<input type="text" id="description" name="description" value="{{ old('description') }}"><br>-->
         <textarea id="description" name="description" value="{{ old('description') }}"></textarea><br>
+
+       @include('inc.companies')
+
         <button type="submit" id="saved">Guardar</button>
     </form>
 @endsection

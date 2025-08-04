@@ -22,6 +22,7 @@
 
         <label>Descripción:</label>
         <textarea name="description">{{ old('description', $company->description) }}</textarea><br>
+        @include('inc.products')
         <button type="submit" id="update">Actualizar</button>
     </form>
 @endsection

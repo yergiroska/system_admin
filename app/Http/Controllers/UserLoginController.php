@@ -8,7 +8,7 @@ use App\Models\UserLogin;
 
 class UserLoginController extends Controller
 {
-    
+
     public function details(int $id)
     {
         $users_logins = UserLogin::where('user_id', $id)->get();

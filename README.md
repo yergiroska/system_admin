@@ -1,61 +1,127 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# System Admin
 
-## System Admin
+## Descripción del Proyecto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+System Admin es un sistema administrativo desarrollado con Laravel que permite la gestión integral de productos, empresas y clientes. El sistema facilita el mantenimiento de relaciones entre productos y empresas mediante una estructura de muchos a muchos, permitiendo asociar múltiples productos a múltiples empresas. Además, incluye un módulo de clientes para gestionar la información de contacto y seguimiento de los mismos.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Características Principales
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Gestión de Productos**: Creación, visualización, edición y eliminación de productos con descripción detallada.
+- **Gestión de Empresas**: Administración completa de empresas con información descriptiva.
+- **Gestión de Clientes**: Registro y seguimiento de información de clientes.
+- **Relaciones Muchos a Muchos**: Asociación flexible entre productos y empresas.
+- **Autenticación de Usuarios**: Sistema de login seguro para controlar el acceso.
+- **Registro de Actividades**: Seguimiento detallado de todas las acciones realizadas en el sistema mediante logs.
+- **Interfaz en Español**: Diseñada para usuarios hispanohablantes.
+- **Operaciones Asíncronas**: Implementación de AJAX para mejorar la experiencia del usuario sin recargar páginas.
+- **Borrado Lógico**: Implementación de SoftDeletes para mantener historial de datos.
 
-## Learning Laravel
+## Módulos del Sistema
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Módulo de Productos
+- Gestión completa de productos
+- Asociación con empresas
+- Validación de datos
+- Operaciones CRUD mediante interfaz amigable
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Módulo de Empresas
+- Administración de información empresarial
+- Visualización de productos asociados
+- Validación de datos
+- Operaciones CRUD con confirmaciones
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Módulo de Clientes
+- Registro de información personal de clientes
+- Gestión de documentos de identidad
+- Seguimiento de fechas importantes
+- Operaciones CRUD con confirmaciones AJAX
 
-## Laravel Sponsors
+### Módulo de Usuarios
+- Control de acceso
+- Registro de actividades por usuario
+- Seguimiento de sesiones
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Módulo de Notas
+- Gestión de notas y recordatorios
+- Marcado de tareas completadas
+- Operaciones CRUD con confirmaciones AJAX
+- Registro de actividades en el sistema
 
-### Premium Partners
+### Módulo de Registro (Logs)
+- Seguimiento detallado de todas las acciones del sistema
+- Registro de creación, modificación y eliminación de registros
+- Visualización cronológica de actividades
+- Detalles completos de cada operación realizada
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Instalación
 
-## Contributing
+1. Clonar el repositorio
+   ```
+   git clone [url-del-repositorio]
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. Instalar dependencias
+   ```
+   composer install
+   npm install
+   ```
 
-## Code of Conduct
+3. Configurar el archivo .env
+   ```
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. Configurar la base de datos en el archivo .env
 
-## Security Vulnerabilities
+5. Ejecutar migraciones
+   ```
+   php artisan migrate
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+6. Iniciar el servidor
+   ```
+   php artisan serve
+   ```
 
-## License
+## Tecnologías Utilizadas
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Laravel**: Framework PHP para el desarrollo del backend
+- **JavaScript/jQuery**: Para funcionalidades AJAX y mejora de experiencia de usuario
+- **Blade**: Sistema de plantillas para las vistas
+- **Eloquent ORM**: Para manejo de base de datos y relaciones
+
+## Requisitos del Sistema
+
+- PHP 8.0 o superior
+- Composer
+- MySQL o MariaDB
+- Servidor web (Apache/Nginx)
+
+## Uso
+
+### Acceso al Sistema
+1. Acceder a la URL del proyecto en el navegador
+2. Iniciar sesión con credenciales de usuario
+3. Navegar por el menú principal para acceder a los diferentes módulos
+
+### Gestión de Productos
+- Para crear un producto: Acceder a Productos > Crear Producto
+- Para editar un producto: Seleccionar el producto en la lista y hacer clic en "Editar"
+- Para eliminar un producto: Seleccionar el producto y hacer clic en "Eliminar"
+- Para asociar empresas: En el formulario de creación/edición, seleccionar las empresas deseadas
+
+### Gestión de Empresas
+- Para crear una empresa: Acceder a Empresas > Crear Empresa
+- Para ver detalles: Hacer clic en el nombre de la empresa en la lista
+- Para editar o eliminar: Usar los botones correspondientes en la lista
+
+### Gestión de Clientes
+- Para crear un cliente: Acceder a Clientes > Crear Cliente
+- Para gestionar clientes: Usar la interfaz de lista con opciones de edición y eliminación
+
+## Licencia
+
+El framework Laravel es un software de código abierto bajo la [licencia MIT](https://opensource.org/licenses/MIT).

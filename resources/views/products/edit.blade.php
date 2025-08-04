@@ -22,7 +22,7 @@
 
         <label>Descripción:</label>
         <input type="text" name="description" value="{{ old('description', $product->description) }}"><br>
-
+        @include('inc.companies')
         <button type="submit" id="update">Actualizar</button>
     </form>
 @endsection

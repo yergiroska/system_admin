@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Log;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,10 @@ class CompanyController extends Controller
 
     public function create()
     {
-        return view('companies.create');
+        $products = Product::all();
+        return view('companies.create', [
+            'products' => $products,
+        ]);
     }
 
     public function store(Request $request)
@@ -38,6 +42,8 @@ class CompanyController extends Controller
         $company->name = $request->name;
         $company->description = $request->description;
         $company->save();
+
+        $company->products()->attach($request->products ?? []);
 
         $log = new Log();
         $log->action = 'CREAR';
@@ -92,8 +98,10 @@ class CompanyController extends Controller
     public function edit($id)
     {
         $company = Company::find($id);
+        $products = Product::all();
         return view('companies.edit', [
-            'company' => $company
+            'company' => $company,
+            'products' => $products,
         ]);
     }
 
@@ -108,6 +116,8 @@ class CompanyController extends Controller
         $company->name = $request->name;
         $company->description = $request->description;
         $company->save();
+
+        $company->products()->sync($request->products ?? []);
 
         return response()->json([
             'status' => 'success',
