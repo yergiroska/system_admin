@@ -3,7 +3,7 @@
 @section('content')
     <h1>Lista de Empresas</h1>
     <a href="{{ route('companies.create') }}">Crear Empresa</a> |
-    <a href="{{ route('companies.view.companies') }}">Lista de Empresas</a>
+    <a href="{{ route('companies.view') }}">Lista de Empresas</a>
 
     @if (session('success'))
         <p>{{ session('success') }}</p>

@@ -3,7 +3,7 @@
 @section('content')
     <h1>Producto</h1>
     <a href="{{ route('products.create') }}">Crear Producto</a> |
-    <a href="{{ route('products.view.products') }}">Lista de Productos</a>
+    <a href="{{ route('products.view') }}">Lista de Productos</a>
 
     @if (session('success'))
         <p>{{ session('success') }}</p>

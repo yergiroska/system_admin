@@ -3,7 +3,7 @@
 @section('content')
     <h1>Notas</h1>
     <a href="{{ route('notes.create') }}">Crear Nota</a> |
-    <a href="{{ route('notes.view.notes') }}">Lista de Notas</a>
+    <a href="{{ route('notes.view') }}">Lista de Notas</a>
 
     @if (session('success'))
         <p>{{ session('success') }}</p>

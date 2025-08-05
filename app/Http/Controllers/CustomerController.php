@@ -63,20 +63,6 @@ class CustomerController extends Controller
         //return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
     }
 
-    public function viewCustomers()
-    {
-        return view('customers.view_customers');
-    }
-
-    public function listCustomers(): JsonResponse
-    {
-        $customers = Customer::all();
-        return response()->json([
-            'status' => 'success',
-            'data' => $customers,
-        ]);
-    }
-
     public function edit($id)
     {
         $customer = Customer::find($id);
@@ -125,10 +111,25 @@ class CustomerController extends Controller
         $customer->delete();
 
         return response()->json([
-                'status' => 'success',
-                'message' => 'Cliente eliminado con exito',
-            ]);
+            'status' => 'success',
+            'message' => 'Cliente eliminado con exito',
+        ]);
 
         //return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
+
+    public function viewCustomers()
+    {
+        return view('customers.view_customers');
+    }
+
+    public function listCustomers(): JsonResponse
+    {
+        $customers = Customer::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $customers,
+        ]);
+    }
+
 }
