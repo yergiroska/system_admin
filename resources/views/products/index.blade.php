@@ -19,13 +19,13 @@
         </thead>
         <tbody>
         @foreach ($products as $product)
-            <tr id="{!! $product->id !!}">
-                <td>{{ $product->name }}</td>
-                <td> {{ $product->description }}</td>
+            <tr id="{!! $product->getId() !!}">
+                <td>{{ $product->getName() }}</td>
+                <td> {{ $product->getDescription() }}</td>
                 <td>
                     <a href="{{ route('products.edit', $product) }}">Editar</a>
-                    <button data-id="{!! $product->id !!}"
-                            data-url="{!! route('products.destroy', $product->id) !!}"
+                    <button data-id="{!! $product->getId() !!}"
+                            data-url="{!! route('products.destroy', $product->getId()) !!}"
                             type="button" class="delete" >Eliminar</button>
                 </td>
             </tr>

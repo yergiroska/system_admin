@@ -39,8 +39,8 @@ class CompanyController extends Controller
         ]);
 
         $company= new Company();
-        $company->name = $request->name;
-        $company->description = $request->description;
+        $company->setName($request->name);
+        $company->setDescription($request->description);
         $company->save();
 
         $company->products()->attach($request->products ?? []);

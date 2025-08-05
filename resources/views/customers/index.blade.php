@@ -21,15 +21,15 @@
     </thead>
     <tbody>
     @foreach ($customers as $customer)
-        <tr id="{!! $customer->id !!}">
-            <td>{{ $customer->first_name }}</td>
-            <td>{{ $customer->last_name }}</td>
-            <td>{{ $customer->formatted_birth_date }}</td>
-            <td>{{ $customer->identity_document }}</td>
+        <tr id="{!! $customer->getId() !!}">
+            <td>{{ $customer->getFirstName() }}</td>
+            <td>{{ $customer->getLastName()}}</td>
+            <td>{{ $customer->getBirthDate() }}</td>
+            <td>{{ $customer->getIdentityDocument() }}</td>
             <td>
                 <a href="{{ route('customers.edit', $customer) }}">Editar</a>
-                <button data-id="{!! $customer->id !!}"
-                        data-url="{!! route('customers.destroy', $customer->id) !!}"
+                <button data-id="{!! $customer->getId() !!}"
+                        data-url="{!! route('customers.destroy', $customer->getId()) !!}"
                         type="button"
                         class="delete"
                 >Eliminar</button>

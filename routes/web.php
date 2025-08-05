@@ -34,6 +34,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 /***Routes Customer***/
 Route::prefix('customers')
     ->name('customers.')
+    ->middleware('auth')
     ->group(function () {
     Route::get('/', [CustomerController::class, 'index'])->name('index');            // Listar
     Route::get('/create', [CustomerController::class, 'create'])->name('create');
@@ -51,6 +52,7 @@ Route::prefix('customers')
 /***Routes Product***/
 Route::prefix('products')
     ->name('products.')
+    ->middleware('auth')
     ->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index');            // Listar
     Route::get('/create', [ProductController::class, 'create'])->name('create');    // Formulario crear
@@ -67,6 +69,7 @@ Route::prefix('products')
 /***Routes Note***/
 Route::prefix('notes')
     ->name('notes.')
+    ->middleware('auth')
     ->group(function () {
     Route::get('/', [NoteController::class, 'index'])->name('index'); // Listar
     Route::get('/create', [NoteController::class, 'create'])->name('create');    // Formulario crear
@@ -84,6 +87,7 @@ Route::prefix('notes')
 /***Route de Company***/
 Route::prefix('companies')
     ->name('companies.')
+    ->middleware('auth')
     ->group(function () {
     Route::get('/', [CompanyController::class, 'index'])->name('index');
     Route::get('/create', [CompanyController::class, 'create'])->name('create');    // Formulario crear
@@ -101,6 +105,7 @@ Route::prefix('companies')
 /***Route de Logs***/
 Route::prefix('logs')
     ->name('logs.')
+    ->middleware('auth')
     ->group(function () {
     Route::get('/', [LogController::class, 'index'])->name('index');
     Route::get('/{id}/details', [LogController::class, 'details'])->name('details');
@@ -109,6 +114,7 @@ Route::prefix('logs')
 /***Route de Users***/
 Route::prefix('users')
     ->name('users.')
+    ->middleware('auth')
     ->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
 });
@@ -116,6 +122,7 @@ Route::prefix('users')
 /***Route de UsersLogins***/
 Route::prefix('users-logins')
     ->name('user_login.')
+    ->middleware('auth')
     ->group(function () {
     Route::get('/{id}/details', [UserLoginController::class, 'details'])->name('details');
 });

@@ -22,6 +22,59 @@ class Customer extends Model
     protected $hidden = ['birth_date'];
     protected $appends = ['formatted_birth_date'];
 
+    public function getId()
+    {
+        return $this->attributes['id'];
+    }
+
+    public function getFirstName()
+    {
+        return ucfirst($this->attributes['first_name']);
+    }
+
+    public function getLastName()
+    {
+        return ucfirst($this->attributes['last_name']);
+    }
+
+    public function getFullName()
+    {
+        return ucfirst($this->attributes['first_name']) . ' ' . ucfirst($this->attributes['last_name']);
+    }
+
+    public function getBirthDate()
+    {
+        return Carbon::parse($this->attributes['birth_date'])->format('d-m-Y');
+    }
+    public function getIdentityDocument()
+    {
+        return $this->attributes['identity_document'];
+    }
+
+
+    public function setFirstName($name): Customer
+    {
+        $this->attributes['first_name'] = ucfirst($name);
+        return $this;
+    }
+
+    public function setLastName($name)
+    {
+        $this->attributes['last_name'] = ucfirst($name);
+        return $this;
+    }
+    public function setBirthDate($date)
+    {
+        $this->attributes['birth_date'] = Carbon::parse($date);
+        return $this;
+    }
+
+    public function setIdentityDocument($document)
+    {
+        $this->attributes['identity_document'] = $document;
+        return $this;
+    }
+
     public function getFormattedBirthDateAttribute()
     {
         return Carbon::parse($this->birth_date)->format('d-m-Y');

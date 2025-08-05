@@ -40,8 +40,8 @@ class ProductController extends Controller
         ]);
 
         $product = new Product();
-        $product->name = $request->name;
-        $product->description = $request->description;
+        $product->setName($request->name);
+        $product->setDescription($request->description);
         $product->save();
 
         $product->companies()->attach($request->companies ?? []);
