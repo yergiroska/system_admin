@@ -20,14 +20,14 @@
         </thead>
         <tbody>
         @foreach ($note as $note)
-            <tr id="{!! $note->id !!}">
-                <td>{{ $note->title }}</td>
-                <td>{{ $note->contents }}</td>
-                <td>{{ $note->completed ? 'Si' : 'No' }}</td>
+            <tr id="{!! $note->getId() !!}">
+                <td>{{ $note->getTitle() }}</td>
+                <td>{{ $note->getContents() }}</td>
+                <td>{{ $note->getCompleted() ? 'Si' : 'No' }}</td>
                 <td>
                     <a href="{{ route('notes.edit', $note) }}">Editar</a>
-                    <button data-id="{!! $note->id !!}"
-                            data-url="{!! route('notes.destroy', $note->id) !!}"
+                    <button data-id="{!! $note->getId() !!}"
+                            data-url="{!! route('notes.destroy', $note->getId()) !!}"
                             type="button" class="delete">Eliminar</button>
 
                 </td>
