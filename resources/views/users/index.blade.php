@@ -14,11 +14,11 @@
         </thead>
         <tbody>
         @foreach ($users as $user)
-            <tr id="{{ $user->id }}">
-                <td>{{ $user->id }}</td>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->is_connected ? 'Si': 'No' }}</td>
-                <td><a href="{{ route('user_login.details', $user->id) }}">Ver</a></td>
+            <tr id="{{ $user->getId() }}">
+                <td>{{ $user->getId() }}</td>
+                <td>{{ $user->getName() }}</td>
+                <td>{{ $user->getIsConnected() ? 'Si': 'No' }}</td>
+                <td><a href="{{ route('user_login.details', $user->getId()) }}">Ver</a></td>
             </tr>
         @endforeach
         </tbody>

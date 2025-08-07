@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     use SoftDeletes;
+
     protected $table = 'customers';
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -46,6 +47,7 @@ class Customer extends Model
     {
         return Carbon::parse($this->attributes['birth_date'])->format('d-m-Y');
     }
+
     public function getIdentityDocument()
     {
         return $this->attributes['identity_document'];
@@ -63,6 +65,7 @@ class Customer extends Model
         $this->attributes['last_name'] = ucfirst($name);
         return $this;
     }
+
     public function setBirthDate($date)
     {
         $this->attributes['birth_date'] = Carbon::parse($date);

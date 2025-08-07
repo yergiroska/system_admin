@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'name',
         'description',
@@ -19,21 +20,29 @@ class Company extends Model
     protected $hidden = ['birth_date'];
     protected $appends = ['formatted_birth_date'];
 
-    public function getId(){
+    public function getId()
+    {
         return $this->attributes['id'];
     }
-    public function getName(){
+
+    public function getName()
+    {
         return $this->attributes['name'];
     }
-    public function getDescription(){
+
+    public function getDescription()
+    {
         return $this->attributes['description'];
     }
 
-    public function setName($name){
+    public function setName($name)
+    {
         $this->attributes['name'] = $name;
         return $this;
     }
-    public function setDescription($description){
+
+    public function setDescription($description)
+    {
         $this->attributes['description'] = $description;
         return $this;
     }

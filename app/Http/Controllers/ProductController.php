@@ -92,12 +92,12 @@ class ProductController extends Controller
 
         // Registro de la acción en el sistema de logs
         $log = new Log();
-        $log->action = 'CREAR';                  // Tipo de acción realizada
-        $log->objeto = 'Productos';              // Tabla/Entidad afectada
-        $log->objeto_id = $product->id;         // ID del registro creado
-        $log->detail = $product->toJson();       // Detalles del producto en formato JSON
-        $log->ip = '2222';                       // IP del usuario (valor estático por ahora)
-        $log->user_id = auth()->user()->id;      // ID del usuario que realizó la acción
+        $log->setAction('CREAR');                  // Tipo de acción realizada
+        $log->setObjeto('Productos');   // Tabla/Entidad afectada
+        $log->setObjetoId($product->id);         // ID del registro creado
+        $log->setDetail($product->toJson());   // Detalles del producto en formato JSON
+        $log->setIp('2222');  // IP del usuario (valor estático por ahora)
+        $log->setUserId(auth()->user()->id);   // ID del usuario que realizó la acción
         $log->save();                            // Guarda el registro de log
 
         // Devuelve respuesta JSON con el resultado exitoso de la operación
@@ -166,8 +166,8 @@ class ProductController extends Controller
         ]);
 
         $product= Product::find($id);
-        $product->name = $request->name;
-        $product->description = $request->description;
+        $product->setName($request->name);
+        $product->setDescription($request->description);
         $product->save();
 
         $product->companies()->sync($request->companies ?? []);
@@ -191,12 +191,12 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         $log = new Log();
-        $log->action = 'ELIMINAR';
-        $log->objeto = 'Productos';
-        $log->objeto_id =  $product->id;
-        $log->detail = $product->toJson();
-        $log->ip = '2222';
-        $log->user_id = auth()->user()->id;
+        $log->setAction('ELIMINAR');
+        $log->setObjeto('Productos');
+        $log->setObjetoId($product->id);
+        $log->setDetail($product->toJson());
+        $log->setIp('2222');
+        $log->setUserId(auth()->user()->id);
         $log->save();
 
         $product->delete();

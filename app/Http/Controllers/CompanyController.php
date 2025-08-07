@@ -7,6 +7,7 @@ use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Controlador para la gestión de empresas en el sistema.
@@ -36,10 +37,14 @@ class CompanyController extends Controller
         $this->middleware('auth');
     }
 
+    private function middleware(string $string)
+    {
+    }
+
     /**
      * Muestra la lista de todas las empresas.
      *
-     * @return \Illuminate\View\View Vista con la lista de empresas
+     * @return View Vista con la lista de empresas
      */
     public function index()
     {
@@ -53,7 +58,7 @@ class CompanyController extends Controller
      * Muestra el formulario para crear una nueva empresa.
      * Incluye la lista de todos los productos disponibles para asociar.
      *
-     * @return \Illuminate\View\View Vista del formulario de creación
+     * @return View Vista del formulario de creación
      */
     public function create()
     {
@@ -108,16 +113,12 @@ class CompanyController extends Controller
             'status' => 'success',
             'message' => 'Empresa creada con exito.',
         ]);
-
-        /*Company::create($request->all());
-
-        return redirect()->route('companies.index')->with('success', 'Empresa creada exitosamente.');*/
     }
 
     /**
      * Muestra la vista para visualizar empresas.
      *
-     * @return \Illuminate\View\View Vista de empresas
+     * @return View Vista de empresas
      */
     public function viewCompanies()
     {
@@ -152,7 +153,7 @@ class CompanyController extends Controller
      * Muestra los detalles de una empresa específica.
      *
      * @param int $id ID de la empresa a mostrar
-     * @return \Illuminate\View\View Vista con los detalles de la empresa
+     * @return View Vista con los detalles de la empresa
      */
     public function show($id)
     {
@@ -166,7 +167,7 @@ class CompanyController extends Controller
      * Muestra el formulario para editar una empresa existente.
      *
      * @param int $id ID de la empresa a editar
-     * @return \Illuminate\View\View Vista del formulario de edición
+     * @return View Vista del formulario de edición
      */
     public function edit($id)
     {
@@ -192,9 +193,9 @@ class CompanyController extends Controller
             'description' => 'required',
         ]);
 
-        $company= Company::find($id);
-        $company->name = $request->name;
-        $company->description = $request->description;
+        $company = Company::find($id);
+        $company->setName($request->name);
+        $company->setDescription($request->description);
         $company->save();
 
         $company->products()->sync($request->products ?? []);
@@ -203,11 +204,6 @@ class CompanyController extends Controller
             'status' => 'success',
             'message' => 'Empresa actualizada con exito.',
         ]);
-
-       /* $company = Company::findOrFail($id);
-        $company->update($request->all());
-
-        return redirect()->route('companies.index')->with('success', 'Empresa actualizada correctamente.');*/
     }
 
     /**
@@ -224,7 +220,7 @@ class CompanyController extends Controller
         $log = new Log();
         $log->action = 'ELIMINAR';
         $log->objeto = 'Empresas';
-        $log->objeto_id =  $company->id;
+        $log->objeto_id = $company->id;
         $log->detail = $company->toJson();
         $log->ip = '4444';
         $log->user_id = auth()->user()->id;
@@ -236,12 +232,6 @@ class CompanyController extends Controller
             'status' => 'success',
             'message' => 'Empresa eliminada con exito.',
         ]);
-
-        //return redirect()->route('companies.index')->with('success', 'Empresa eliminada.');
-    }
-
-    private function middleware(string $string)
-    {
     }
 
 }

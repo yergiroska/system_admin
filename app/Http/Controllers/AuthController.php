@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserLogin;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 /**
  * Controlador responsable de gestionar la autenticación de los usuarios.
@@ -32,23 +33,29 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $user = new User();
+        $user->setName($request->name);
+        $user->setEmail($request->email);
+        $user->setPassword(Hash::make($request->password));
+        // Actualiza la última sesión al momento actual en la zona horaria de Madrid
+        $user->last_session = Carbon::now('Europe/Madrid');
+        // Marca al usuario como conectado
+        $user->is_connected = 1;
+        // Guarda los cambios en la base de datos
+        $user->save();
+
+        // Crea una nueva instancia de registro de inicio de sesión
+        $user_login = new UserLogin();
+        // Asigna el ID del usuario actualmente autenticado
+        $user_login->user_id = $user->id;
+        // Establece la hora de inicio de la conexión en la zona horaria de Madrid
+        $user_login->start_connection = Carbon::now('Europe/Madrid');
+        // Guarda el registro de inicio de sesión en la base de datos
+        $user_login->save();
 
         Auth::login($user);
 
         return redirect()->route('dashboard');
-    }
-
-    public function showLoginForm()
-    {
-        if(auth()->user()){
-            return redirect()->route('dashboard');
-        }
-        return view('auth.login');
     }
 
     /**
@@ -63,8 +70,8 @@ class AuthController extends Controller
      *
      * Si la autenticación falla, redirige de vuelta con un mensaje de error.
      *
-     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene las credenciales de usuario.
-     * @return \Illuminate\Http\RedirectResponse Redirige al dashboard en caso de éxito o regresa al formulario de inicio de sesión con errores.
+     * @param Request $request La solicitud HTTP que contiene las credenciales de usuario.
+     * @return RedirectResponse Redirige al dashboard en caso de éxito o regresa al formulario de inicio de sesión con errores.
      */
     public function login(Request $request)
     {
@@ -104,6 +111,14 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
+    public function showLoginForm()
+    {
+        if (auth()->user()) {
+            return redirect()->route('dashboard');
+        }
+        return view('auth.login');
+    }
+
     /**
      * Cierra la sesión del usuario actualmente autenticado.
      *
@@ -118,7 +133,7 @@ class AuthController extends Controller
      * - Redirige al formulario de inicio de sesión tras completar el proceso de cierre de sesión.
      *
      * @param Request $request La solicitud HTTP actual.
-     * @return \Illuminate\Http\RedirectResponse Redirección a la página de inicio de sesión.
+     * @return RedirectResponse Redirección a la página de inicio de sesión.
      */
     public function logout(Request $request)
     {
@@ -154,8 +169,8 @@ class AuthController extends Controller
 
         Auth::logout();
 
-       // $request->session()->invalidate();
-       // $request->session()->regenerateToken();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
         return redirect()->route('login');
     }
 }

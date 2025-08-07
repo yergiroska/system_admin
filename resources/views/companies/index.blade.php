@@ -9,7 +9,7 @@
         <p>{{ session('success') }}</p>
     @endif
 
-    <table>
+    <table class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>Nombre</th>
@@ -23,10 +23,10 @@
                 <td>{{ $company->getName() }}</td>
                 <td> {{ $company->getDescription() }}</td>
                <td>
-                    <a href="{{ route('companies.edit', $company) }}">Editar</a>
+                   <a href="{{ route('companies.edit', $company) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
                    <button data-id="{!! $company->getId() !!}"
                            data-url="{!! route('companies.destroy', $company->getId()) !!}"
-                           type="button" class="delete" >Eliminar</button>
+                           type="button" class="delete btn btn-sm btn-danger" ><i class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>
         @endforeach

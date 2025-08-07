@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UserLogin extends Model
@@ -24,6 +23,6 @@ class UserLogin extends Model
         // se debe indicar la relación con el campo user_id explícitamente,
         // ya que laravel intentara hacer la relación de esta forma usuario_id
         // el cual no existe en la tabla logs
-        return $this->belongsTo(User::class ); // Indica explícitamente el campo
+        return $this->belongsTo(User::class); // Indica explícitamente el campo
     }
 }

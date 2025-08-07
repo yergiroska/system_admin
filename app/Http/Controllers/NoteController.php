@@ -95,12 +95,12 @@ class NoteController extends Controller
 
         // Registro de la acción en el sistema de logs
         $log = new Log();
-        $log->action = 'CREAR';                  // Tipo de acción realizada
-        $log->objeto = 'Notes';                  // Entidad afectada
-        $log->objeto_id = $note->id;           // ID de la nota creada
-        $log->detail = $note->toJson();          // Detalles de la nota en formato JSON
-        $log->ip = '3333';                      // IP del usuario (valor estático por ahora)
-        $log->user_id = auth()->user()->id;      // ID del usuario que creó la nota
+        $log->setAction('CREAR');                  // Tipo de acción realizada
+        $log->setObjeto('Notes');  // Entidad afectada
+        $log->setObjetoId($note->id);           // ID de la nota creada
+        $log->setDetail($note->toJson());  // Detalles de la nota en formato JSON
+        $log->setIp('3333');   // IP del usuario (valor estático por ahora)
+        $log->setUserId(auth()->user()->id);  // ID del usuario que creó la nota
         $log->save();                           // Guarda el registro de log
 
         // Devuelve respuesta JSON con el resultado de la operación
@@ -190,9 +190,12 @@ class NoteController extends Controller
         ]);
 
         $note= Note::find($id);
-        $note->title = $request->title;
-        $note->contents = $request->contents;
-        $note->completed = $request->completed;
+        $note->setTitle($request->title);
+        $note->setContents($request->contents);
+        $note->isNotCompleted();
+        if ($request->completed === '1') {
+            $note->isCompleted();
+        }
         $note->save();
 
         return response()->json([
@@ -216,12 +219,12 @@ class NoteController extends Controller
         $note = Note::find($id);
 
         $log = new Log();
-        $log->action = 'ELIMINAR';
-        $log->objeto = 'Notes';
-        $log->objeto_id =  $note->id;
-        $log->detail = $note->toJson();
-        $log->ip = '3333';
-        $log->user_id = auth()->user()->id;
+        $log->setAction('ELIMINAR');
+        $log->setObjeto('Notes');
+        $log->setObjetoId($note->id);
+        $log->setDetail($note->toJson());
+        $log->setIp('3333');
+        $log->setUserId(auth()->user()->id);
         $log->save();
 
         $note->delete();

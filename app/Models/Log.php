@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Log extends Model
 {
@@ -17,7 +17,71 @@ class Log extends Model
         'detail',     // Detalles de la acción en formato JSON
         'ip',         // Dirección IP desde donde se realizó la acción
         'user_id',    // ID del usuario que realizó la acción
+        'objeto',
+        'objeto_id',
     ];
+
+    function getId()
+    {
+        return $this->attributes['id'];
+    }
+    function getAction()
+    {
+        return $this->attributes['action'];
+    }
+    function getDetail()
+    {
+        return $this->attributes['detail'];
+    }
+    function getIp()
+    {
+        return $this->attributes['ip'];
+    }
+    function getObjeto()
+    {
+        return $this->attributes['objeto'];
+    }
+    function getObjetoId()
+    {
+        return $this->attributes['objeto_id'];
+    }
+
+    function getUserId()
+    {
+        return $this->attributes['user_id'];
+    }
+
+
+    function setAction($action)
+    {
+        $this->attributes['action'] = $action;
+        return $this;
+
+    }
+    function setDetail($detail)
+    {
+        $this->attributes['detail'] = $detail;
+        return $this;
+    }
+    function setIp($ip)
+    {
+        $this->attributes['ip'] = $ip;
+        return $this;
+    }
+    function setUserId($id)
+    {
+        $this->attributes['user_id'] = $id;
+    }
+    function setObjeto($objeto)
+    {
+        $this->attributes['objeto'] = $objeto;
+        return $this;
+    }
+    function setObjetoId($id)
+    {
+        $this->attributes['objeto_id'] = $id;
+        return $this;
+    }
 
     /**
      * Obtiene el nombre del usuario que realizó la acción.
@@ -35,7 +99,7 @@ class Log extends Model
      * Relación con el modelo User.
      * Un log pertenece a un usuario.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {
@@ -51,7 +115,7 @@ class Log extends Model
      * Relación alternativa con el modelo User.
      * Un log pertenece a un usuario (con clave foránea explícita).
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function usuario()
     {

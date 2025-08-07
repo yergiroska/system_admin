@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Lista de Empresas</h1>
-    <table border="1">
+    <table class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>ID</th>
@@ -31,7 +31,7 @@
                         $tr += '<td>'+company.id+'</td>';
                         $tr += '<td>'+company.name+'</td>';
                         $tr += '<td>'+company.description+'</td>';
-                        $tr += '<td><a href="' + company.url_detail + '">Ver</a></td>';
+                        $tr += '<td><a href="' + company.url_detail + '" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a></td>';
                         $tr += '</tr>';
                     }
                     $('.companies').append($tr)
