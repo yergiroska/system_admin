@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('company_product', function (Blueprint $table) {
-           // $table->id();
+            $table->id();
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('product_id');
 
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 
             // Clave primaria compuesta (opcional, pero recomendado para evitar duplicados)
-            $table->primary(['company_id', 'product_id']);
+            $table->unique(['company_id', 'product_id']);
 
             $table->timestamps();
             $table->softDeletes();
