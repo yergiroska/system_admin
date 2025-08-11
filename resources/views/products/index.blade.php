@@ -1,37 +1,60 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Producto</h1>
-    <a href="{{ route('products.create') }}">Crear Producto</a> |
-    <a href="{{ route('products.view') }}">Lista de Productos</a>
+    <div class="container mt-4">
+        {{-- Encabezado --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0"><i class="fas fa-building"></i> Lista de Productos</h2>
+            <div>
+                <a href="{{ route('products.create') }}" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus"></i> Crear Producto
+                </a>
+                <a href="{{ route('products.view') }}" class="btn btn-info btn-sm text-white">
+                    <i class="fas fa-list"></i> Lista Detallada
+                </a>
+            </div>
+        </div>
+        {{-- Mensaje de éxito --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i>{{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        @endif
 
-    @if (session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
-
-    <table>
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Acción</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach ($products as $product)
-            <tr id="{!! $product->getId() !!}">
-                <td>{{ $product->getName() }}</td>
-                <td> {{ $product->getDescription() }}</td>
-                <td>
-                    <a href="{{ route('products.edit', $product) }}">Editar</a>
-                    <button data-id="{!! $product->getId() !!}"
-                            data-url="{!! route('products.destroy', $product->getId()) !!}"
-                            type="button" class="delete" >Eliminar</button>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+        {{-- Tabla de productos --}}
+        <div class="card shadow">
+            <div class="card-body p-0">
+                <table class="table table-striped table-hover mb-0 table-responsive table-bordered">
+                    <thead class="table-primary">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th width="120">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($products as $product)
+                        <tr id="{!! $product->getId() !!}">
+                            <td>{{ $product->getName() }}</td>
+                            <td> {{ $product->getDescription() }}</td>
+                            <td class="text-center">
+                                <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button data-id="{!! $product->getId() !!}"
+                                        data-url="{!! route('products.destroy', $product->getId()) !!}"
+                                        type="button" class="delete btn btn-sm btn-danger" >
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')

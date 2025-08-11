@@ -1,31 +1,47 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Crear Producto</h1>
+    <div class="container mt-5" style="max-width: 600px;">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-box"></i> Crear Producto</h4>
+            </div>
+            <div class="card-body">
+                {{-- Mostrar errores --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-    @if ($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                <form action="{{ route('products.store') }}" id="form_product" method="POST">
+                    @csrf
+
+                    <div class="mb-3">
+                    <label for="name" class="form-label">Nombre:</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}"><br>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descripción:</label>
+                        <textarea id="description" name="description" class="form-control" value="{{ old('description') }}"></textarea><br>
+                    </div>
+
+                    <div class="mb-3">
+                        @include('inc.companies')
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" id="saved" class="btn btn-success">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    @endif
-
-    <form action="{{ route('products.store') }}" id="form_product" method="POST">
-        @csrf
-
-        <label>Nombre:</label>
-        <input type="text" id="name" name="name" value="{{ old('name') }}"><br>
-        <label>Descripcón:</label>
-        <!--<input type="text" id="description" name="description" value="{{ old('description') }}"><br>-->
-        <textarea id="description" name="description" value="{{ old('description') }}"></textarea><br>
-
-       @include('inc.companies')
-
-        <button type="submit" id="saved">Guardar</button>
-    </form>
+    </div>
 @endsection
 
 @section('scripts')

@@ -6,18 +6,18 @@
             <div class="card-header bg-primary text-white">
               <h4 class="mb-0"><i class="fas fa-building"></i> Crear Empresa</h4>
             </div>
-            <div class="card-body">
 
-            {{-- Mostrar errores --}}
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            <div class="card-body">
+                {{-- Mostrar errores --}}
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                     {{-- Formulario --}}
                 <form action="{{ route('companies.store') }}" id="form_company" method="POST">

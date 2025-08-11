@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label>Descripción:</label>
+                        <label for="description" class="form-label">Descripción:</label>
                         <textarea name="description" class="form-control" rows="3">{{ old('description', $company->description) }}</textarea><br>
                     </div>
                     {{-- Productos asociados --}}

@@ -26,7 +26,6 @@
             <div class="card-body p-0">
                 <table class="table table-striped table-hover mb-0 table-responsive table-bordered">
                     <thead class="table-primary">
-
                     <tr>
                         <th>Nombre</th>
                         <th>Descripción</th>

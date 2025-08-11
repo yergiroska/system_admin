@@ -85,9 +85,10 @@ class CompanyController extends Controller
     {
         // Validación de campos requeridos
         $request->validate([
-            'name' => 'required',         // Nombre de la empresa: campo obligatorio
+            'name' => 'required|unique:companies,name',
             'description' => 'required',   // Descripción de la empresa: campo obligatorio
         ]);
+
 
         // Creación de nueva instancia de Company y asignación de valores
         $company = new Company();
