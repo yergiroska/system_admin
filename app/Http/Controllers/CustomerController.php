@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Models\CompanyProduct;
 use App\Models\Customer;
 use App\Models\Log;
+use App\Models\Purchase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -213,4 +216,75 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function getProducts(int $id)
+    {
+        $customer = Customer::find($id);
+        $companies = Company::with('products')->get();
+        return view('customers.products', [
+            'customer' => $customer,
+            'companies' => $companies,
+        ]);
+    }
+
+    /**
+     * Registra compras para un cliente específico en la base de datos.
+     *
+     * Este método realiza las siguientes acciones:
+     * 1. Obtiene los IDs de los productos seleccionados en el formulario.
+     * 2. Busca al cliente correspondiente al ID proporcionado.
+     * 3. Por cada producto seleccionado:
+     *    - Crea una nueva instancia de la clase Purchase.
+     *    - Asigna el ID del cliente y el ID del producto a la nueva compra.
+     *    - Guarda el registro de la compra en la base de datos mediante la relación.
+     * 4. Redirige al usuario de vuelta con un mensaje de éxito.
+     *
+     * @param int $id ID del cliente para el cual se registrarán las compras
+     * @param Request $request Contiene los IDs de los productos seleccionados
+     * @return RedirectResponse Redirección con un mensaje de estado
+     */
+    final public function buy(int $id, Request $request)
+    {
+        /**
+         * 1. Obtener los productos seleccionados del formulario
+         */
+        $productsIds = $request->input('products');
+        /**
+         * 2. Obtener el cliente correspondiente al ID proporcionado
+         */
+        $customer = Customer::find($id);
+        foreach ($productsIds as  $productId) {
+            /**
+             * 1. Crear una nueva instancia de la clase Purchase
+             * 2. Asignar el ID del cliente
+             * 3. Asignar el ID del de la tabla pivot company_product
+             * 4. Guardar la compra en la base de datos
+             */
+            /*
+            $purchase = new Purchase(); // 1)
+            $purchase->setCustomerId($id); // 2)
+            $purchase->setCompanyProductId($productId); // 3)
+            $purchase->save(); // 4)
+            */
+
+            /**
+             * 1. Crear una nueva instancia de la clase Purchase
+             */
+            $purchase = new Purchase();
+            /**
+             * 2. Asignar el ID del cliente y el ID del producto
+             */
+            $purchase->setCompanyProductId((int) $productId);
+
+            /**
+             * 3. Guardar la compra en la base de datos
+             * 4. Relacionar la compra con el cliente
+             */
+            $customer->purchases()->save($purchase);
+
+        }
+        return redirect()
+            ->back()
+            ->with('status', 'Compra registrada correctamente.');
+
+    }
 }

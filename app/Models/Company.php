@@ -54,6 +54,10 @@ class Company extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)
+            ->using(CompanyProduct::class)   // modelo pivot
+            ->as('companyProduct')           // alias para acceder al pivot
+            ->withPivot('id');               // incluye el id del pivot
+            // ->withTimestamps();           // descomenta si tu pivot tiene timestamps
     }
 }

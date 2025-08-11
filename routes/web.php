@@ -39,10 +39,12 @@ Route::prefix('customers')
     Route::get('/', [CustomerController::class, 'index'])->name('index');            // Listar
     Route::get('/create', [CustomerController::class, 'create'])->name('create');
     Route::get('/{id}/edit', [CustomerController::class, 'edit'])->name('edit');    // Formulario editar
+    Route::get('/{id}/get-products', [CustomerController::class, 'getProducts'])->name('get_products');    // Formulario editar
 
     Route::post('/save', [CustomerController::class, 'store'])->name('store');           // Guardar nuevo para web
     Route::put('/{id}/update', [CustomerController::class, 'update'])->name('update');     // Actualizar
     Route::delete('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy'); // Eliminar
+    Route::post('/{id}/buy', [CustomerController::class, 'buy'])->name('buy');           // Guardar nuevo para web
 
     Route::get('/view', [CustomerController::class, 'viewCustomers'])->name('view');
     Route::get('/list', [CustomerController::class, 'listCustomers'])->name('lists'); // Listar

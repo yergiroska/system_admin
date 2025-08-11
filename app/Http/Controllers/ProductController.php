@@ -28,10 +28,6 @@ use Illuminate\Http\Request;
  */
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Muestra la lista de todos los productos.
@@ -207,7 +203,4 @@ class ProductController extends Controller
         ]);
     }
 
-    private function middleware(string $string)
-    {
-    }
 }

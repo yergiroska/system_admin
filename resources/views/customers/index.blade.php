@@ -27,12 +27,13 @@
             <td>{{ $customer->getBirthDate() }}</td>
             <td>{{ $customer->getIdentityDocument() }}</td>
             <td>
-                <a href="{{ route('customers.edit', $customer) }}">Editar</a>
+                <a href="{{ route('customers.edit', $customer->getId()) }}">Editar</a>
                 <button data-id="{!! $customer->getId() !!}"
                         data-url="{!! route('customers.destroy', $customer->getId()) !!}"
                         type="button"
                         class="delete"
                 >Eliminar</button>
+                <a href="{{ route('customers.get_products', $customer->getId()) }}">Comprar</a>
 
             </td>
         </tr>

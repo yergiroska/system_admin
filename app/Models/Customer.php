@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
 
 class Customer extends Model
 {
@@ -82,4 +84,10 @@ class Customer extends Model
     {
         return Carbon::parse($this->birth_date)->format('d-m-Y');
     }
+
+    final public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
 }
