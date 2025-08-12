@@ -21,17 +21,18 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nombre:</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}"><br>
+                        <label for="name" class="form-label">Nombre del Producto:</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}" required>
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Descripción:</label>
-                        <textarea name="description" class="form-control" rows="3">{{ old('description', $product->description) }}</textarea><br>
+                        <label for="description" class="form-label">Descripción del Producto:</label>
+                        <textarea name="description" class="form-control" rows="3">{{ old('description', $product->description) }}</textarea>
 
                     </div>
                     <div class="mb-3">
                         @include('inc.companies')
                     </div>
+
                     <div class="d-grid">
                         <button type="submit" id="update" class="btn btn-success text-white">
                             <i class="fas fa-save"></i> Actualizar

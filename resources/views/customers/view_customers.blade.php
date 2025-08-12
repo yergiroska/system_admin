@@ -1,19 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Lista de Clientes</h1>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Fecha de Nacimiento</th>
-            <th>DNI</th>
-        </tr>
-        </thead>
-        <tbody class="customers"></tbody>
-    </table>
+    <div class="container mt-4">
+        {{-- Encabezado --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">
+                <i class="fas fa-users"></i> Lista de Clientes
+            </h2>
+        </div>
+
+        {{-- Tabla de clientes --}}
+        <div class="card shadow">
+                <table class="table table-striped table-hover table-bordered mb-0 table-responsive">
+            <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Fecha de Nacimiento</th>
+                <th>DNI</th>
+            </tr>
+            </thead>
+            <tbody class="customers"></tbody>
+        </table>
+        </div>
+    </div>
 @endsection
 
 

@@ -24,12 +24,12 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nombre:</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name') }}"><br>
+                        <label for="name" class="form-label">Nombre Empresa:</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Descripción:</label>
-                        <textarea id="description" name="description" class="form-control" rows="3" value="{{ old('description') }}"></textarea><br>
+                        <label for="description" class="form-label">Descripción Empresa:</label>
+                        <textarea id="description" name="description" class="form-control" rows="3" value="{{ old('description') }}"></textarea>
                     </div>
 
                     {{-- Productos asociados --}}

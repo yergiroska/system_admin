@@ -1,35 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Crear Cliente</h1>
+    <div class="container mt-5" style="max-width: 600px;">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-user"></i> Crear Cliente</h4>
+            </div>
+            <div class="card-body">
+                {{-- Mostrar errores --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-    @if ($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                <form action="{{ route('customers.store') }}" id="form_customer" method="POST">
+                    @csrf
+
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">Nombre del Cliente:</label>
+                        <input type="text" name="first_name" class="form-control" value="{{ old('first_name') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Apellido del Cliente:</label>
+                        <input type="text" name="last_name" class="form-control" value="{{ old('last_name') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="birth_date" class="form-label">Fecha de Nacimiento:</label>
+                        <input type="date" name="birth_date" class="form-control" value="{{ old('birth_date') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="identity_document" class="form-label">DNI:</label>
+                        <input type="text" name="identity_document" class="form-control" value="{{ old('identity_document') }}" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" id="saved" class="btn btn-success">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    @endif
-
-    <form action="{{ route('customers.store') }}" id="form_customer" method="POST">
-        @csrf
-
-        <label>Nombre:</label>
-        <input type="text" name="first_name" value="{{ old('first_name') }}"><br>
-
-        <label>Apellido:</label>
-        <input type="text" name="last_name" value="{{ old('last_name') }}"><br>
-
-        <label>Fecha de Nacimiento:</label>
-        <input type="date" name="birth_date" value="{{ old('birth_date') }}"><br>
-
-        <label>DNI:</label>
-        <input type="text" name="identity_document" value="{{ old('identity_document') }}"><br>
-
-        <button type="submit" id="saved">Guardar</button>
-    </form>
+    </div>
 @endsection
 
 @section('scripts')

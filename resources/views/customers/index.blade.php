@@ -1,45 +1,75 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Clientes</h1>
-<a href="{{ route('customers.create') }}">Crear Cliente</a> |
-<a href="{{ route('customers.view') }}">Lista de Clientes</a>
+    <div class="container mt-4">
+        {{-- Encabezado --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0"><i class="fas fa-user"></i> Lista de Clientes</h2>
+            <div>
+                <a href="{{ route('customers.create') }}" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus"></i> Crear Cliente
+                </a>
+                <a href="{{ route('customers.view') }}" class="btn btn-info btn-sm text-white">
+                    <i class="fas fa-list"></i> Lista Detallada
+                </a>
+            </div>
+        </div>
 
-@if (session('success'))
-    <p>{{ session('success') }}</p>
-@endif
+        {{-- Mensaje de éxito --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i>{{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        @endif
 
-<table>
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Fecha de Nacimiento</th>
-        <th>DNI</th>
-        <th>Acción</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach ($customers as $customer)
-        <tr id="{!! $customer->getId() !!}">
-            <td>{{ $customer->getFirstName() }}</td>
-            <td>{{ $customer->getLastName()}}</td>
-            <td>{{ $customer->getBirthDate() }}</td>
-            <td>{{ $customer->getIdentityDocument() }}</td>
-            <td>
-                <a href="{{ route('customers.edit', $customer->getId()) }}">Editar</a>
-                <button data-id="{!! $customer->getId() !!}"
-                        data-url="{!! route('customers.destroy', $customer->getId()) !!}"
-                        type="button"
-                        class="delete"
-                >Eliminar</button>
-                <a href="{{ route('customers.get_products', $customer->getId()) }}">Comprar</a>
+        {{-- Tabla de productos --}}
+        <div class="card shadow">
+            <div class="card-body p-0">
+                <table class="table table-striped table-hover mb-0 table-responsive table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>DNI</th>
+                            <th class="text-center" style="width: 180px;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($customers as $customer)
+                        <tr id="{!! $customer->getId() !!}">
+                            <td>{{ $customer->getFirstName() }}</td>
+                            <td>{{ $customer->getLastName()}}</td>
+                            <td>{{ $customer->getBirthDate() }}</td>
+                            <td>{{ $customer->getIdentityDocument() }}</td>
+                            <td class="text-center">
+                                {{-- Botón editar --}}
+                                <a href="{{ route('customers.edit', $customer->getId()) }}" class="btn btn-sm btn-primary" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
 
-            </td>
-        </tr>
-    @endforeach
-    </tbody>
-</table>
+                                {{-- Botón Eliminar --}}
+                                <button data-id="{!! $customer->getId() !!}"
+                                        data-url="{!! route('customers.destroy', $customer->getId()) !!}"
+                                        type="button"
+                                        class="delete btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+
+                                {{-- Botón comprar --}}
+                                <a href="{{ route('customers.get_products', $customer->getId()) }}"
+                                   class="btn btn-sm btn-warning text-white" title="Comprar productos">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')

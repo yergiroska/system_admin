@@ -8,34 +8,16 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 </head>
 <body>
 {{-- Incluimos el menú (navbar) que ahora mostrará usuario y reloj --}}
 @include('components.menu')
-    {{--@if(Auth::check())
-        <div class="text-end">
-            Usuario: <strong>{{ Auth::user()->name }}</strong>
-            @if(session('last_logout_time'))
-                Última sesión: <small>{{ session('last_logout_time') }}</small>
-            @endif
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn btn-danger btn-sm">Cerrar Sesión</button>
-            </form>
-        </div>
-    @endif--}}
 <div class="container mt-4">
     @yield('content')
 </div>
 <hr>
-    {{--<nav>
-        <div>
-            Fecha - Hora Actual: <small id="current-time">
-            {{ \Carbon\Carbon::now('Europe/Madrid')->format('d-m-Y H:i') }}</small>
-        </div>
-
-    </nav>--}}
 <footer class="text-center py-3">
     <p>&copy; {{ date('Y') }} - Sistema de Administración </p>
 </footer>
@@ -62,7 +44,9 @@
     setInterval(updateTime, 60000); // 60000 ms = 1 minuto
 </script>
 
-
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 @yield('scripts')
 </body>
 </html>

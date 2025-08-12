@@ -27,11 +27,11 @@
             <div class="card-body p-0">
                 <table class="table table-striped table-hover mb-0 table-responsive table-bordered">
                     <thead class="table-primary">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th width="120">Acción</th>
-                    </tr>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th class="text-center" style="width: 180px;">Acción</th >
+                        </tr>
                     </thead>
                     <tbody>
                     @foreach ($products as $product)
@@ -39,12 +39,12 @@
                             <td>{{ $product->getName() }}</td>
                             <td> {{ $product->getDescription() }}</td>
                             <td class="text-center">
-                                <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-primary" title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button data-id="{!! $product->getId() !!}"
                                         data-url="{!! route('products.destroy', $product->getId()) !!}"
-                                        type="button" class="delete btn btn-sm btn-danger" >
+                                        type="button" class="delete btn btn-sm btn-danger" title="Eliminar">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </td>

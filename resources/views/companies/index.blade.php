@@ -29,7 +29,7 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th width="120">Acción</th>
+                        <th class="text-center" style="width: 180px;">Acción</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,12 +38,12 @@
                             <td>{{ $company->getName() }}</td>
                             <td> {{ $company->getDescription() }}</td>
                             <td class="text-center">
-                               <a href="{{ route('companies.edit', $company) }}" class="btn btn-sm btn-primary">
+                               <a href="{{ route('companies.edit', $company) }}" class="btn btn-sm btn-primary" title="Editar">
                                    <i class="fas fa-edit"></i>
                                </a>
                                <button data-id="{!! $company->getId() !!}"
                                        data-url="{!! route('companies.destroy', $company->getId()) !!}"
-                                       type="button" class="delete btn btn-sm btn-danger" >
+                                       type="button" class="delete btn btn-sm btn-danger" title="Eliminar">
                                    <i class="fas fa-trash-alt"></i>
                                </button>
                             </td>

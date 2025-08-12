@@ -16,7 +16,7 @@
 @yield('content')
 </div>
 <hr>
-<footer>
+<footer class="text-center py-3">
     <p>&copy; {{ date('Y') }} - Sistema de Administración </p>
 </footer>
 @yield('scripts')

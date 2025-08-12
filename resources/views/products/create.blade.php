@@ -22,17 +22,19 @@
                     @csrf
 
                     <div class="mb-3">
-                    <label for="name" class="form-label">Nombre:</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}"><br>
+                    <label for="name" class="form-label">Nombre del Producto:</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}">
                     </div>
+
                     <div class="mb-3">
-                        <label for="description" class="form-label">Descripción:</label>
-                        <textarea id="description" name="description" class="form-control" value="{{ old('description') }}"></textarea><br>
+                        <label for="description" class="form-label">Descripción del Producto:</label>
+                        <textarea id="description" name="description" class="form-control" value="{{ old('description') }}"></textarea>
                     </div>
 
                     <div class="mb-3">
                         @include('inc.companies')
                     </div>
+
                     <div class="d-grid">
                         <button type="submit" id="saved" class="btn btn-success">
                             <i class="fas fa-save"></i> Guardar
