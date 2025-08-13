@@ -47,6 +47,7 @@
 @endsection
 
 @section('scripts')
+    @parent
     <script>
         $(document).ready(function() {
             $('#saved').on('click', function(evento) {

@@ -32,13 +32,20 @@
                     <h6 class="text-muted"><i class="fas fa-boxes"></i> Productos</h6>
                     <div class="row">
                         @foreach($company->products as $product)
+                            @php
+                                $price = $product->companyProduct?->getPrice(); // Precio desde el pivote
+                            @endphp
                             <div class="col-md-4 mb-2">
                                 <div class="form-check border rounded p-2">
                                     <label class="form-check-label">
                                         <input type="checkbox" name="products[]" value="{!! $product->companyProduct->getId() !!}">
                                         {{ $product->getName() }}
                                     </label>
+                                    <span class="badge bg-light text-dark">
+                                        {{ $price !== null ? (number_format((float)$price, 2, '.', ''). '€ ' ) : '-' }}
+                                    </span>
                                 </div>
+
                             </div>
                         @endforeach
                     </div>

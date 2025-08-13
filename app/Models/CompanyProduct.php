@@ -22,7 +22,9 @@ class CompanyProduct extends Pivot
         'id',
         'company_id',
         'product_id',
+        'price',
     ];
+
 
     public function getId()
     {
@@ -37,6 +39,11 @@ class CompanyProduct extends Pivot
     public function getProductId()
     {
         return $this->attributes['product_id'];
+    }
+
+    public function getPrice()
+    {
+        return $this->attributes['price'];
     }
 
 }
