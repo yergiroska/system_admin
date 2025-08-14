@@ -18,9 +18,6 @@ class Product extends Model
         'deleted_at'
     ];
 
-    protected $hidden = ['birth_date'];
-    protected $appends = ['formatted_birth_date'];
-
     public function getId()
     {
         return $this->attributes['id'];
@@ -48,17 +45,12 @@ class Product extends Model
         return $this;
     }
 
-    public function getFormattedBirthDateAttribute()
-    {
-        return Carbon::parse($this->birth_date)->format('d-m-Y');
-    }
-
     public function companies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class)
             ->using(CompanyProduct::class) // modelo pivot
             ->as('companyProduct') // alias para acceder al pivot
-            ->withPivot('id'); // incluye el id del pivot
+            ->withPivot(['id', 'price']); // incluye el id del pivot
         // ->withTimestamps(); // descomenta si tu pivot tiene timestamps
     }
 }

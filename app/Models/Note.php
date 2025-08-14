@@ -19,9 +19,6 @@ class Note extends Model
         'deleted_at'
     ];
 
-    protected $hidden = ['birth_date'];
-    protected $appends = ['formatted_birth_date'];
-
     public function getId()
     {
         return $this->attributes['id'];
