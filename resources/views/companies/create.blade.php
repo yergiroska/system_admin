@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="container mt-5" style="max-width: 600px;">
         <div class="card shadow">

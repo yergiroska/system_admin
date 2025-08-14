@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class CompanyProduct extends Pivot
@@ -16,7 +17,7 @@ class CompanyProduct extends Pivot
     protected $keyType = 'int';
 
     // Pon en true si tu tabla pivot tiene created_at/updated_at
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'id',
@@ -44,6 +45,16 @@ class CompanyProduct extends Pivot
     public function getPrice()
     {
         return $this->attributes['price'];
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 
 }
