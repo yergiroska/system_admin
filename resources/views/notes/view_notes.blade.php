@@ -1,7 +1,11 @@
 @extends('layouts.app')
-
 @section('content')
-    <h1>Lista de Notas</h1>
+    <div class="container mt-4">
+        {{-- Encabezado --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0"><i class="fas fa-list"></i> Lista de Notas</h2>
+        </div>
+
     <table border="1">
         <thead>
         <tr>
@@ -14,6 +18,7 @@
         </thead>
         <tbody class="notes"></tbody>
     </table>
+    </div>
 @endsection
 
 

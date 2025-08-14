@@ -62,6 +62,13 @@
                                    class="btn btn-sm btn-warning text-white" title="Comprar productos">
                                     <i class="fas fa-shopping-cart"></i>
                                 </a>
+
+                                {{-- Botón comprar --}}
+                                <a href="{{ route('customers.show', $customer->getId()) }}"
+                                   class="btn btn-sm btn-info text-white" title="Comprar productos">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+
                             </td>
                         </tr>
                     @endforeach

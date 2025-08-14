@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="container mt-4">
     {{-- Encabezado --}}
@@ -20,6 +19,7 @@
                 <tbody class="companies"></tbody>
             </table>
         </div>
+    </div>
 @endsection
 
 

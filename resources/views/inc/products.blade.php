@@ -2,12 +2,21 @@
 <div class="list-group">
 @foreach ($products as $product)
         @php
-            // Si existe el producto, busco la compañía que tenga ese producto con el company_id actual
-            // luego accedo a la tabla pivot que tenga ese product_id y company_id y obtengo el precio
-            // Si no existe product_id ni company_id devuelvo null
+            // Calcula el precio del producto para una compañía específica
+            // Si la compañía está definida:
+            //   - Busca el producto dentro de la colección de productos de la compañía usando firstWhere()
+            //   - Accede a la relación pivot (companyProduct) para obtener el precio
+            // Si la compañía no está definida, devuelve null
             $price = isset($company)
             ? $company->products->firstWhere('id', $product->id)?->companyProduct?->price
-            : null
+            : null;
+
+            // Verifica si el producto está asociado a la compañía actual
+            // Devuelve true si:
+            //   - La compañía está definida (isset($company)) Y
+            //   - El producto existe en la colección de productos de la compañía (contains())
+            // En caso contrario devuelve false
+            $checked = isset($company) && $company?->products?->contains($product->id)
         @endphp
         <div class="list-group-item">
             <div class="row g-3 align-items-center">
@@ -24,7 +33,7 @@
                                 {{--{{ isset($product) && $product?->companies?->contains($company->id) ? 'checked' : '' }}--}}
 
                                 {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
-                                @checked(isset($company) && $company?->products?->contains($product->id))
+                                @checked($checked)
                             >
                             <label class="form-check-label ms-1" for="product-{{ $product->id }}">
                                 {{ $product->name }}
@@ -45,7 +54,7 @@
                             name="products[{{ $product->id }}][price]"
                             value="{{ $price ?? '' }}"
                             placeholder="0.00"
-                            @disabled(!isset($price))
+                            @disabled(!$checked)
                         >
                         <span class="input-group-text">€</span>
                     </div>

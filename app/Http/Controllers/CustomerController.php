@@ -287,4 +287,32 @@ class CustomerController extends Controller
             ->with('status', 'Compra registrada correctamente.');
 
     }
+
+    /**
+     * Muestra los detalles de un cliente específico.
+     *
+     * Este método se encarga de:
+     * 1. Obtener el cliente desde la base de datos utilizando su ID
+     * 2. Cargar las relaciones necesarias para mostrar información adicional:
+     *    - Compras relacionadas con los productos de la empresa y su respectiva compañía
+     * 3. Retornar una vista con los datos del cliente y sus relaciones.
+     *
+     * @param int $id ID del cliente que se desea visualizar
+     * @return View Vista con los detalles del cliente
+     * @throws ModelNotFoundException Si no se encuentra el cliente con el ID especificado
+     */
+    public function show($id)
+    {
+        // Relaciones a precargar para mejorar legibilidad y mantenimiento
+        $relations = [
+            'purchases.companyProduct.company',
+            'purchases.companyProduct.product',
+        ];
+
+        $customer = Customer::with($relations)->findOrFail($id);
+
+        return view('customers.show', [
+            'customer' => $customer,
+        ]);
+    }
 }
