@@ -58,6 +58,11 @@
                         <i class="fas fa-user-plus"></i> Registrar
                     </button>
                 </div>
+                <div class="d-grid mt-4 text-center">
+                    <a href="{{ route('login') }}" >
+                        Iniciar sesión
+                    </a>
+                </div>
             </form>
         </div>
     </div>

@@ -12,7 +12,7 @@ use App\Http\Controllers\UserLoginController;
 use Illuminate\Support\Facades\Route;
 
 /***Route de la Vista inicio***/
-Route::get('/', [HomeController::class, 'index'])->name('welcome');
+//Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 /***Route del Dashboard***/
 Route::get('/dashboard', [HomeController::class, 'dashboard'])
@@ -21,10 +21,10 @@ Route::get('/dashboard', [HomeController::class, 'dashboard'])
 
 
 /***Route de Users****/
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/auth', [AuthController::class, 'login'])->name('post.login');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register'])->name('post.register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 

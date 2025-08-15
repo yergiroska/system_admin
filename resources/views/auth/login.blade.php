@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('login') }}" method="POST">
+                <form action="{{ route('post.login') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
@@ -37,6 +37,11 @@
                         <button type="submit" class="btn btn-dark">
                             <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                         </button>
+                    </div>
+                    <div class="d-grid mt-4 text-center">
+                        <a href="{{ route('register') }}" class="" >
+                            Registrase
+                        </a>
                     </div>
                 </form>
             </div>
