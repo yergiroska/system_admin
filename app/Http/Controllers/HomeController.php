@@ -16,7 +16,6 @@ class HomeController extends Controller
     final public function dashboard(): View
     {
         $customer = auth()->user()?->customer;
-
         $companies = Company::with('products')->get();
         return view('dashboard', [
             'companies' => $companies,
