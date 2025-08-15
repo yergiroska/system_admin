@@ -3,7 +3,7 @@
 - [x] **index**
 - [x] **crear**
 - [x] **editar**
-- [ ] **ver**: falta por hacer
+- [ ] **ver** 15/08/2025
 
 ## ✅ Pendientes:
 
@@ -11,8 +11,20 @@
     - [x] Datos del cliente
     - [x] Productos comprados
     - [x] Empresa de cada producto
-- [ ] Mejorar vistas:
-    - [ ] Home
-    - [ ] Dashboard
-        - [ ] Crear un controller para cada uno
-        - [ ] Al cerrar sesión, redirigir a home   
+
+
+- [ ] Mejorar vistas
+    - [x] Home
+      - [x] Crear un controller para dashboard 15/08/2025
+      - [ ] Que el Home sea el login
+    - [x] Dashboard        
+        - [ ] Crear un controlador para home
+        - [ ] Al cerrar sesión, redirigir a home(que será el login)
+
+- [ ] Actualizar el precio de los productos
+    - [ ] Crear un controlador para actualizar precio de los productos
+    - [ ] Crear un formulario para actualizar precio de los productos
+    - [ ] Crear un link para actualizar precio de los productos
+    - [ ] Crear stock de productos por empresa
+
+
