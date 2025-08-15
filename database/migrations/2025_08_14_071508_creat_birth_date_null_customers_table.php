@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('company_product', function (Blueprint $table) {
-            $table->decimal('price', 10, 2)->after('product_id');
+        Schema::table('customers', function (Blueprint $table) {
+            if (!Schema::hasColumn('customers', 'birth_date')) {
+                $table->date('birth_date')->nullable()->change();
+            }
         });
     }
 
@@ -21,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('company_product', function (Blueprint $table) {
-            $table->dropColumn('price');
+        Schema::table('customers', function (Blueprint $table) {
+            //
         });
     }
 };

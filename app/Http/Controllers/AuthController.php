@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\User;
 use App\Models\UserLogin;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Throwable;
 
 /**
  * Controlador responsable de gestionar la autenticación de los usuarios.
@@ -25,6 +28,9 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    /**
+     * @throws Throwable
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -32,6 +38,8 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed'
         ]);
+        DB::beginTransaction();
+        try {
 
         $user = new User();
         $user->setName($request->name);
@@ -44,6 +52,11 @@ class AuthController extends Controller
         // Guarda los cambios en la base de datos
         $user->save();
 
+        $customer = new Customer();
+        $customer->setUserId($user->id);   // asociación 1–1 con el usuario
+        $customer->save();
+
+
         // Crea una nueva instancia de registro de inicio de sesión
         $user_login = new UserLogin();
         // Asigna el ID del usuario actualmente autenticado
@@ -53,8 +66,17 @@ class AuthController extends Controller
         // Guarda el registro de inicio de sesión en la base de datos
         $user_login->save();
 
-        Auth::login($user);
 
+        DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            return back()
+                ->withInput($request->only('name', 'email'))
+                ->withErrors(['register' => 'No se pudo completar el registro. Inténtalo de nuevo.']);
+        }
+
+        Auth::login($user);
         return redirect()->route('dashboard');
     }
 
