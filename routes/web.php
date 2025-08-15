@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProductController;
@@ -11,14 +12,10 @@ use App\Http\Controllers\UserLoginController;
 use Illuminate\Support\Facades\Route;
 
 /***Route de la Vista inicio***/
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 /***Route del Dashboard***/
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})
+Route::get('/dashboard', [HomeController::class, 'dashboard'])
     ->middleware('auth')
     ->name('dashboard');
 

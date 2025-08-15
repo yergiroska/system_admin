@@ -19,7 +19,8 @@ class Customer extends Model
         'last_name',
         'birth_date',
         'identity_document',
-        'deleted_at'
+        'deleted_at',
+        'user_id',
     ];
 
     protected $hidden = ['birth_date'];
@@ -55,7 +56,6 @@ class Customer extends Model
         return $this->attributes['identity_document'];
     }
 
-
     public function setFirstName($name): Customer
     {
         $this->attributes['first_name'] = ucfirst($name);
@@ -80,6 +80,11 @@ class Customer extends Model
         return $this;
     }
 
+    public function setUserId(int $userId): Customer
+    {
+        $this->attributes['user_id'] = $userId;
+        return $this;
+    }
     public function getFormattedBirthDateAttribute()
     {
         return Carbon::parse($this->birth_date)->format('d-m-Y');
@@ -88,6 +93,12 @@ class Customer extends Model
     final public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
+    }
+
+    // NUEVO: Relación inversa 1–1 con User
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

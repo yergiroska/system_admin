@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('logs', function (Blueprint $table) {
-            $table->integer('user_id')->nullable()->after('ip');
+        Schema::table('customers', function (Blueprint $table) {
+            if (!Schema::hasColumn('customers', 'identity_document')) {
+                $table->string('identity_document')->nullable()->change();
+            }
         });
     }
 
@@ -21,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('logs', function (Blueprint $table) {
-            $table->dropColumn('user_id');
+        Schema::table('customers', function (Blueprint $table) {
+
         });
     }
 };
