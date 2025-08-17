@@ -45,4 +45,4 @@
 ---
 
 <div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span> Actualizar los modelos</div>
-    <div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Quitar los "atributtes y []", mirar el modelo <span style="color: red">Customer</span>.</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Quitar los "atributtes y []", mirar el modelo <span style="color: red">Customer</span>.</div>
