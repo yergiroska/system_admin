@@ -7,6 +7,8 @@ use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use App\Http\Requests\ProductRequest;
 
 
 /**
@@ -38,7 +40,7 @@ class ProductController extends Controller
     {
         $products = Product::all();
         return view('products.index', [
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
@@ -65,26 +67,23 @@ class ProductController extends Controller
      * 4. Registrar la acción en el log del sistema
      * 5. Devolver una respuesta JSON con el resultado
      *
-     * @param Request $request Contiene los datos del formulario de creación del producto
-     * @return \Illuminate\Http\JsonResponse Respuesta JSON con el estado de la operación
+     * @param ProductRequest $request Contiene los datos validados del formulario de creación del producto
+     * @return JsonResponse Respuesta JSON con el estado de la operación
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request): JsonResponse
     {
-        // Validación de los campos requeridos del formulario
-        $request->validate([
-            'name' => 'required',          // Nombre: campo obligatorio
-            'description' => 'required',    // Descripción: campo obligatorio
-        ]);
+        // Los datos ya están validados por ProductRequest
+        $data = $request->validated();
 
         // Creación de una nueva instancia del modelo Product y asignación de valores
         $product = new Product();
-        $product->setName($request->name);           // Establece el nombre del producto
-        $product->setDescription($request->description); // Establece la descripción del producto
+        $product->setName($data['name']);           // Establece el nombre del producto
+        $product->setDescription($data['description']); // Establece la descripción del producto
         $product->save();   // Guarda el nuevo producto en la base de datos
 
         // Asocia las compañías seleccionadas al producto (si existen)
         // Si no se seleccionaron compañías, se asigna un array vacío
-        $product->companies()->attach($request->companies ?? []);
+        $product->companies()->attach($data['companies'] ?? []);
 
         // Registro de la acción en el sistema de logs
         $log = new Log();
@@ -98,8 +97,8 @@ class ProductController extends Controller
 
         // Devuelve respuesta JSON con el resultado exitoso de la operación
         return response()->json([
-            'status' => 'success',
-            'message' => 'Producto creado con exito.',
+            'status' => 'success',                    // Estado de la operación
+            'message' => 'Producto creado con éxito.', // Mensaje informativo
         ]);
     }
 
@@ -152,10 +151,11 @@ class ProductController extends Controller
      *
      * @param int $id ID del producto a actualizar
      * @param Request $request Los datos actualizados del producto
-     * @return \Illuminate\Http\JsonResponse Respuesta JSON con el estado de la operación
+     * @return JsonResponse Respuesta JSON con el estado de la operación
      */
     public function update($id, Request $request)
     {
+        // Validación de campos requeridos
         $request->validate([
             'name' => 'required',
             'description' => 'required',
@@ -166,11 +166,12 @@ class ProductController extends Controller
         $product->setDescription($request->description);
         $product->save();
 
+        // Sincronización de relaciones con compañías
         $product->companies()->sync($request->companies ?? []);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Producto actualizado con exito.',
+            'message' => 'Producto actualizado con éxito.',
         ]);
     }
 
@@ -180,12 +181,13 @@ class ProductController extends Controller
      * Registra la eliminación en el log del sistema antes de eliminar el producto.
      *
      * @param int $id ID del producto a eliminar
-     * @return \Illuminate\Http\JsonResponse Respuesta JSON con el estado de la operación
+     * @return JsonResponse Respuesta JSON con el estado de la operación
      */
     public function destroy($id)
     {
         $product = Product::find($id);
 
+        // Registro de la eliminación en el log
         $log = new Log();
         $log->setAction('ELIMINAR');
         $log->setObjeto('Productos');
@@ -195,11 +197,12 @@ class ProductController extends Controller
         $log->setUserId(auth()->user()->id);
         $log->save();
 
+        // Eliminación del producto
         $product->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Producto eliminado con exito.',
+            'message' => 'Producto eliminado con éxito.',
         ]);
     }
 

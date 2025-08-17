@@ -22,6 +22,9 @@
                         <th>Compañía</th>
                         <th>Producto</th>
                         <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,7 +38,9 @@
                             // Obtiene el producto
                             $product = $company_product->product;
                             // Obtiene el precio
-                            $price = $company_product->getPrice() ;
+                            $unit_price = $purchase->getUnitPrice() ;
+                            $quantity = $purchase->getQuantity() ;
+                            $total = $purchase->getTotal() ;
                         @endphp
                         <tr>
                             {{-- Muestra el nombre de la compañía o un guión si es null --}}
@@ -44,7 +49,17 @@
                             <td>{{ $product?->getName()}}</td>
                             <td>
                                 {{-- Si hay precio, lo formatea con 2 decimales y añade el símbolo €. Si no, muestra un guión --}}
-                                {{ number_format((float)$price, 2, '.', '') }} €
+                                {{ number_format((float)$unit_price, 2, ',', '') }} €
+                            </td>
+                            <td>
+                                {{ $quantity }}
+                            </td>
+                            <td>
+                                {{-- Si hay precio, lo formatea con 2 decimales y añade el símbolo €. Si no, muestra un guión --}}
+                                {{ number_format((float)$total, 2, ',', '') }} €
+                            </td>
+                            <td>
+                                {{ $purchase->getCreatedAt() }}
                             </td>
                         </tr>
                     @empty

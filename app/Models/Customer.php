@@ -23,71 +23,84 @@ class Customer extends Model
         'user_id',
     ];
 
-    protected $hidden = ['birth_date'];
-    protected $appends = ['formatted_birth_date'];
+    protected $casts = [
+        'birth_date' => 'datetime',
+    ];
 
     public function getId()
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getFirstName()
     {
-        return ucfirst($this->attributes['first_name']);
+        return is_null($this->first_name)
+            ? 'No tiene datos'
+            : ucfirst($this->first_name);
     }
 
     public function getLastName()
     {
-        return ucfirst($this->attributes['last_name']);
+        return is_null($this->last_name)
+            ? 'No tiene datos'
+            : ucfirst($this->last_name);
     }
 
     public function getFullName()
     {
-        return ucfirst($this->attributes['first_name']) . ' ' . ucfirst($this->attributes['last_name']);
+        return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
     }
 
     public function getBirthDate()
     {
-        return Carbon::parse($this->attributes['birth_date'])->format('d-m-Y');
+        return $this->birth_date?->format('d-m-Y');
+        // esto de arriba es lo mismo de abajo pero en php 8
+
+        /*
+        return $this->birth_date
+            ? $this->birth_date->format('d-m-Y')
+            : null;*/
     }
 
     public function getIdentityDocument()
     {
-        return $this->attributes['identity_document'];
+        return is_null($this->identity_document)
+            ? 'No tiene datos'
+            : $this->identity_document;
     }
 
     public function setFirstName($name): Customer
     {
-        $this->attributes['first_name'] = ucfirst($name);
+        $this->first_name = ucfirst($name);
         return $this;
     }
 
     public function setLastName($name)
     {
-        $this->attributes['last_name'] = ucfirst($name);
+        $this->last_name = ucfirst($name);
         return $this;
     }
 
     public function setBirthDate($date)
     {
-        $this->attributes['birth_date'] = Carbon::parse($date);
+        $this->birth_date = Carbon::parse($date);
         return $this;
     }
 
     public function setIdentityDocument($document)
     {
-        $this->attributes['identity_document'] = $document;
+        $this->identity_document = $document;
         return $this;
     }
 
     public function setUserId(int $userId): Customer
     {
-        $this->attributes['user_id'] = $userId;
+        $this->user_id = $userId;
         return $this;
     }
     public function getFormattedBirthDateAttribute()
     {
-        return Carbon::parse($this->birth_date)->format('d-m-Y');
+        return $this->birth_date->format('d-m-Y');
     }
 
     final public function purchases(): HasMany
