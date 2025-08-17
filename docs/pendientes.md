@@ -8,34 +8,41 @@
 
 # ✅ Pendientes:
 
-## <span style="color:limegreen;">✔</span> Hacer el link de "ver cliente" que muestre:
-  #### <span style="color:limegreen;">✔</span> Datos del cliente
-  #### <span style="color:limegreen;">✔</span> Productos comprados
-  #### <span style="color:limegreen;">✔</span> Empresa de cada producto
+<div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span> Hacer el link de "ver cliente" que muestre:</div>
+<div style="font-weight: bold; margin-left: 20px"><span style="color:limegreen;">✔</span> Datos del cliente</div>
+<div style="font-weight: bold; margin-left: 20px"><span style="color:limegreen;">✔</span> Productos comprados</div>
+<div style="font-weight: bold; margin-left: 20px"><span style="color:limegreen;">✔</span> Empresa de cada producto</div>
+
+---
+
+<div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span> Mejorar vistas</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span>Home</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Crear un controller para dashboard 15/08/2025</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Que el Home sea el login</div>
+
+---
+
+<div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span>  Dashboard </div>       
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Crear un controlador para home</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Al cerrar sesión, redirigir a home(que será el login)</div>
+
+---
 
 
-## <span style="color:limegreen;">✔</span> Mejorar vistas
-#### <span style="color:limegreen;">✔</span>Home
-#### <span style="color:limegreen;">✔</span> Crear un controller para dashboard 15/08/2025
-#### <span style="color:limegreen;">✔</span> Que el Home sea el login
+<div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span>   Añadir a la compra "purchases"</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Precio.</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Cantidad.</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Total</div>
 
-## <span style="color:limegreen;">✔</span>  Dashboard        
-#### <span style="color:limegreen;">✔</span> Crear un controlador para home
-#### <span style="color:limegreen;">✔</span> Al cerrar sesión, redirigir a home(que será el login)
+---
 
+<div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span> Actualizar el precio de los productos</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Crear un controlador para actualizar precio de los productos</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Crear un formulario para actualizar precio de los productos</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Crear un link para actualizar precio de los productos</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Crear stock de productos por empresa</div>
 
-## <span style="color:limegreen;">✔</span>   Añadir a la compra "purchases"
-#### <span style="color:limegreen;">✔</span> Precio.
-#### <span style="color:limegreen;">✔</span> Cantidad.
-#### <span style="color:limegreen;">✔</span> Total
+---
 
-
-## <span style="color:limegreen;">✔</span> Actualizar el precio de los productos
-#### <span style="color:orangered;">✘</span> Crear un controlador para actualizar precio de los productos
-#### <span style="color:orangered;">✘</span> Crear un formulario para actualizar precio de los productos
-#### <span style="color:orangered;">✘</span> Crear un link para actualizar precio de los productos
-#### <span style="color:orangered;">✘</span> Crear stock de productos por empresa
-
-
-- [ ] Actualizar los modelos
-    - [ ] Quitar los "y atributtes, []" ,mirar el Customer.
+<div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span> Actualizar los modelos</div>
+    <div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Quitar los "atributtes y []", mirar el modelo <span style="color: red">Customer</span>.</div>
