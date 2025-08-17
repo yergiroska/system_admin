@@ -10,7 +10,9 @@ use App\Models\Purchase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\View\View;
+use JsonException;
 
 /**
  * Controlador para la gestión de clientes en el sistema.
@@ -247,12 +249,18 @@ class CustomerController extends Controller
         /**
          * 1. Obtener los productos seleccionados del formulario
          */
-        $productsIds = $request->input('products');
+        $products = $request->input('products');
+
+        $products = collect($products)
+            ->filter(fn ($product) => !empty($product['id'])) // descarta nulos o vacíos
+            ->map(fn ($product) => (object) $product)
+            ->all();
+
         /**
          * 2. Obtener el cliente correspondiente al ID proporcionado
          */
         $customer = Customer::find($id);
-        foreach ($productsIds as  $productId) {
+        foreach ($products as $product) {
             /**
              * 1. Crear una nueva instancia de la clase Purchase
              * 2. Asignar el ID del cliente
@@ -273,19 +281,22 @@ class CustomerController extends Controller
             /**
              * 2. Asignar el ID del cliente y el ID del producto
              */
-            $purchase->setCompanyProductId((int) $productId);
+            // dd($product);
+
+            $purchase->setCompanyProductId($product->id);
+            $purchase->setUnitPrice($product->price);
+            $purchase->setQuantity($product->quantity);
+            $purchase->setTotal($product->total);
 
             /**
              * 3. Guardar la compra en la base de datos
              * 4. Relacionar la compra con el cliente
              */
             $customer->purchases()->save($purchase);
-
         }
         return redirect()
             ->back()
             ->with('status', 'Compra registrada correctamente.');
-
     }
 
     /**

@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('post.login') }}" method="POST">
+                <form action="{{ route('post.login') }}" method="POST" autocomplete="on">
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
