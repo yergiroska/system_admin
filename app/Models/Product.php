@@ -20,28 +20,28 @@ class Product extends Model
 
     public function getId()
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getName()
     {
-        return $this->attributes['name'];
+        return $this->name;
     }
 
     public function getDescription()
     {
-        return $this->attributes['description'];
+        return $this->description;
     }
 
     public function setName($name)
     {
-        $this->attributes['name'] = $name;
+        $this->name = $name;
         return $this;
     }
 
     public function setDescription($description)
     {
-        $this->attributes['description'] = $description;
+        $this->description = $description;
         return $this;
     }
 

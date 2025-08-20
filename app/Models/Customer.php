@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Hash;
 
 class Customer extends Model
 {
     use SoftDeletes;
 
     protected $table = 'customers';
-    protected $primaryKey = 'id';
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -23,35 +23,53 @@ class Customer extends Model
         'user_id',
     ];
 
-    protected $casts = [
-        'birth_date' => 'datetime',
+    /**
+     * Fechas que Eloquent tratará como instancias de Carbon.
+     * (Con casts ya no es estrictamente necesario, pero puede declararse)
+     */
+    protected array $dates = [
+        'birth_date',
+        'deleted_at',
     ];
 
-    public function getId()
+    /**
+     * Casts de atributos.
+     * - birth_date como 'date:Y-m-d' para que al convertir a array/json salga "YYYY-MM-DD".
+     * - deleted_at con formato estándar de timestamp.
+     */
+    protected $casts = [
+        'id' => 'integer',
+        'birth_date' => 'date:Y-m-d',
+        'deleted_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
+    protected $dateFormat = 'Y-m-d H:i:s';
+
+    final public function getId(): int
     {
         return $this->id;
     }
 
-    public function getFirstName()
+    final public function getFirstName(): string
     {
         return is_null($this->first_name)
             ? 'No tiene datos'
             : ucfirst($this->first_name);
     }
 
-    public function getLastName()
+    final public function getLastName(): string
     {
         return is_null($this->last_name)
             ? 'No tiene datos'
             : ucfirst($this->last_name);
     }
 
-    public function getFullName()
+    final public function getFullName(): string
     {
         return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
     }
 
-    public function getBirthDate()
+    final public function getBirthDate(): ?string
     {
         return $this->birth_date?->format('d-m-Y');
         // esto de arriba es lo mismo de abajo pero en php 8
@@ -62,45 +80,46 @@ class Customer extends Model
             : null;*/
     }
 
-    public function getIdentityDocument()
+    final public function getBirthDateForm(): ?string
+    {
+        return $this->birth_date?->format('Y-m-d');
+    }
+
+    final public function getIdentityDocument(): string
     {
         return is_null($this->identity_document)
             ? 'No tiene datos'
             : $this->identity_document;
     }
 
-    public function setFirstName($name): Customer
+    final public function setFirstName(string $name): self
     {
         $this->first_name = ucfirst($name);
         return $this;
     }
 
-    public function setLastName($name)
+    final public function setLastName(string $name): self
     {
         $this->last_name = ucfirst($name);
         return $this;
     }
 
-    public function setBirthDate($date)
+    final public function setBirthDate(string $date): self
     {
         $this->birth_date = Carbon::parse($date);
         return $this;
     }
 
-    public function setIdentityDocument($document)
+    final public function setIdentityDocument(string $document): self
     {
         $this->identity_document = $document;
         return $this;
     }
 
-    public function setUserId(int $userId): Customer
+    final public function setUserId(int $userId): self
     {
         $this->user_id = $userId;
         return $this;
-    }
-    public function getFormattedBirthDateAttribute()
-    {
-        return $this->birth_date->format('d-m-Y');
     }
 
     final public function purchases(): HasMany
@@ -109,7 +128,7 @@ class Customer extends Model
     }
 
     // NUEVO: Relación inversa 1–1 con User
-    public function user(): BelongsTo
+    final public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

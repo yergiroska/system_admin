@@ -31,7 +31,7 @@
                 method: 'GET',
                 success: function (response) {
                     let products = response.data
-                    let $tr;
+                    let $tr = '';
                     for (const product of products) {
                         $tr += '<tr>';
                         $tr += '<td>'+product.id+'</td>';

@@ -46,3 +46,12 @@
 
 <div style="font-weight: bold; font-size: 25px"><span style="color:limegreen;">✔</span> Actualizar los modelos</div>
 <div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Quitar los "atributtes y []", mirar el modelo <span style="color: red">Customer</span>.</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo Company</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo CompanyProduct</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:limegreen;">✔</span> Modelo Customer</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo Log</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo Note</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo Product</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo Purchase</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo User</div>
+<div style="font-weight: bold;margin-left: 20px"><span style="color:orangered;">✘</span> Modelo UserLogin</div>

@@ -41,7 +41,7 @@
                         <tr id="{!! $customer->getId() !!}">
                             <td>{{ $customer->getFirstName() }}</td>
                             <td>{{ $customer->getLastName()}}</td>
-                            <td>{{ $customer->getBirthDate() }}</td>
+                            <td>{{ $customer->birth_date?->format('d-m-Y') }}</td>
                             <td>{{ $customer->getIdentityDocument() }}</td>
                             <td class="text-center">
                                 {{-- Botón editar --}}

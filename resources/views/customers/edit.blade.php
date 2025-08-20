@@ -27,22 +27,22 @@
 
                     <div class="mb-3">
                         <label for="first_name" class="form-label">Nombre:</label>
-                        <input type="text" name="first_name" class="form-control" value="{{ old('first_name', $customer->first_name) }}" required>
-                    <div class="mb-3">
+                        <input type="text" name="first_name" class="form-control" value="{{ $customer->first_name }}" required>
+                    </div>
 
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Apellido:</label>
-                        <input type="text" name="last_name" class="form-control" value="{{ old('last_name', $customer->last_name) }}" required>
+                        <input type="text" name="last_name" class="form-control" value="{{  $customer->last_name }}" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="birth_date" class="form-label">Fecha de Nacimiento:</label>
-                        <input type="date" name="birth_date" class="form-control" value="{{ old('birth_date', $customer->birth_date) }}" required>
+                        <input type="date" name="birth_date" class="form-control" value="{{  $customer->birth_date?->format('Y-m-d') }}" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="identity_document" class="form-label">DNI:</label>
-                        <input type="text" name="identity_document" class="form-control" value="{{ old('identity_document', $customer->identity_document) }}" required>
+                        <input type="text" name="identity_document" class="form-control" value="{{  $customer->identity_document }}" required>
                     </div>
 
                     <div class="d-grid">
@@ -51,6 +51,7 @@
                         </button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

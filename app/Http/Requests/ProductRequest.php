@@ -26,7 +26,9 @@ class ProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'companies' => 'sometimes|array',
-            'companies.*' => 'integer|exists:companies,id',
+            'companies.*' => 'array',
+            'companies.*.id' => 'sometimes|integer|exists:companies,id',
+            'companies.*.price' => 'nullable|numeric|min:0',
         ];
     }
 

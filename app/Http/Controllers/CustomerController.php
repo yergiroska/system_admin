@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Models\CompanyProduct;
 use App\Models\Customer;
 use App\Models\Log;
 use App\Models\Purchase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\View\View;
-use JsonException;
 
 /**
  * Controlador para la gestión de clientes en el sistema.
@@ -64,7 +61,6 @@ class CustomerController extends Controller
     {
         return view('customers.create');
     }
-
 
     /**
      * Almacena un nuevo cliente en la base de datos.
@@ -135,9 +131,9 @@ class CustomerController extends Controller
      *
      * @param int $id ID del cliente a actualizar
      * @param Request $request Los datos actualizados del cliente
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function update($id, Request $request)
+    public function update($id, Request $request): JsonResponse
     {
         $request->validate([
             'first_name' => 'required',
@@ -147,10 +143,10 @@ class CustomerController extends Controller
         ]);
 
         $customer = Customer::find($id);
-        $customer->setFirstName($request->first_name);
-        $customer->setLastName($request->last_name);
-        $customer->setBirthDate($request->birth_date);
-        $customer->setIdentityDocument($request->identity_document);
+        $customer->setFirstName($request->first_name)
+        ->setLastName($request->last_name)
+        ->setBirthDate($request->birth_date)
+        ->setIdentityDocument($request->identity_document);
         $customer->save();
 
         return response()->json([
@@ -167,9 +163,9 @@ class CustomerController extends Controller
      * Registra la eliminación en el log del sistema antes de eliminar el cliente.
      *
      * @param int $id ID del cliente a eliminar
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $customer = Customer::find($id);
 
@@ -197,7 +193,7 @@ class CustomerController extends Controller
      *
      * @return View
      */
-    public function viewCustomers()
+    public function viewCustomers(): View
     {
         return view('customers.view_customers');
     }
@@ -207,7 +203,7 @@ class CustomerController extends Controller
      *
      * Utilizado para peticiones AJAX en la interfaz de usuario.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function listCustomers(): JsonResponse
     {
@@ -244,7 +240,7 @@ class CustomerController extends Controller
      * @param Request $request Contiene los IDs de los productos seleccionados
      * @return RedirectResponse Redirección con un mensaje de estado
      */
-    final public function buy(int $id, Request $request)
+    final public function buy(int $id, Request $request): RedirectResponse
     {
         /**
          * 1. Obtener los productos seleccionados del formulario
@@ -261,19 +257,6 @@ class CustomerController extends Controller
          */
         $customer = Customer::find($id);
         foreach ($products as $product) {
-            /**
-             * 1. Crear una nueva instancia de la clase Purchase
-             * 2. Asignar el ID del cliente
-             * 3. Asignar el ID del de la tabla pivot company_product
-             * 4. Guardar la compra en la base de datos
-             */
-            /*
-            $purchase = new Purchase(); // 1)
-            $purchase->setCustomerId($id); // 2)
-            $purchase->setCompanyProductId($productId); // 3)
-            $purchase->save(); // 4)
-            */
-
             /**
              * 1. Crear una nueva instancia de la clase Purchase
              */
@@ -312,6 +295,7 @@ class CustomerController extends Controller
      * @return View Vista con los detalles del cliente
      * @throws ModelNotFoundException Si no se encuentra el cliente con el ID especificado
      */
+
     public function show($id)
     {
         // Relaciones a precargar para mejorar legibilidad y mantenimiento

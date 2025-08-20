@@ -74,7 +74,6 @@ class ProductController extends Controller
     {
         // Los datos ya están validados por ProductRequest
         $data = $request->validated();
-
         // Creación de una nueva instancia del modelo Product y asignación de valores
         $product = new Product();
         $product->setName($data['name']);           // Establece el nombre del producto
@@ -128,7 +127,6 @@ class ProductController extends Controller
         ]);
     }
 
-
     /**
      * Muestra el formulario para editar un producto existente.
      *
@@ -145,29 +143,24 @@ class ProductController extends Controller
         ]);
     }
 
-
     /**
      * Actualiza la información de un producto existente.
      *
      * @param int $id ID del producto a actualizar
-     * @param Request $request Los datos actualizados del producto
+     * @param ProductRequest $request Los datos actualizados del producto
      * @return JsonResponse Respuesta JSON con el estado de la operación
      */
-    public function update($id, Request $request)
+    public function update($id, ProductRequest $request)
     {
         // Validación de campos requeridos
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-        ]);
-
+        $data = $request->validated();
         $product= Product::find($id);
-        $product->setName($request->name);
-        $product->setDescription($request->description);
+        $product->setName($data['name']);           // Establece el nombre del producto
+        $product->setDescription($data['description']); // Establece la descripción del producto
         $product->save();
 
         // Sincronización de relaciones con compañías
-        $product->companies()->sync($request->companies ?? []);
+        $product->companies()->sync($data['companies'] ?? []);
 
         return response()->json([
             'status' => 'success',

@@ -19,7 +19,7 @@
                         <input
                             type="checkbox"
                             class="form-check-input company-checkbox"
-                            name="companies[{!! $company->id !!}][__checked]"
+                            name="companies[{!! $company->id !!}][company_id]"
                             id="company_{{ $company->id }}"
                             value="{!! $company->id !!}"
                             {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
