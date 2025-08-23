@@ -9,6 +9,7 @@ use App\Models\Purchase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
@@ -26,9 +27,27 @@ use Illuminate\View\View;
  * - Registro de logs para operaciones críticas (crear, eliminar)
  * - Manejo de respuestas JSON para operaciones AJAX
  * - Verificación de autenticación de usuarios
+ *
+ * Requisitos y dependencias:
+ * - Modelos:
+ * Customer, Company, Purchase, Log
+ * - Autenticación habilitada para operaciones críticas
+ *
+ * @category Controllers
+ * @package  App\Http\Controllers
+ * @see      Customer
+ * @see      Company
+ * @see      Purchase
+ * @see      Log
  */
 class CustomerController extends Controller
 {
+    /**
+     * Constructor del controlador.
+     *
+     * Punto de extensión para aplicar middlewares u otras configuraciones
+     * a nivel de controlador.
+     */
     public function __construct()
     {
 
@@ -73,6 +92,7 @@ class CustomerController extends Controller
      *
      * @param Request $request Contiene los datos del formulario de creación del cliente
      * @return JsonResponse Respuesta JSON con el estado de la operación
+     * @throws ValidationException Cuando la validación falla
      */
     public function store(Request $request)
     {
@@ -132,6 +152,7 @@ class CustomerController extends Controller
      * @param int $id ID del cliente a actualizar
      * @param Request $request Los datos actualizados del cliente
      * @return JsonResponse
+     * @throws ValidationException Cuando la validación falla
      */
     public function update($id, Request $request): JsonResponse
     {
@@ -293,9 +314,8 @@ class CustomerController extends Controller
      *
      * @param int $id ID del cliente que se desea visualizar
      * @return View Vista con los detalles del cliente
-     * @throws ModelNotFoundException Si no se encuentra el cliente con el ID especificado
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException Si no se encuentra el cliente con el ID especificado
      */
-
     public function show($id)
     {
         // Relaciones a precargar para mejorar legibilidad y mantenimiento
