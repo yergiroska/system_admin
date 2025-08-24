@@ -53,7 +53,7 @@ class Customer extends Model
     final public function getFirstName(): string
     {
         return is_null($this->first_name)
-            ? 'No tiene datos'
+            ? $this->user->getName()
             : ucfirst($this->first_name);
     }
 
