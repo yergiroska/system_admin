@@ -9,6 +9,23 @@
                 </h2>
             </div>
             <div class="card-body">
+                {{-- Mensajes de error --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                {{-- Mensaje de éxito --}}
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <div class="text-center">
                     <h4 class="mb-3">
                         Bienvenido, <strong>{{ Auth::user()->name }}</strong>
