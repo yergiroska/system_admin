@@ -95,8 +95,22 @@ class AuthController extends Controller
      * @param Request $request La solicitud HTTP que contiene las credenciales de usuario.
      * @return RedirectResponse Redirige al dashboard en caso de éxito o regresa al formulario de inicio de sesión con errores.
      */
-    public function login(Request $request)
+    final public function login(Request $request)
     {
+        // Validación básica del formulario
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // Verificar si el usuario existe por email antes de intentar autenticación
+        $user = User::where('email', $request->input('email'))->first();
+        if (!$user) {
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['email' => 'El usuario no existe']);
+        }
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
@@ -116,8 +130,6 @@ class AuthController extends Controller
             $user->is_connected = 1;
             // Guarda los cambios en la base de datos
             $user->save();
-
-
             // Crea una nueva instancia de registro de inicio de sesión
             $user_login = new UserLogin();
             // Asigna el ID del usuario actualmente autenticado
@@ -130,7 +142,7 @@ class AuthController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        return back()->withErrors(['email' => 'Credenciales inválidas']);
     }
 
     public function showLoginForm()

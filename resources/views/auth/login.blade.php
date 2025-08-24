@@ -8,6 +8,17 @@
                 </h4>
             </div>
             <div class="card-body">
+                {{-- Bloque general de errores (opcional) --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('post.login') }}" method="POST" autocomplete="on">
                     @csrf
                     <div class="mb-3">
