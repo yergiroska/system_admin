@@ -28,18 +28,6 @@ use Illuminate\View\View;
  */
 class CompanyController extends Controller
 {
-    /**
-     * Constructor del controlador.
-     * Aplica el middleware de autenticación a todas las acciones del controlador.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    private function middleware(string $string)
-    {
-    }
 
     /**
      * Muestra la lista de todas las empresas.
@@ -92,8 +80,8 @@ class CompanyController extends Controller
 
         // Creación de nueva instancia de Company y asignación de valores
         $company = new Company();
-        $company->setName($request->name);         // Asigna el nombre de la empresa
-        $company->setDescription($request->description); // Asigna la descripción
+        $company->name = $request->name;         // Asigna el nombre de la empresa
+        $company->description = $request->description; // Asigna la descripción
         $company->save();   // Guarda la empresa en la base de datos
 
         // Asocia los productos seleccionados a la empresa (si hay alguno)
@@ -195,8 +183,8 @@ class CompanyController extends Controller
         ]);
 
         $company = Company::find($id);
-        $company->setName($request->name);
-        $company->setDescription($request->description);
+        $company->name = $request->name;
+        $company->description = $request->description;
         $company->save();
 
         $company->products()->sync($request->products ?? []);

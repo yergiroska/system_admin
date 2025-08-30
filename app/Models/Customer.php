@@ -92,33 +92,9 @@ class Customer extends Model
             : $this->identity_document;
     }
 
-    final public function setFirstName(string $name): self
-    {
-        $this->first_name = ucfirst($name);
-        return $this;
-    }
-
-    final public function setLastName(string $name): self
-    {
-        $this->last_name = ucfirst($name);
-        return $this;
-    }
-
     final public function setBirthDate(string $date): self
     {
         $this->birth_date = Carbon::parse($date);
-        return $this;
-    }
-
-    final public function setIdentityDocument(string $document): self
-    {
-        $this->identity_document = $document;
-        return $this;
-    }
-
-    final public function setUserId(int $userId): self
-    {
-        $this->user_id = $userId;
         return $this;
     }
 

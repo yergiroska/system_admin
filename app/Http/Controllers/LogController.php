@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Log;
 use Illuminate\Http\Request;
-
+use Illuminate\View\View;
 
 /**
  * Controlador para la gestión de registros (logs) del sistema.
@@ -19,17 +19,6 @@ use Illuminate\Http\Request;
  */
 class LogController extends Controller
 {
-    /**
-     * Constructor del controlador.
-     *
-     * Establece el middleware de autenticación para todas las acciones
-     * del controlador, asegurando que solo usuarios autenticados
-     * puedan acceder a los registros del sistema.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Muestra la lista de todos los registros del sistema.
@@ -37,7 +26,7 @@ class LogController extends Controller
      * Obtiene los registros ordenados por fecha de creación (más recientes primero)
      * y los pasa a la vista para su visualización.
      *
-     * @return \Illuminate\View\View Vista con el listado de logs
+     * @return View Vista con el listado de logs
      */
     public function index()
     {
@@ -54,7 +43,7 @@ class LogController extends Controller
      * almacenados en formato JSON para mostrarlos en la vista.
      *
      * @param int $id ID del registro a mostrar
-     * @return \Illuminate\View\View Vista con los detalles del log
+     * @return View Vista con los detalles del log
      */
     public function details(int $id)
     {
@@ -64,9 +53,5 @@ class LogController extends Controller
             'log' => $log,
             'details' => $details
         ]);
-    }
-
-    private function middleware(string $string)
-    {
     }
 }

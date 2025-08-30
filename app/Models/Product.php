@@ -33,18 +33,6 @@ class Product extends Model
         return $this->description;
     }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
-        return $this;
-    }
-
     public function companies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class)

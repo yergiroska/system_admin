@@ -234,7 +234,9 @@ class AuthController extends Controller
         $user->save();
 
         // Obtiene el último registro de inicio de sesión del usuario actual
-        $user_login = UserLogin::where('user_id', Auth::id())->orderBy('id', 'desc')->first();
+        $user_login = UserLogin::where('user_id', Auth::id())
+            ->orderBy('id', 'desc')
+            ->first();
         // Actualiza el ID del usuario asociado al registro
         $user_login->user_id = Auth::id();
         // Establece la hora de finalización de la conexión en la zona horaria de Madrid

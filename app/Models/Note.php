@@ -6,6 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed|string $title
+ */
 class Note extends Model
 {
     use SoftDeletes;
@@ -39,29 +42,12 @@ class Note extends Model
         return $this->completed;
     }
 
-    public function setTitle($title)
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    public function setContents($contents)
-    {
-        $this->contents = $contents;
-        return $this;
-    }
-
-    public function setCompleted($completed)
-    {
-        $this->completed = $completed;
-    }
-
-    public function isCompleted()
+    public function isCompleted(): void
     {
         $this->completed = true;
     }
 
-    public function isNotCompleted()
+    public function isNotCompleted(): void
     {
         $this->completed = false;
     }

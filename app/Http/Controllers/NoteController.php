@@ -6,7 +6,7 @@ use App\Models\Log;
 use App\Models\Note;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
+use Illuminate\View\View;
 
 /**
  * Controlador para la gestión de notas en el sistema.
@@ -31,17 +31,13 @@ use Illuminate\Http\Request;
  */
 class NoteController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Muestra la lista de todas las notas.
      *
-     * @return \Illuminate\View\View Vista con la lista de todas las notas
+     * @return View Vista con la lista de todas las notas
      */
-    public function index()
+    public function index(): View
     {
         $note = Note::all();
         return view('notes.index', [
@@ -52,9 +48,9 @@ class NoteController extends Controller
     /**
      * Muestra el formulario para crear una nueva nota.
      *
-     * @return \Illuminate\View\View Vista del formulario de creación
+     * @return View Vista del formulario de creación
      */
-    public function create()
+    public function create(): View
     {
         return view('notes.create');
     }
@@ -72,7 +68,7 @@ class NoteController extends Controller
      * @param Request $request Contiene los datos del formulario de creación de la nota
      * @return JsonResponse Respuesta JSON con el estado de la operación
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         // Validación de los campos requeridos del formulario
         $request->validate([
@@ -84,8 +80,8 @@ class NoteController extends Controller
         // Creación y guardado de la nueva nota
         $note = new Note();
 
-        $note->setTitle($request->title);         // Establece el título
-        $note->setContents($request->contents);   // Establece el contenido
+        $note->title = $request->title;         // Establece el título
+        $note->contents = $request->contents;   // Establece el contenido
         $note->isNotCompleted(); // Establece el estado inicial de la nota como no completada
         if ($request->completed === '1') {
             $note->isCompleted(); // Marca la nota como completada si se recibe el valor '1'
@@ -95,12 +91,12 @@ class NoteController extends Controller
 
         // Registro de la acción en el sistema de logs
         $log = new Log();
-        $log->setAction('CREAR');                  // Tipo de acción realizada
-        $log->setObjeto('Notes');  // Entidad afectada
-        $log->setObjetoId($note->id);           // ID de la nota creada
-        $log->setDetail($note->toJson());  // Detalles de la nota en formato JSON
-        $log->setIp('3333');   // IP del usuario (valor estático por ahora)
-        $log->setUserId(auth()->user()->id);  // ID del usuario que creó la nota
+        $log->action = 'CREAR';                  // Tipo de acción realizada
+        $log->objeto = 'Notes';  // Entidad afectada
+        $log->objeto_id = $note->id;           // ID de la nota creada
+        $log->detail = $note->toJson();  // Detalles de la nota en formato JSON
+        $log->ip = '3333';   // IP del usuario (valor estático por ahora)
+        $log->user_id =auth()->user()->id;  // ID del usuario que creó la nota
         $log->save();                           // Guarda el registro de log
 
         // Devuelve respuesta JSON con el resultado de la operación
@@ -113,7 +109,7 @@ class NoteController extends Controller
     /**
      * Muestra la vista para visualizar notas.
      *
-     * @return \Illuminate\View\View Vista para visualización de notas
+     * @return View Vista para visualización de notas
      */
     public function viewNotes()
     {
@@ -150,9 +146,9 @@ class NoteController extends Controller
      * Muestra los detalles de una nota específica.
      *
      * @param int $id ID de la nota a mostrar
-     * @return \Illuminate\View\View Vista con los detalles de la nota
+     * @return View Vista con los detalles de la nota
      */
-    public function show($id)
+    final public function show(int $id): View
     {
         $note = Note::find($id);
         return view('notes.show', [
@@ -164,9 +160,9 @@ class NoteController extends Controller
      * Muestra el formulario para editar una nota existente.
      *
      * @param int $id ID de la nota a editar
-     * @return \Illuminate\View\View Vista del formulario de edición
+     * @return View Vista del formulario de edición
      */
-    public function edit($id)
+    final public function edit(int $id): View
     {
         $note = Note::find($id);
         return view('notes.edit', [
@@ -181,7 +177,7 @@ class NoteController extends Controller
      * @param Request $request Datos actualizados de la nota
      * @return JsonResponse Respuesta JSON con el resultado de la operación
      */
-    public function update($id, Request $request)
+    final public function update(int $id, Request $request): JsonResponse
     {
         $request->validate([
             'title' => 'required',
@@ -190,8 +186,8 @@ class NoteController extends Controller
         ]);
 
         $note= Note::find($id);
-        $note->setTitle($request->title);
-        $note->setContents($request->contents);
+        $note->title = $request->title;
+        $note->contents = $request->contents;
         $note->isNotCompleted();
         if ($request->completed === '1') {
             $note->isCompleted();
@@ -214,17 +210,17 @@ class NoteController extends Controller
      * @param int $id ID de la nota a eliminar
      * @return JsonResponse Respuesta JSON con el resultado de la operación
      */
-    public function destroy($id)
+    final public function destroy(int $id): JsonResponse
     {
         $note = Note::find($id);
 
         $log = new Log();
-        $log->setAction('ELIMINAR');
-        $log->setObjeto('Notes');
-        $log->setObjetoId($note->id);
-        $log->setDetail($note->toJson());
-        $log->setIp('3333');
-        $log->setUserId(auth()->user()->id);
+        $log->action = 'ELIMINAR';
+        $log->objeto = 'Notes';
+        $log->objeto_id = $note->id;
+        $log->detail = $note->toJson();
+        $log->ip = '3333';
+        $log->user_id = auth()->user()->id;
         $log->save();
 
         $note->delete();
@@ -233,11 +229,6 @@ class NoteController extends Controller
                 'status' => 'success',
                 'message' => 'Nota eliminada con exito.',
             ]);
-
-        //return redirect()->route('notes.index')->with('success', 'Note deleted successfully.');
     }
 
-    private function middleware(string $string)
-    {
-    }
 }
