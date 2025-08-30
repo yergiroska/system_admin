@@ -185,8 +185,8 @@ class CustomerController extends Controller
         $log->objeto = 'customers';
         $log->objeto_id = $id;
         $log->detail = $customer->toJson();
-        $log->setIp('1111');
-        $log->setUserId(auth()->user()->id);
+        $log->ip = '1111';
+        $log->user_id =auth()->user()->id;
         $log->save();
 
         $customer->delete();

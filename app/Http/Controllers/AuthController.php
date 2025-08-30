@@ -97,7 +97,7 @@ class AuthController extends Controller
         $user->save();
 
         $customer = new Customer();
-        $customer->setUserId($user->id);   // asociación 1–1 con el usuario
+        $customer->user_id = $user->id;   // asociación 1–1 con el usuario
         $customer->save();
 
         // Crea una nueva instancia de registro de inicio de sesión

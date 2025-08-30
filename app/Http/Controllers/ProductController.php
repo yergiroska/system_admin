@@ -182,12 +182,12 @@ class ProductController extends Controller
 
         // Registro de la eliminación en el log
         $log = new Log();
-        $log->setAction('ELIMINAR');
-        $log->setObjeto('Productos');
-        $log->setObjetoId($product->id);
-        $log->setDetail($product->toJson());
-        $log->setIp('2222');
-        $log->setUserId(auth()->user()->id);
+        $log->action = 'ELIMINAR';
+        $log->objeto = 'Productos';
+        $log->objeto_id = $product->id;
+        $log->detail = $product->toJson();
+        $log->ip = '2222';
+        $log->user_id = auth()->user()->id;
         $log->save();
 
         // Eliminación del producto
