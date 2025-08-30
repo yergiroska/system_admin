@@ -14,6 +14,7 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
+                    <th>Imagen del Producto</th>
                 </tr>
             </thead>
             <tbody class="products"></tbody>
@@ -33,10 +34,15 @@
                     let products = response.data
                     let $tr = '';
                     for (const product of products) {
+                        let imageSrc = product.image_url ? '/storage/images/' + product.image_url : 'https://via.placeholder.com/64x64?text=No+Img';
+
                         $tr += '<tr>';
                         $tr += '<td>'+product.id+'</td>';
                         $tr += '<td>'+product.name+'</td>';
                         $tr += '<td>'+product.description+'</td>';
+                        $tr += '<td>';
+                        $tr += '<img src="' + imageSrc + '" alt="' + product.name + '" style="width:64px;height:64px;object-fit:cover;border-radius:6px;">';
+                        $tr += '</td>';
                         $tr += '</tr>';
                     }
                     $('.products').append($tr)

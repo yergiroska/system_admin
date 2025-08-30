@@ -30,6 +30,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Descripción</th>
+                            <th>Imagen del Producto</th>
                             <th class="text-center" style="width: 180px;">Acción</th >
                         </tr>
                     </thead>
@@ -38,6 +39,14 @@
                         <tr id="{!! $product->getId() !!}">
                             <td>{{ $product->getName() }}</td>
                             <td> {{ $product->getDescription() }}</td>
+                            <td>
+                                @php
+                                    $src = $product->image_url ? '/storage/images/' . $product->image_url : 'https://via.placeholder.com/64x64?text=No+Img';
+                                @endphp
+                                <img src="{{ $src }}" alt="{{ $product->name }}" style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
+                            </td>
+
+
                             <td class="text-center">
                                 <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-primary" title="Editar">
                                     <i class="fas fa-edit"></i>
@@ -65,7 +74,7 @@
                 let id = $(this).attr('data-id') // esta y la de abajohacen lo mismo
                 let url = $(this).data('url')
 
-                if(confirm('Estas seguro')) {
+                if(confirm('Estás seguro')) {
                     $.ajax({
                         url: url,
                         method: 'DELETE',

@@ -18,7 +18,8 @@
                     </div>
                 @endif
 
-                <form action="{{ route('products.store') }}" id="form_product" method="POST">
+                <form action="{{ route('products.store') }}" id="form_product" method="POST" enctype="multipart/form-data"
+                >
                     @csrf
 
                     <div class="mb-3">
@@ -29,6 +30,11 @@
                     <div class="mb-3">
                         <label for="description" class="form-label">Descripción del Producto:</label>
                         <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen del Producto:</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
                     </div>
 
                     <div class="mb-3">
@@ -52,10 +58,16 @@
         $(document).ready(function() {
             $('#saved').on('click', function(evento) {
                 evento.preventDefault();
+
+                const form = document.getElementById('form_product');
+                const formData = new FormData(form);
+
                 $.ajax({
                     url: $('#form_product').attr('action'),
                     method: $('#form_product').attr('method'),
-                    data: $('#form_product').serialize(),
+                    data: formData,
+                    processData: false,   // Importante para FormData
+                    contentType: false,   // Importante para FormData
                     success: function(response) {
                         if(response.status === 'success'){
                             alert('Registro exitoso');
