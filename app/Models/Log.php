@@ -23,63 +23,62 @@ class Log extends Model
 
     function getId()
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
     function getAction()
     {
-        return $this->attributes['action'];
+        return $this->action;
     }
     function getDetail()
     {
-        return $this->attributes['detail'];
+        return $this->detail;
     }
     function getIp()
     {
-        return $this->attributes['ip'];
+        return $this->ip;
     }
     function getObjeto()
     {
-        return $this->attributes['objeto'];
+        return $this->objeto;
     }
     function getObjetoId()
     {
-        return $this->attributes['objeto_id'];
+        return $this->objeto_id;
     }
 
     function getUserId()
     {
-        return $this->attributes['user_id'];
+        return $this->user_id;
     }
-
 
     function setAction($action)
     {
-        $this->attributes['action'] = $action;
+        $this->action = $action;
         return $this;
 
     }
     function setDetail($detail)
     {
-        $this->attributes['detail'] = $detail;
+        $this->detail = $detail;
         return $this;
     }
     function setIp($ip)
     {
-        $this->attributes['ip'] = $ip;
+        $this->ip = $ip;
         return $this;
     }
     function setUserId($id)
     {
-        $this->attributes['user_id'] = $id;
+        $this->user_id = $id;
     }
     function setObjeto($objeto)
     {
-        $this->attributes['objeto'] = $objeto;
+        $this->objeto = $objeto;
         return $this;
     }
     function setObjetoId($id)
     {
-        $this->attributes['objeto_id'] = $id;
+        $this->objeto_id = $id;
         return $this;
     }
 
