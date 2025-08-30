@@ -4,7 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\HigherOrderCollectionProxy;
 
+/**
+ * @property string $action
+ * @property string|null $objeto
+ * @property HigherOrderCollectionProxy|int|mixed|null $objeto_id
+ * @property string $detail
+ * @property string $ip
+ * @property int|mixed $user_id
+ */
 class Log extends Model
 {
     /**
@@ -49,37 +58,6 @@ class Log extends Model
     function getUserId()
     {
         return $this->user_id;
-    }
-
-    function setAction($action)
-    {
-        $this->action = $action;
-        return $this;
-
-    }
-    function setDetail($detail)
-    {
-        $this->detail = $detail;
-        return $this;
-    }
-    function setIp($ip)
-    {
-        $this->ip = $ip;
-        return $this;
-    }
-    function setUserId($id)
-    {
-        $this->user_id = $id;
-    }
-    function setObjeto($objeto)
-    {
-        $this->objeto = $objeto;
-        return $this;
-    }
-    function setObjetoId($id)
-    {
-        $this->objeto_id = $id;
-        return $this;
     }
 
     /**

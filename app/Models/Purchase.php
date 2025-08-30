@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Modelo para la tabla de compras.
+ * @property int $company_product_id
+ * @property float|mixed $unit_price
+ * @property int|mixed $quantity
+ * @property float|mixed $total
  */
 class Purchase extends Model
 {
@@ -64,32 +68,4 @@ class Purchase extends Model
         return $this->belongsTo(CompanyProduct::class, 'company_product_id');
     }
 
-    final public function setCustomerId(int $customerId)
-    {
-        $this->customer_id = $customerId;
-        return $this;
-    }
-
-    final public function setCompanyProductId(int $companyProductId)
-    {
-        $this->company_product_id = $companyProductId;
-        return $this;
-    }
-
-    public function setUnitPrice(float $unitPrice)
-    {
-        $this->unit_price = $unitPrice;
-        return $this;
-    }
-    final public function setQuantity(int $quantity)
-    {
-        $this->quantity = $quantity;
-        return $this;
-    }
-
-    final public function setTotal(float $total)
-    {
-        $this->total = $total;
-        return $this;
-    }
 }

@@ -42,16 +42,6 @@ use Illuminate\View\View;
  */
 class CustomerController extends Controller
 {
-    /**
-     * Constructor del controlador.
-     *
-     * Punto de extensión para aplicar middlewares u otras configuraciones
-     * a nivel de controlador.
-     */
-    public function __construct()
-    {
-
-    }
 
     /**
      * Muestra la lista de todos los clientes.
@@ -106,20 +96,20 @@ class CustomerController extends Controller
 
         // Creación de una nueva instancia del modelo Customer y asignación de valores
         $customer = new Customer();
-        $customer->setFirstName($request->first_name);
-        $customer->setLastName($request->last_name);
+        $customer->first_name = $request->first_name;
+        $customer->last_name = $request->last_name;
         $customer->setBirthDate($request->birth_date);
-        $customer->setIdentityDocument($request->identity_document);
+        $customer->identity_document =$request->identity_document;
         $customer->save(); // Guarda el nuevo cliente en la base de datos
 
         // Registro de la acción en el sistema de logs
         $log = new Log();
-        $log->setAction('CREAR');                  // Tipo de acción realizada
-        $log->setObjeto('customers');              // Tabla afectada
-        $log->setObjetoId($customer->id);        // ID del registro creado
-        $log->setDetail($customer->toJson());      // Detalles del cliente en formato JSON
-        $log->setIp('1111');                      // IP del usuario (pendiente implementación real)
-        $log->setUserId(auth()->user()->id);      // ID del usuario que realizó la acción
+        $log->action = 'CREAR';                  // Tipo de acción realizada
+        $log->objeto = 'customers';              // Tabla afectada
+        $log->objeto_id =$customer->id;        // ID del registro creado
+        $log->detail = $customer->toJson();      // Detalles del cliente en formato JSON
+        $log->ip = '1111';                      // IP del usuario (pendiente implementación real)
+        $log->user_id = auth()->user()->id;      // ID del usuario que realizó la acción
         $log->save();                           // Guarda el registro de log
 
         // Devuelve respuesta JSON con el resultado de la operación
@@ -164,10 +154,10 @@ class CustomerController extends Controller
         ]);
 
         $customer = Customer::find($id);
-        $customer->setFirstName($request->first_name)
-        ->setLastName($request->last_name)
-        ->setBirthDate($request->birth_date)
-        ->setIdentityDocument($request->identity_document);
+        $customer->first_name = $request->first_name;
+        $customer->last_name = $request->last_name;
+        $customer->setBirthDate($request->birth_date);
+        $customer->identity_document = $request->identity_document;
         $customer->save();
 
         return response()->json([
@@ -191,10 +181,10 @@ class CustomerController extends Controller
         $customer = Customer::find($id);
 
         $log = new Log();
-        $log->setAction('ELIMINAR');
-        $log->setObjeto('customers');
-        $log->setObjetoId($id);
-        $log->setDetail($customer->toJson());
+        $log->action = 'ELIMINAR';
+        $log->objeto = 'customers';
+        $log->objeto_id = $id;
+        $log->detail = $customer->toJson();
         $log->setIp('1111');
         $log->setUserId(auth()->user()->id);
         $log->save();
@@ -285,12 +275,11 @@ class CustomerController extends Controller
             /**
              * 2. Asignar el ID del cliente y el ID del producto
              */
-            // dd($product);
 
-            $purchase->setCompanyProductId($product->id);
-            $purchase->setUnitPrice($product->price);
-            $purchase->setQuantity($product->quantity);
-            $purchase->setTotal($product->total);
+            $purchase->company_product_id = $product->id;
+            $purchase->unit_price = $product->price;
+            $purchase->quantity = $product->quantity;
+            $purchase->total = $product->total;
 
             /**
              * 3. Guardar la compra en la base de datos

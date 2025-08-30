@@ -76,8 +76,8 @@ class ProductController extends Controller
         $data = $request->validated();
         // Creación de una nueva instancia del modelo Product y asignación de valores
         $product = new Product();
-        $product->setName($data['name']);           // Establece el nombre del producto
-        $product->setDescription($data['description']); // Establece la descripción del producto
+        $product->name =$data['name'];           // Establece el nombre del producto
+        $product->description = $data['description']; // Establece la descripción del producto
         $product->save();   // Guarda el nuevo producto en la base de datos
 
         // Asocia las compañías seleccionadas al producto (si existen)
@@ -86,13 +86,13 @@ class ProductController extends Controller
 
         // Registro de la acción en el sistema de logs
         $log = new Log();
-        $log->setAction('CREAR');                  // Tipo de acción realizada
-        $log->setObjeto('Productos');   // Tabla/Entidad afectada
-        $log->setObjetoId($product->id);         // ID del registro creado
-        $log->setDetail($product->toJson());   // Detalles del producto en formato JSON
-        $log->setIp('2222');  // IP del usuario (valor estático por ahora)
-        $log->setUserId(auth()->user()->id);   // ID del usuario que realizó la acción
-        $log->save();                            // Guarda el registro de log
+        $log->action = 'CREAR'; // Tipo de acción realizada
+        $log->objeto = 'Productos'; // Tabla/Entidad afectada
+        $log->objeto_id = $product->id; // ID del registro creado
+        $log->detail = $product->toJson();  // Detalles del producto en formato JSON
+        $log->ip = '2222';  // IP del usuario (valor estático por ahora)
+        $log->user_id = auth()->user()->id; // ID del usuario que realizó la acción
+        $log->save();
 
         // Devuelve respuesta JSON con el resultado exitoso de la operación
         return response()->json([
@@ -155,8 +155,8 @@ class ProductController extends Controller
         // Validación de campos requeridos
         $data = $request->validated();
         $product= Product::find($id);
-        $product->setName($data['name']);           // Establece el nombre del producto
-        $product->setDescription($data['description']); // Establece la descripción del producto
+        $product->name = $data['name'];           // Establece el nombre del producto
+        $product->description = $data['description']; // Establece la descripción del producto
         $product->save();
 
         // Sincronización de relaciones con compañías
