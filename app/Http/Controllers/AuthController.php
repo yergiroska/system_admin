@@ -29,9 +29,53 @@ class AuthController extends Controller
     }
 
     /**
+     * Maneja el registro de un nuevo usuario en la aplicación.
+     *
+     * ### Propósito:
+     * Este método se encarga de recibir los datos de registro de un nuevo usuario, validar estos datos,
+     * crear las entidades necesarias en la base de datos, y autenticar al usuario inmediatamente después
+     * de un registro exitoso. Si ocurre un error durante el proceso, asegura la transacción con una reversión.
+     *
+     * ### Funcionalidad:
+     * 1. **Validación de datos**:
+     *    - Todos los campos requeridos (`name`, `email` y `password`) deben estar presentes y cumplir ciertas reglas:
+     *        - El `name` y el `email` deben ser únicos en la tabla `users`.
+     *        - El `password` debe tener al menos 6 caracteres y debe ser confirmado correctamente.
+     *
+     * 2. **Transacción database**:
+     *    - Todo el proceso de creación de usuario y entidades relacionadas está envuelto dentro de una transacción
+     *      para garantizar la consistencia.
+     *
+     * 3. **Creación de registros**:
+     *    - Se crea un objeto `User` con los datos proporcionados:
+     *        - Se encripta el `password` usando el helper `Hash::make`.
+     *        - Se actualiza la última sesión y el estado "conectado" del usuario.
+     *        - El registro del usuario se guarda en la base de datos.
+     *    - Se crea un objeto `Customer` vinculado al usuario mediante su `id`.
+     *    - Se crea un registro de inicio de sesión `UserLogin` vinculando el `id` del usuario y asignando el
+     *      inicio de la conexión.
+     *
+     * 4. **Comportamiento en caso de error**:
+     *    - Si ocurre alguna excepción (`Throwable`) durante el proceso, la transacción es revertida y el usuario
+     *      es redirigido de vuelta al formulario con errores y datos parcialmente ingresados.
+     *
+     * 5. **Autenticación automática**:
+     *    - Después de un registro exitoso, el usuario es autenticado inmediatamente mediante el helper `Auth::login`.
+     *
+     * 6. **Redirección post-registro**:
+     *    - Una vez registrado y autenticado, el usuario es redirigido a la vista principal del dashboard.
+     *
+     * ### Ejemplo en un proyecto real:
+     * Dentro de un sistema como una tienda en línea o un panel administrativo, este método asegura que los registros
+     * de usuarios sean consistentes, creando no solo el usuario principal, sino también las entidades relacionadas
+     * (como `Customer` y `UserLogin`). Es decir, desde el momento del registro, el sistema configura todo lo necesario
+     * para el correcto seguimiento del usuario (como el inicio de sesión y datos relacionados).
+     *
+     * @param Request $request - Contiene los datos enviados por el cliente para registrar al usuario.
+     * @return RedirectResponse - Redirige al dashboard en caso de éxito o regresa al formulario con errores en caso de fallo.
      * @throws Throwable
      */
-    public function register(Request $request)
+    public function register(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|unique:users',
@@ -42,13 +86,13 @@ class AuthController extends Controller
         try {
 
         $user = new User();
-        $user->setName($request->name);
-        $user->setEmail($request->email);
-        $user->setPassword(Hash::make($request->password));
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
         // Actualiza la última sesión al momento actual en la zona horaria de Madrid
-        $user->last_session = Carbon::now('Europe/Madrid');
+        $user->setLastSession();
         // Marca al usuario como conectado
-        $user->is_connected = 1;
+        $user->setConnected();
         // Guarda los cambios en la base de datos
         $user->save();
 
@@ -56,16 +100,14 @@ class AuthController extends Controller
         $customer->setUserId($user->id);   // asociación 1–1 con el usuario
         $customer->save();
 
-
         // Crea una nueva instancia de registro de inicio de sesión
         $user_login = new UserLogin();
         // Asigna el ID del usuario actualmente autenticado
         $user_login->user_id = $user->id;
         // Establece la hora de inicio de la conexión en la zona horaria de Madrid
-        $user_login->start_connection = Carbon::now('Europe/Madrid');
+        $user_login->setStartConnection();
         // Guarda el registro de inicio de sesión en la base de datos
         $user_login->save();
-
 
         DB::commit();
         } catch (Throwable $e) {
@@ -95,7 +137,7 @@ class AuthController extends Controller
      * @param Request $request La solicitud HTTP que contiene las credenciales de usuario.
      * @return RedirectResponse Redirige al dashboard en caso de éxito o regresa al formulario de inicio de sesión con errores.
      */
-    final public function login(Request $request)
+    final public function login(Request $request): RedirectResponse
     {
         // Validación básica del formulario
         $request->validate([
@@ -125,9 +167,9 @@ class AuthController extends Controller
             // Obtiene el usuario autenticado actualmente
             $user = User::find(Auth::id());
             // Actualiza la última sesión al momento actual en la zona horaria de Madrid
-            $user->last_session = Carbon::now('Europe/Madrid');
+            $user->setLastSession();
             // Marca al usuario como conectado
-            $user->is_connected = 1;
+            $user->setConnected();
             // Guarda los cambios en la base de datos
             $user->save();
             // Crea una nueva instancia de registro de inicio de sesión
@@ -135,7 +177,7 @@ class AuthController extends Controller
             // Asigna el ID del usuario actualmente autenticado
             $user_login->user_id = Auth::id();
             // Establece la hora de inicio de la conexión en la zona horaria de Madrid
-            $user_login->start_connection = Carbon::now('Europe/Madrid');
+            $user_login->setStartConnection();
             // Guarda el registro de inicio de sesión en la base de datos
             $user_login->save();
 
@@ -169,7 +211,7 @@ class AuthController extends Controller
      * @param Request $request La solicitud HTTP actual.
      * @return RedirectResponse Redirección a la página de inicio de sesión.
      */
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         //$logoutTime = \Carbon\Carbon::now('Europe/Madrid')->format('d-m-Y H:i');
 
@@ -185,9 +227,9 @@ class AuthController extends Controller
         // Obtiene el usuario actualmente autenticado
         $user = User::find(Auth::id());
         // Actualiza la última sesión del usuario al momento actual (zona horaria Madrid)
-        $user->last_session = Carbon::now('Europe/Madrid');
+        $user->setLastSession();
         // Marca al usuario como desconectado (0)
-        $user->is_connected = 0;
+        $user->setDisConnected();
         // Guarda los cambios en la base de datos
         $user->save();
 
@@ -196,10 +238,9 @@ class AuthController extends Controller
         // Actualiza el ID del usuario asociado al registro
         $user_login->user_id = Auth::id();
         // Establece la hora de finalización de la conexión en la zona horaria de Madrid
-        $user_login->end_connection = Carbon::now('Europe/Madrid');
+        $user_login->setEndConnection();
         // Guarda los cambios en la base de datos
         $user_login->save();
-
 
         Auth::logout();
 
