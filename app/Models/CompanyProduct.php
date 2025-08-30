@@ -29,22 +29,22 @@ class CompanyProduct extends Pivot
 
     public function getId()
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getCompanyId()
     {
-        return $this->attributes['company_id'];
+        return $this->company_id;
     }
 
     public function getProductId()
     {
-        return $this->attributes['product_id'];
+        return $this->product_id;
     }
 
     public function getPrice()
     {
-        return $this->attributes['price'];
+        return $this->price;
     }
 
     public function company(): BelongsTo

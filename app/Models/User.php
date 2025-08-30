@@ -26,50 +26,50 @@ class User extends Authenticatable
 
     function getId()
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     function getName()
     {
-        return $this->attributes['name'];
+        return $this->name;
     }
 
     function getEmail()
     {
-        return $this->attributes['email'];
+        return $this->email;
     }
 
     function getPassword()
     {
-        return $this->attributes['password'];
+        return $this->password;
     }
 
     function getIsConnected()
     {
-        return $this->attributes['is_connected'];
+        return $this->is_connected;
     }
 
     function setName($name)
     {
-        $this->attributes['name'] = $name;
+        $this->name = $name;
         return $this;
     }
 
     function setEmail($email)
     {
-        $this->attributes['email'] = $email;
+        $this->email = $email;
         return $this;
     }
 
     function setPassword($password)
     {
-        $this->attributes['password'] = $password;
+        $this->password = $password;
         return $this;
     }
 
     function setIsConnected($is_connected)
     {
-        $this->attributes['is_connected'] = $is_connected;
+        $this->is_connected = $is_connected;
         return $this;
     }
 

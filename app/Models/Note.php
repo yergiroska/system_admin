@@ -21,49 +21,49 @@ class Note extends Model
 
     public function getId()
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getTitle()
     {
-        return $this->attributes['title'];
+        return $this->title;
     }
 
     public function getContents()
     {
-        return $this->attributes['contents'];
+        return $this->contents;
     }
 
     public function getCompleted()
     {
-        return $this->attributes['completed'];
+        return $this->completed;
     }
 
     public function setTitle($title)
     {
-        $this->attributes['title'] = $title;
+        $this->title = $title;
         return $this;
     }
 
     public function setContents($contents)
     {
-        $this->attributes['contents'] = $contents;
+        $this->contents = $contents;
         return $this;
     }
 
     public function setCompleted($completed)
     {
-        $this->attributes['completed'] = $completed;
+        $this->completed = $completed;
     }
 
     public function isCompleted()
     {
-        $this->attributes['completed'] = true;
+        $this->completed = true;
     }
 
     public function isNotCompleted()
     {
-        $this->attributes['completed'] = false;
+        $this->completed = false;
     }
 
     public function getFormattedBirthDateAttribute()
