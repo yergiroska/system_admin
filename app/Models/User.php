@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
@@ -24,52 +25,47 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function getEmail()
+    public function getEmail()
     {
         return $this->email;
     }
 
-    function getPassword()
+    public function getPassword()
     {
         return $this->password;
     }
 
-    function getIsConnected()
+    public function getIsConnected()
     {
         return $this->is_connected;
     }
 
-    function setName($name)
+
+    public function setConnected()
     {
-        $this->name = $name;
+        $this->is_connected = 1;
         return $this;
     }
 
-    function setEmail($email)
+    public function setDisConnected()
     {
-        $this->email = $email;
+        $this->is_connected = 0;
         return $this;
     }
 
-    function setPassword($password)
+    public function setLastSession()
     {
-        $this->password = $password;
-        return $this;
-    }
-
-    function setIsConnected($is_connected)
-    {
-        $this->is_connected = $is_connected;
+        $this->last_session = Carbon::now('Europe/Madrid');
         return $this;
     }
 
