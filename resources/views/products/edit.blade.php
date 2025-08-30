@@ -17,7 +17,7 @@
                     </div>
                 @endif
                 {{-- Formulario --}}
-                <form action="{{ route('products.update', $product) }}" id="form_product" method="POST">
+                <form action="{{ route('products.update', $product) }}" id="form_product" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
@@ -27,8 +27,13 @@
                     <div class="mb-3">
                         <label for="description" class="form-label">Descripción del Producto:</label>
                         <textarea name="description" class="form-control" rows="3">{{ old('description', $product->description) }}</textarea>
-
                     </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen del Producto:</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    </div>
+
                     <div class="mb-3">
                         @include('inc.companies')
                     </div>
@@ -49,10 +54,16 @@
         $(document).ready(function() {
             $('#update').on('click', function(evento) {
                 evento.preventDefault();
+
+                const form = document.getElementById('form_product');
+                const formData = new FormData(form);
+
                 $.ajax({
                     url: $('#form_product').attr('action'),
                     method: $('#form_product').attr('method'),
-                    data: $('#form_product').serialize(),
+                    data: formData,
+                    processData: false,   // Importante para FormData
+                    contentType: false,   // Importante para FormData
                     success: function(response) {
                         if(response.status === 'success'){
                             alert(response.message);

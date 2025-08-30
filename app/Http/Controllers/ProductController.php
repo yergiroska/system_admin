@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Storage; // ← Agregar esta línea
 
 
 /**
@@ -78,6 +79,15 @@ class ProductController extends Controller
         $product = new Product();
         $product->name =$data['name'];           // Establece el nombre del producto
         $product->description = $data['description']; // Establece la descripción del producto
+        // Subida de imagen (opcional)
+        if ($request->hasFile('image')) {
+            // Guardar en storage/app/public/
+            $filename = $request->file('image')->hashName();
+            $content_image = file_get_contents($request->file('image'));
+            Storage::disk('public')->put('images/' . $filename, $content_image);
+            $product->image_url = $filename;
+
+        }
         $product->save();   // Guarda el nuevo producto en la base de datos
 
         // Asocia las compañías seleccionadas al producto (si existen)
@@ -157,8 +167,19 @@ class ProductController extends Controller
         $product= Product::find($id);
         $product->name = $data['name'];           // Establece el nombre del producto
         $product->description = $data['description']; // Establece la descripción del producto
-        $product->save();
+        // Si se sube una nueva imagen, opcionalmente elimina la anterior y actualiza
+        if ($request->hasFile('image')) {
+            // Eliminar imagen anterior si existe
+            if ($product->image_url) {
+                Storage::disk('public')->delete('images/'.$product->image_url);
+            }
 
+            $filename = $request->file('image')->hashName();
+            $content_image = file_get_contents($request->file('image'));
+            Storage::disk('public')->put('images/' . $filename, $content_image);
+            $product->image_url = $filename;
+        }
+        $product->save();
         // Sincronización de relaciones con compañías
         $product->companies()->sync($data['companies'] ?? []);
 
@@ -180,6 +201,12 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
+        if ($product->image_url) {
+
+
+            Storage::disk('public')->delete('images/'.$product->image_url);
+        }
+
         // Registro de la eliminación en el log
         $log = new Log();
         $log->action = 'ELIMINAR';
@@ -188,10 +215,10 @@ class ProductController extends Controller
         $log->detail = $product->toJson();
         $log->ip = '2222';
         $log->user_id = auth()->user()->id;
-        $log->save();
+      //  $log->save();
 
         // Eliminación del producto
-        $product->delete();
+       $product->delete();
 
         return response()->json([
             'status' => 'success',
