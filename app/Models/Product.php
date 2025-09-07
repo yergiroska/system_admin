@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class Product extends Model
 {
     use SoftDeletes;
@@ -19,6 +20,11 @@ class Product extends Model
         'deleted_at'
     ];
 
+    public function getImageUrlAttribute($value)
+    {
+        return $value ? asset('storage/images/' . $value) : null;
+    }
+    
     public function getId()
     {
         return $this->id;
