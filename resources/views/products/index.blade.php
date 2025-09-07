@@ -40,10 +40,7 @@
                             <td>{{ $product->getName() }}</td>
                             <td> {{ $product->getDescription() }}</td>
                             <td>
-                                @php
-                                    $src = $product->image_url ? '/storage/images/' . $product->image_url : 'https://via.placeholder.com/64x64?text=No+Img';
-                                @endphp
-                                <img src="{{ $src }}" alt="{{ $product->name }}" style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
+                                <img src="{{ $product->image_url ?? '' }}" alt="{{ $product->name }}" style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
                             </td>
 
 

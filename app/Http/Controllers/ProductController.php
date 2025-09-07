@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage; // ← Agregar esta línea
-
+use App\Models\User;
 
 /**
  * Controlador para la gestión de productos en el sistema.
@@ -95,14 +95,18 @@ class ProductController extends Controller
         $product->companies()->attach($data['companies'] ?? []);
 
         // Registro de la acción en el sistema de logs
+      
+        $user = User::first();
+
+        $userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
-        $log->action = 'CREAR'; // Tipo de acción realizada
-        $log->objeto = 'Productos'; // Tabla/Entidad afectada
-        $log->objeto_id = $product->id; // ID del registro creado
-        $log->detail = $product->toJson();  // Detalles del producto en formato JSON
+        $log->action ='CREAR';                  // Tipo de acción realizada
+        $log->objeto = 'Productos';   // Tabla/Entidad afectada
+        $log->objeto_id = $product->id;         // ID del registro creado
+        $log->detail = $product->toJson();   // Detalles del producto en formato JSON
         $log->ip = '2222';  // IP del usuario (valor estático por ahora)
-        $log->user_id = auth()->user()->id; // ID del usuario que realizó la acción
-        $log->save();
+        $log->user_id = $userId;   // ID del usuario que realizó la acción
+        $log->save();                            // Guarda el registro de log
 
         // Devuelve respuesta JSON con el resultado exitoso de la operación
         return response()->json([
@@ -208,14 +212,17 @@ class ProductController extends Controller
         }
 
         // Registro de la eliminación en el log
+        $user = User::first();
+
+        $userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
         $log->action = 'ELIMINAR';
         $log->objeto = 'Productos';
         $log->objeto_id = $product->id;
         $log->detail = $product->toJson();
         $log->ip = '2222';
-        $log->user_id = auth()->user()->id;
-      //  $log->save();
+        $log->user_id = $userId;
+        $log->save();
 
         // Eliminación del producto
        $product->delete();
