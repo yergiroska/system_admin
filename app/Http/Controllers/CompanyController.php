@@ -7,6 +7,7 @@ use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 /**
@@ -82,6 +83,15 @@ class CompanyController extends Controller
         $company = new Company();
         $company->name = $request->name;         // Asigna el nombre de la empresa
         $company->description = $request->description; // Asigna la descripción
+        // Subida de imagen (opcional)
+        if ($request->hasFile('image')) {
+            // Guardar en storage/app/public/
+            $filename = $request->file('image')->hashName();
+            $content_image = file_get_contents($request->file('image'));
+            Storage::disk('public')->put('images/' . $filename, $content_image);
+            $company->image_url = $filename;
+
+        }
         $company->save();   // Guarda la empresa en la base de datos
 
         // Asocia los productos seleccionados a la empresa (si hay alguno)
