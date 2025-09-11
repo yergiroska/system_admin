@@ -30,6 +30,10 @@
                         <label for="description" class="form-label">Descripción Empresa:</label>
                         <textarea id="description" name="description" class="form-control" rows="3" value="{{ old('description') }}"></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen de la Empresa:</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    </div>
 
                     {{-- Productos asociados --}}
                     <div class="mb-3">
