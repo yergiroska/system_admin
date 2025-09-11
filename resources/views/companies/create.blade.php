@@ -55,10 +55,14 @@
         $(document).ready(function() {
             $('#saved').on('click', function(evento) {
                 evento.preventDefault();
+                const form = document.getElementById('form_company');
+                const formData = new FormData(form);
                 $.ajax({
                     url: $('#form_company').attr('action'),
                     method: $('#form_company').attr('method'),
-                    data: $('#form_company').serialize(),
+                    data: formData,
+                    processData: false,   // Importante para FormData
+                    contentType: false,   // Importante para FormData
                     success: function(response) {
                         if(response.status === 'success'){
                             alert('Registro exitoso');
