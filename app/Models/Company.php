@@ -45,4 +45,10 @@ class Company extends Model
     {
         return $value ? asset('storage/images/' . $value) : null;
     }
+
+    public function getImageNameAttribute()
+    {
+        return $this->attributes['image_url'];// Accede directamente al atributo de la base de datos
+        //return $this->image_url; // Usa el accesor para obtener la URL completa
+    }
 }

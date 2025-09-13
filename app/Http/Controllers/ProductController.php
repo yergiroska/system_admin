@@ -95,7 +95,7 @@ class ProductController extends Controller
         $product->companies()->attach($data['companies'] ?? []);
 
         // Registro de la acción en el sistema de logs
-      
+
         $user = User::first();
 
         $userId = auth()->user() ? auth()->user()->id : $user->id;
@@ -205,10 +205,8 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        if ($product->image_url) {
-
-
-            Storage::disk('public')->delete('images/'.$product->image_url);
+        if ($product->image_name) {
+            Storage::disk('public')->delete('images/'.$product->image_name);
         }
 
         // Registro de la eliminación en el log

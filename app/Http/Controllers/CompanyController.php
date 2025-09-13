@@ -227,6 +227,9 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = Company::find($id);
+        if ($company->image_name) {
+            Storage::disk('public')->delete('images/'.$company->image_name);
+        }
 
         $log = new Log();
         $log->action = 'ELIMINAR';
