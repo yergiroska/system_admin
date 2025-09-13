@@ -40,4 +40,9 @@ class Company extends Model
             ->withPivot(['id', 'price'])               // incluye el id del pivot
             ->withTimestamps();           // descomenta si tu pivot tiene timestamps
     }
+
+    public function getImageUrlAttribute($value)
+    {
+        return $value ? asset('storage/images/' . $value) : null;
+    }
 }

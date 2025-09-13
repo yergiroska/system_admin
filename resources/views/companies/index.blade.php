@@ -29,6 +29,7 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Descripción</th>
+                        <th>Imagen de la Empresa</th>
                         <th class="text-center" style="width: 180px;">Acción</th>
                     </tr>
                     </thead>
@@ -37,6 +38,10 @@
                         <tr id="{!! $company->getId() !!}">
                             <td>{{ $company->getName() }}</td>
                             <td> {{ $company->getDescription() }}</td>
+                            <td>
+                                <img src="{{ $company->image_url ?? '' }}" alt="{{ $company->name }}"
+                                     style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
+                            </td>
                             <td class="text-center">
                                <a href="{{ route('companies.edit', $company) }}" class="btn btn-sm btn-primary" title="Editar">
                                    <i class="fas fa-edit"></i>
