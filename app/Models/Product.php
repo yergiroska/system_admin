@@ -24,7 +24,7 @@ class Product extends Model
     {
         return $value ? asset('storage/images/' . $value) : null;
     }
-    
+
     public function getId()
     {
         return $this->id;
@@ -47,5 +47,11 @@ class Product extends Model
             ->as('companyProduct') // alias para acceder al pivot
             ->withPivot(['id', 'price']) // incluye el id del pivot
             ->withTimestamps(); // descomenta si tu pivot tiene timestamps
+    }
+
+    public function getImageNameAttribute()
+    {
+        return $this->attributes['image_url'];// Accede directamente al atributo de la base de datos
+        //return $this->image_url; // Usa el accesor para obtener la URL completa
     }
 }
