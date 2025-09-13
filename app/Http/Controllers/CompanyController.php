@@ -132,16 +132,8 @@ class CompanyController extends Controller
      */
     public function listCompanies(): JsonResponse
     {
-        $compania = Company::all();
-        $companies = [];
-        foreach ($compania as $company) {
-            $companies[] = [
-                'id' => $company->id,
-                'name' => $company->name,
-                'description' => $company->description,
-                'url_detail' => route('companies.show', $company->id),
-            ];
-        }
+        $companies = Company::all();
+
         return response()->json([
             'status' => 'success',
             'data' => $companies,
