@@ -195,6 +195,18 @@ class CompanyController extends Controller
         $company = Company::find($id);
         $company->name = $request->name;
         $company->description = $request->description;
+        // Si se sube una nueva imagen, opcionalmente elimina la anterior y actualiza
+        if ($request->hasFile('image')) {
+            // Eliminar imagen anterior si existe
+            if ($company->image_url) {
+                Storage::disk('public')->delete('images/'.$company->image_url);
+            }
+
+            $filename = $request->file('image')->hashName();
+            $content_image = file_get_contents($request->file('image'));
+            Storage::disk('public')->put('images/' . $filename, $content_image);
+            $company->image_url = $filename;
+        }
         $company->save();
 
         $company->products()->sync($request->products ?? []);
