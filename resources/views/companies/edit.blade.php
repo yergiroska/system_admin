@@ -31,6 +31,11 @@
                         <label for="description" class="form-label">Descripción:</label>
                         <textarea name="description" class="form-control" rows="3">{{ old('description', $company->description) }}</textarea><br>
                     </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen de la Empresa:</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    </div>
+
                     {{-- Productos asociados --}}
                     <div class="mb-3">
                         @include('inc.products')
@@ -51,10 +56,15 @@
         $(document).ready(function() {
             $('#update').on('click', function(evento) {
                 evento.preventDefault();
+                const form = document.getElementById('form_company');
+                const formData = new FormData(form);
+
                 $.ajax({
                     url: $('#form_company').attr('action'),
                     method: $('#form_company').attr('method'),
-                    data: $('#form_company').serialize(),
+                    data: formData,
+                    processData: false,   // Importante para FormData
+                    contentType: false,   // Importante para FormData
                     success: function(response) {
                         if(response.status === 'success'){
                             alert(response.message);
