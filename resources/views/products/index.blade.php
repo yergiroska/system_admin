@@ -40,10 +40,9 @@
                             <td>{{ $product->getName() }}</td>
                             <td> {{ $product->getDescription() }}</td>
                             <td>
-                                <img src="{{ $product->image_url ?? '' }}" alt="{{ $product->name }}" style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
+                                <img src="{{ $product->image_url ?? '' }}" alt="{{ $product->name }}"
+                                     style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
                             </td>
-
-
                             <td class="text-center">
                                 <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-primary" title="Editar">
                                     <i class="fas fa-edit"></i>
