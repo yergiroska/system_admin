@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use App\Models\User;
 
 /**
  * Controlador para la gestión de empresas en el sistema.
@@ -219,19 +220,25 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = Company::find($id);
+		
         if ($company->image_name) {
             Storage::disk('public')->delete('images/'.$company->image_name);
         }
+		
+		// Registro de la eliminación en el log
+        $user = User::first();
 
+		$userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
         $log->action = 'ELIMINAR';
         $log->objeto = 'Empresas';
         $log->objeto_id = $company->id;
         $log->detail = $company->toJson();
         $log->ip = '4444';
-        $log->user_id = auth()->user()->id;
+        $log->user_id = $userId;
         $log->save();
 
+		// Eliminación del producto
         $company->delete();
 
         return response()->json([

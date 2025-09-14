@@ -39,10 +39,10 @@
                     <tbody>
                     @foreach ($customers as $customer)
                         <tr id="{!! $customer->getId() !!}">
-                            <td>{{ $customer->getFirstName() }}</td>
-                            <td>{{ $customer->getLastName()}}</td>
+                            <td>{{ $customer->first_name }}</td>
+                            <td>{{ $customer->last_name }}</td>
                             <td>{{ $customer->birth_date?->format('d-m-Y') }}</td>
-                            <td>{{ $customer->getIdentityDocument() }}</td>
+                            <td>{{ $customer->identity_document }}</td>
                             <td class="text-center">
                                 {{-- Botón editar --}}
                                 <a href="{{ route('customers.edit', $customer->getId()) }}" class="btn btn-sm btn-primary" title="Editar">

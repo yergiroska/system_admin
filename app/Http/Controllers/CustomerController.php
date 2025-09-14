@@ -51,10 +51,7 @@ class CustomerController extends Controller
      * @return View|RedirectResponse
      */
     public function index()
-    {
-        if(!auth()->user()){
-            return redirect()->route('login');
-        }
+    {       
         $customers = Customer::all();
         return view('customers.index', [
             'customers' => $customers

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 // Ruta de prueba para verificar que funciona
@@ -28,5 +29,13 @@ Route::prefix('companies')
         Route::post('/save', [CompanyController::class, 'store'])->name('store'); // Guardar nuevo
         Route::put('/{id}/update', [CompanyController::class, 'update'])->name('update');     // Actualizar
         Route::delete('/{id}/delete', [CompanyController::class, 'destroy'])->name('destroy'); // Eliminar
-         // Listar
-    });
+});
+
+Route::prefix('customers')
+    ->name('customers.')
+    ->group(function () {
+        Route::get('/', [CustomerController::class, 'listCustomers'])->name('lists');  // Listar
+        Route::post('/save', [CustomerController::class, 'store'])->name('store'); // Guardar nuevo
+        Route::put('/{id}/update', [CustomerController::class, 'update'])->name('update');     // Actualizar
+        Route::delete('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy'); // Eliminar
+});

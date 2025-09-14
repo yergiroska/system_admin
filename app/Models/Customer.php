@@ -46,6 +46,8 @@ class Customer extends Model
         'deleted_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    protected $appends = ['full_name', 'birth_date_format'];
+
     protected $dateFormat = 'Y-m-d H:i:s';
 
     final public function getId(): int
@@ -53,34 +55,38 @@ class Customer extends Model
         return $this->id;
     }
 
-    final public function getFirstName(): string
+    final public function getFirstNameAttribute($value): string
     {
-        return is_null($this->first_name)
-            ? $this->user->getName()
-            : ucfirst($this->first_name);
+        return is_null($value)
+            ? ucfirst($this->user->getName())
+            : ucfirst($value);
     }
 
-    final public function getLastName(): string
+    final public function getLastNameAttribute($value): string
     {
-        return is_null($this->last_name)
+        return is_null($value)
             ? 'No tiene datos'
-            : ucfirst($this->last_name);
+            : ucfirst($value);
     }
 
-    final public function getFullName(): string
+    final public function getFullNameAttribute(): string
     {
-        return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
+        $full_name = ucfirst($this->first_name); // ya procesado por laravel, llama a este metódo getFirstNameAttribute
+
+        // si el atributo last_name existe lo concateno con el 'first_name'.
+        if(isset($this->attributes['last_name'])){ // "$this->attributes['last_name']", valor de la base de datos directamente
+            $full_name .= ' ' . ucfirst($this->attributes['last_name']);
+        }
+        return $full_name;
     }
 
-    final public function getBirthDate(): ?string
-    {
-        return $this->birth_date?->format('d-m-Y');
-        // esto de arriba es lo mismo de abajo pero en php 8
 
-        /*
-        return $this->birth_date
+    final public function getBirthDateFormatAttribute($value): ?string
+    {
+    
+        return isset($this->birth_date)
             ? $this->birth_date->format('d-m-Y')
-            : null;*/
+            : null;
     }
 
     final public function getBirthDateForm(): ?string
@@ -88,11 +94,11 @@ class Customer extends Model
         return $this->birth_date?->format('Y-m-d');
     }
 
-    final public function getIdentityDocument(): string
+    final public function getIdentityDocumentAttribute($value): string
     {
-        return is_null($this->identity_document)
+        return is_null($value)
             ? 'No tiene datos'
-            : $this->identity_document;
+            : $value;
     }
 
     final public function setBirthDate(string $date): self
