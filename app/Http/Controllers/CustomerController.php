@@ -6,9 +6,11 @@ use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Log;
 use App\Models\Purchase;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -51,7 +53,7 @@ class CustomerController extends Controller
      * @return View|RedirectResponse
      */
     public function index()
-    {       
+    {
         $customers = Customer::all();
         return view('customers.index', [
             'customers' => $customers
@@ -97,16 +99,28 @@ class CustomerController extends Controller
         $customer->last_name = $request->last_name;
         $customer->setBirthDate($request->birth_date);
         $customer->identity_document =$request->identity_document;
+        // Subida de imagen (opcional)
+        if ($request->hasFile('image')) {
+            // Guardar en storage/app/public/
+            $filename = $request->file('image')->hashName();
+            $content_image = file_get_contents($request->file('image'));
+            Storage::disk('public')->put('images/' . $filename, $content_image);
+            $customer->image_url = $filename;
+
+        }
         $customer->save(); // Guarda el nuevo cliente en la base de datos
 
         // Registro de la acción en el sistema de logs
+        $user = User::first();
+
+        $userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
         $log->action = 'CREAR';                  // Tipo de acción realizada
         $log->objeto = 'customers';              // Tabla afectada
         $log->objeto_id =$customer->id;        // ID del registro creado
         $log->detail = $customer->toJson();      // Detalles del cliente en formato JSON
         $log->ip = '1111';                      // IP del usuario (pendiente implementación real)
-        $log->user_id = auth()->user()->id;      // ID del usuario que realizó la acción
+        $log->user_id = $userId;      // ID del usuario que realizó la acción
         $log->save();                           // Guarda el registro de log
 
         // Devuelve respuesta JSON con el resultado de la operación
@@ -155,6 +169,18 @@ class CustomerController extends Controller
         $customer->last_name = $request->last_name;
         $customer->setBirthDate($request->birth_date);
         $customer->identity_document = $request->identity_document;
+        // Si se sube una nueva imagen, opcionalmente elimina la anterior y actualiza
+        if ($request->hasFile('image')) {
+            // Eliminar imagen anterior si existe
+            if ($customer->image_url) {
+                Storage::disk('public')->delete('images/'.$customer->image_url);
+            }
+
+            $filename = $request->file('image')->hashName();
+            $content_image = file_get_contents($request->file('image'));
+            Storage::disk('public')->put('images/' . $filename, $content_image);
+            $customer->image_url = $filename;
+        }
         $customer->save();
 
         return response()->json([
@@ -176,14 +202,20 @@ class CustomerController extends Controller
     public function destroy($id): JsonResponse
     {
         $customer = Customer::find($id);
+        if ($customer->image_name) {
+            Storage::disk('public')->delete('images/'.$customer->image_name);
+        }
 
+        // Registro de la eliminación en el log
+        $user = User::first();
+        $userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
         $log->action = 'ELIMINAR';
         $log->objeto = 'customers';
         $log->objeto_id = $id;
         $log->detail = $customer->toJson();
         $log->ip = '1111';
-        $log->user_id =auth()->user()->id;
+        $log->user_id = $userId;
         $log->save();
 
         $customer->delete();

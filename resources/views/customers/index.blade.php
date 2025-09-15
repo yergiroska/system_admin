@@ -33,6 +33,7 @@
                             <th>Apellido</th>
                             <th>Fecha de Nacimiento</th>
                             <th>DNI</th>
+                            <th>Imagen del Cliente</th>
                             <th class="text-center" style="width: 180px;">Acción</th>
                         </tr>
                     </thead>
@@ -43,6 +44,10 @@
                             <td>{{ $customer->last_name }}</td>
                             <td>{{ $customer->birth_date?->format('d-m-Y') }}</td>
                             <td>{{ $customer->identity_document }}</td>
+                            <td>
+                                <img src="{{ $customer->image_url ?? '' }}" alt="{{ $customer->name }}"
+                                     style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
+                            </td>
                             <td class="text-center">
                                 {{-- Botón editar --}}
                                 <a href="{{ route('customers.edit', $customer->getId()) }}" class="btn btn-sm btn-primary" title="Editar">
@@ -86,7 +91,8 @@
                 evento.preventDefault();
                 let id = $(this).attr('data-id') // esta y la de abajo hacen lo mismo
                 let url = $(this).data('url')
-                if(confirm('Estas seguro')) {
+
+                if(confirm('Estás seguro')) {
                     $.ajax({
                         url: url,
                         method: 'DELETE',
