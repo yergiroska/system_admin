@@ -99,13 +99,16 @@ class CompanyController extends Controller
         $company->products()->attach($request->products ?? []);
 
         // Registro de la acción en el sistema de logs
+        $user = User::first();
+
+        $userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
         $log->action = 'CREAR';                  // Tipo de acción realizada
         $log->objeto = 'Empresas';              // Entidad afectada
         $log->objeto_id = $company->id;        // ID del registro creado
         $log->detail = $company->toJson();      // Detalles de la empresa en formato JSON
         $log->ip = '4444';                     // IP del usuario (valor estático)
-        $log->user_id = auth()->user()->id;    // ID del usuario autenticado
+        $log->user_id = $userId;    // ID del usuario autenticado
         $log->save();                          // Guarda el registro de log
 
         // Retorna respuesta JSON con el resultado
@@ -220,14 +223,13 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = Company::find($id);
-		
+
         if ($company->image_name) {
             Storage::disk('public')->delete('images/'.$company->image_name);
         }
-		
+
 		// Registro de la eliminación en el log
         $user = User::first();
-
 		$userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
         $log->action = 'ELIMINAR';

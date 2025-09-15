@@ -22,6 +22,7 @@ class Customer extends Model
         'last_name',
         'birth_date',
         'identity_document',
+        'image_url',
         'deleted_at',
         'user_id',
     ];
@@ -83,7 +84,7 @@ class Customer extends Model
 
     final public function getBirthDateFormatAttribute($value): ?string
     {
-    
+
         return isset($this->birth_date)
             ? $this->birth_date->format('d-m-Y')
             : null;
@@ -116,6 +117,17 @@ class Customer extends Model
     final public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getImageUrlAttribute($value)
+    {
+        return $value ? asset('storage/images/' . $value) : null;
+    }
+
+    public function getImageNameAttribute()
+    {
+        return $this->attributes['image_url'];// Accede directamente al atributo de la base de datos
+        //return $this->image_url; // Usa el accesor para obtener la URL completa
     }
 
 }

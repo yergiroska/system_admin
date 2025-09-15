@@ -45,6 +45,11 @@
                         <input type="text" name="identity_document" class="form-control" value="{{  $customer->identity_document }}" required>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen del Cliente:</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    </div>
+
                     <div class="d-grid">
                         <button type="submit" id="update" class="btn btn-success text-white">
                             <i class="fas fa-save"></i> Actualizar
@@ -62,10 +67,16 @@
         $(document).ready(function() {
             $('#update').on('click', function(evento) {
                 evento.preventDefault();
+
+                const form = document.getElementById('form_customer');
+                const formData = new FormData(form);
+
                 $.ajax({
                     url: $('#form_customer').attr('action'),
                     method: $('#form_customer').attr('method'),
-                    data: $('#form_customer').serialize(),
+                    data: formData,
+                    processData: false,   // Importante para FormData
+                    contentType: false,   // Importante para FormData
                     success: function(response) {
                         if(response.status === 'success'){
                             alert('Actualizado con exito');

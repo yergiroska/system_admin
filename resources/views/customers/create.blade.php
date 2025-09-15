@@ -41,6 +41,11 @@
                         <input type="text" name="identity_document" class="form-control" value="{{ old('identity_document') }}" required>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Imagen del Cliente:</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    </div>
+
                     <div class="d-grid">
                         <button type="submit" id="saved" class="btn btn-success">
                             <i class="fas fa-save"></i> Guardar
@@ -57,10 +62,16 @@
         $(document).ready(function() {
             $('#saved').on('click', function(evento) {
                 evento.preventDefault();
+
+                const form = document.getElementById('form_customer');
+                const formData = new FormData(form);
+
                 $.ajax({
                     url: $('#form_customer').attr('action'),
                     method: $('#form_customer').attr('method'),
-                    data: $('#form_customer').serialize(),
+                    data: formData,
+                    processData: false,   // Importante para FormData
+                    contentType: false,   // Importante para FormData
                     success: function(response) {
                         if(response.status === 'success'){
                             alert('Registro exitoso');

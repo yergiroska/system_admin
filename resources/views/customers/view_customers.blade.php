@@ -43,7 +43,7 @@
                         $tr += '<td>'+customer.id+'</td>';
                         $tr += '<td>'+customer.first_name+'</td>';
                         $tr += '<td>'+customer.last_name+'</td>';
-                        $tr += '<td>'+customer.formatted_birth_date+'</td>';
+                        $tr += '<td>'+customer.formatted_birth_date +'</td>';
                         $tr += '<td>'+customer.identity_document+'</td>';
                         $tr += '</tr>';
                     }
