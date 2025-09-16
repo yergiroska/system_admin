@@ -13,7 +13,7 @@
                     <p class="mb-1"><strong>ID:</strong> {{ $customer->getId() }}</p>
                 </div>
                 <div class="mb-3">
-                    <p class="mb-1"><strong>Nombre:</strong> {{ $customer->getFullName() }}</p>
+                    <p class="mb-1"><strong>Nombre:</strong> {{ $customer->getFullNameAttribute() }}</p>
                 </div>
 
                 <table class="table table-bordered">
