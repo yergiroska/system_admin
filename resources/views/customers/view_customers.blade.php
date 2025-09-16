@@ -39,11 +39,15 @@
                     let customers = response.data
                     let $tr='';
                     for (const customer of customers) {
+                        let fecha = 'No tiene datos'
+                        if(customer.birth_date_format !== null){
+                            fecha = customer.birth_date_format
+                        }
                         $tr += '<tr>';
                         $tr += '<td>'+customer.id+'</td>';
                         $tr += '<td>'+customer.first_name+'</td>';
                         $tr += '<td>'+customer.last_name+'</td>';
-                        $tr += '<td>'+customer.formatted_birth_date +'</td>';
+                        $tr += '<td>'+fecha+'</td>';
                         $tr += '<td>'+customer.identity_document+'</td>';
                         $tr += '</tr>';
                     }
