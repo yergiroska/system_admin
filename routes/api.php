@@ -2,12 +2,22 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 
 // Ruta de prueba para verificar que funciona
 Route::get('/test', function () {
     return response()->json(['message' => 'API funcionando correctamente desde Laravel']);
 });
+
+// RUTAS DE AUTENTICACIÓN (sin autenticación requerida)
+Route::prefix('auth')
+    ->name('auth.')
+    ->group(function () {
+        Route::post('/login', [AuthController::class, 'login'])->name('login');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::get('/me', [AuthController::class, 'me'])->name('me');
+    });
 
 
 // Rutas para el controlador de productos
