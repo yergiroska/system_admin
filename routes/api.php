@@ -11,8 +11,8 @@ Route::get('/test', function () {
 });
 
 // RUTAS DE AUTENTICACIÓN (sin autenticación requerida)
-Route::prefix('auth')
-    ->name('auth.')
+Route::prefix('authenticate')
+    ->name('authenticate.')
     ->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -23,6 +23,7 @@ Route::prefix('auth')
 // Rutas para el controlador de productos
 Route::prefix('products')
     ->name('products.')
+    ->middleware('api.auth')
     ->group(function () {
         Route::get('/', [ProductController::class, 'listProducts'])->name('lists');  // Listar
         Route::post('/save', [ProductController::class, 'store'])->name('store'); // Guardar nuevo
@@ -33,6 +34,7 @@ Route::prefix('products')
 
 Route::prefix('companies')
     ->name('companies.')
+    ->middleware('api.auth')
     ->group(function () {
         Route::get('/', [CompanyController::class, 'listCompanies'])->name('lists');  // Listar
         Route::post('/save', [CompanyController::class, 'store'])->name('store'); // Guardar nuevo
@@ -42,6 +44,7 @@ Route::prefix('companies')
 
 Route::prefix('customers')
     ->name('customers.')
+    ->middleware('api.auth')
     ->group(function () {
         Route::get('/', [CustomerController::class, 'listCustomers'])->name('lists');  // Listar
         Route::post('/save', [CustomerController::class, 'store'])->name('store'); // Guardar nuevo

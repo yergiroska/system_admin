@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -33,7 +34,10 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Si las credenciales son correctas, retornar los datos del usuario
+        // Generar y guardar el api_token
+        $user->api_token = Str::random(60);
+        $user->save();
+
         return response()->json([
             'success' => true,
             'message' => 'Login exitoso',
@@ -41,7 +45,8 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-            ]
+            ],
+            'api_token' => $user->api_token,
         ], 200);
     }
 
@@ -50,6 +55,10 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        // Limpiar la sesión
+        session()->forget(['user_authenticated', 'user_id']);
+        session()->invalidate();
+
         return response()->json([
             'success' => true,
             'message' => 'Logout exitoso'
