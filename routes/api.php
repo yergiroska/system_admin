@@ -1,6 +1,7 @@
 <?php
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\ProductController;
+
+use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -34,9 +35,11 @@ Route::prefix('products')
 
 Route::prefix('companies')
     ->name('companies.')
-    ->middleware('api.auth')
+    //->middleware('api.auth')
     ->group(function () {
         Route::get('/', [CompanyController::class, 'listCompanies'])->name('lists');  // Listar
+        Route::get('/show/{id}', [CompanyController::class, 'showCompany'])->name('show');
+        Route::get('/{id}/edit', [CompanyController::class, 'editCompany'])->name('edit');
         Route::post('/save', [CompanyController::class, 'store'])->name('store'); // Guardar nuevo
         Route::put('/{id}/update', [CompanyController::class, 'update'])->name('update');     // Actualizar
         Route::delete('/{id}/delete', [CompanyController::class, 'destroy'])->name('destroy'); // Eliminar

@@ -13,7 +13,7 @@
         <div class="alert alert-info d-flex align-items-center" role="alert">
             <h5 class="mb-0">
                 <i class="fas fa-user"></i> Cliente:
-                <strong>{{ $customer->getFullName() }}</strong>
+                <strong>{{ $customer->getFullNameAttribute() }}</strong>
             </h5>
         </div>
 

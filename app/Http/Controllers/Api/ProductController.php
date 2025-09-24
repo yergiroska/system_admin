@@ -1,60 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Company;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Log;
 use App\Models\Product;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
-use App\Http\Requests\ProductRequest;
-use Illuminate\Support\Facades\Storage; // ← Agregar esta línea
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
-/**
- * Controlador para la gestión de productos en el sistema.
- *
- * Este controlador maneja todas las operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
- * relacionadas con los productos, incluyendo:
- * - Listado de productos
- * - Creación de nuevos productos
- * - Actualización de información de productos
- * - Eliminación de productos
- * - Gestión de relaciones con compañías
- *
- * También se encarga de:
- * - Validación de datos de entrada
- * - Registro de logs para operaciones críticas (crear, eliminar)
- * - Manejo de respuestas JSON para operaciones AJAX
- * - Verificación de autenticación de usuarios
- */
 class ProductController extends Controller
 {
-
     /**
-     * Muestra la lista de todos los productos.
+     * Devuelve una lista de todos los productos en formato JSON.
      *
-     * @return \Illuminate\View\View Vista con la lista de productos
-     */
-    public function index()
-    {
-        $products = Product::all();
-        return view('products.index', [
-            'products' => $products,
-        ]);
-    }
-
-    /**
-     * Muestra el formulario para crear un nuevo producto.
+     * Utilizado para peticiones AJAX en la interfaz de usuario.
      *
-     * @return \Illuminate\View\View Vista con el formulario de creación y lista de compañías
+     * @return JsonResponse Lista de productos en formato JSON
      */
-    public function create()
+    public function listProducts(): JsonResponse
     {
-        $companies = Company::all();
-        return view('products.create', [
-            'companies' => $companies,
+        $products = Product::with('companies')->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $products,
         ]);
     }
 
@@ -112,32 +82,6 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'success',                    // Estado de la operación
             'message' => 'Producto creado con éxito.', // Mensaje informativo
-        ]);
-    }
-
-    /**
-     * Muestra la vista para visualizar productos.
-     *
-     * @return \Illuminate\View\View Vista para visualización de productos
-     */
-    public function viewProducts()
-    {
-        return view('products.view_products');
-    }
-
-    /**
-     * Muestra el formulario para editar un producto existente.
-     *
-     * @param int $id ID del producto a editar
-     * @return \Illuminate\View\View Vista con el formulario de edición y datos del producto
-     */
-    public function edit($id)
-    {
-        $product = Product::find($id);
-        $companies = Company::all();
-        return view('products.edit', [
-            'product' => $product,
-            'companies' => $companies,
         ]);
     }
 
@@ -207,12 +151,11 @@ class ProductController extends Controller
         $log->save();
 
         // Eliminación del producto
-       $product->delete();
+        $product->delete();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Producto eliminado con éxito.',
         ]);
     }
-
 }
