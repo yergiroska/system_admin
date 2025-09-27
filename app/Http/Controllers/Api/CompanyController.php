@@ -19,7 +19,7 @@ class CompanyController extends Controller
      *
      * @return JsonResponse Lista de empresas con sus detalles
      */
-    public function listCompanies(): JsonResponse
+    final public function listCompanies(): JsonResponse
     {
         $companies = Company::with('products')->get();
 
@@ -29,7 +29,7 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function showCompany($id): JsonResponse
+    final public function showCompany(int $id): JsonResponse
     {
         // Busca la compañía por ID y carga sus productos
         $company = Company::with('products')->findOrFail($id);
@@ -87,7 +87,7 @@ class CompanyController extends Controller
      * @param Request $request Contiene los datos del formulario de creación
      * @return JsonResponse Respuesta con el estado de la operación
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         // Validación de campos requeridos
         $request->validate([
@@ -141,7 +141,7 @@ class CompanyController extends Controller
      * @param Request $request Datos actualizados de la empresa
      * @return JsonResponse Respuesta con el resultado de la operación
      */
-    public function update($id, Request $request)
+    public function update(int $id, Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required',
@@ -180,7 +180,7 @@ class CompanyController extends Controller
      * @param int $id ID de la empresa a eliminar
      * @return JsonResponse Respuesta con el resultado de la operación
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         $company = Company::find($id);
 

@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function listProducts(): JsonResponse
     {
-        $products = Product::with('companies')->get();
+        $products = Product::all();
         return response()->json([
             'status' => 'success',
             'data' => $products,

@@ -6,11 +6,10 @@ use App\Models\Company;
 use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage; // ← Agregar esta línea
 use App\Models\User;
+use Illuminate\View\View;
 
 /**
  * Controlador para la gestión de productos en el sistema.
@@ -35,9 +34,9 @@ class ProductController extends Controller
     /**
      * Muestra la lista de todos los productos.
      *
-     * @return \Illuminate\View\View Vista con la lista de productos
+     * @return View Vista con la lista de productos
      */
-    public function index()
+    public function index(): View
     {
         $products = Product::all();
         return view('products.index', [
@@ -48,9 +47,9 @@ class ProductController extends Controller
     /**
      * Muestra el formulario para crear un nuevo producto.
      *
-     * @return \Illuminate\View\View Vista con el formulario de creación y lista de compañías
+     * @return View Vista con el formulario de creación y lista de compañías
      */
-    public function create()
+    public function create(): View
     {
         $companies = Company::all();
         return view('products.create', [
@@ -118,9 +117,9 @@ class ProductController extends Controller
     /**
      * Muestra la vista para visualizar productos.
      *
-     * @return \Illuminate\View\View Vista para visualización de productos
+     * @return View Vista para visualización de productos
      */
-    public function viewProducts()
+    public function viewProducts(): View
     {
         return view('products.view_products');
     }
@@ -129,9 +128,9 @@ class ProductController extends Controller
      * Muestra el formulario para editar un producto existente.
      *
      * @param int $id ID del producto a editar
-     * @return \Illuminate\View\View Vista con el formulario de edición y datos del producto
+     * @return View Vista con el formulario de edición y datos del producto
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $product = Product::find($id);
         $companies = Company::all();
@@ -148,7 +147,7 @@ class ProductController extends Controller
      * @param ProductRequest $request Los datos actualizados del producto
      * @return JsonResponse Respuesta JSON con el estado de la operación
      */
-    public function update($id, ProductRequest $request)
+    public function update(int $id, ProductRequest $request): JsonResponse
     {
         // Validación de campos requeridos
         $data = $request->validated();
@@ -185,7 +184,7 @@ class ProductController extends Controller
      * @param int $id ID del producto a eliminar
      * @return JsonResponse Respuesta JSON con el estado de la operación
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         $product = Product::find($id);
 
