@@ -24,9 +24,11 @@ Route::prefix('authenticate')
 // Rutas para el controlador de productos
 Route::prefix('products')
     ->name('products.')
-    ->middleware('api.auth')
+    //->middleware('api.auth')
     ->group(function () {
         Route::get('/', [ProductController::class, 'listProducts'])->name('lists');  // Listar
+        Route::get('/show/{id}', [ProductController::class, 'showProduct'])->name('show');
+        Route::get('/{id}/edit', [ProductController::class, 'editProduct'])->name('edit');
         Route::post('/save', [ProductController::class, 'store'])->name('store'); // Guardar nuevo
         Route::put('/{id}/update', [ProductController::class, 'update'])->name('update');     // Actualizar
         Route::delete('/{id}/delete', [ProductController::class, 'destroy'])->name('destroy'); // Eliminar

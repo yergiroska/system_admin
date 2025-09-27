@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Models\Company;
 use App\Models\Log;
 use App\Models\Product;
 use App\Models\User;
@@ -25,6 +26,50 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $products,
+        ]);
+    }
+
+    public function showProduct($id): JsonResponse
+    {
+        // Busca al producto por ID y carga sus companies
+        $product = Product::with('companies')->find($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $product,
+        ]);
+    }
+
+    final public function editProduct(int $id): JsonResponse
+    {
+        // 1. Cargar el producto con companies asociados
+        $product = Product::with('companies')->findOrFail($id);
+
+        // 2. Cargar todas las companies
+        $allCompanies = Company::all();
+
+        // 3. Prepara las compañías con información de asociación (¡fuera del response!)
+        $companies = [];
+        foreach ($allCompanies as $company) {
+            $associatedCompany = $product?->companies->firstWhere('id', $company->id);
+            $companies[] = [
+                'id' => $company->id,
+                'name' => $company->name,
+                'description' => $company->description,
+                'image_url' => $company->image_url,
+                'is_associated' => $associatedCompany !== null,
+                'price' => $associatedCompany ? $associatedCompany->companyProduct->price : 0.00,
+            ];
+        }
+
+        $product = $product?->toArray();
+        unset($product['companies']);
+        // 4. Devolver la respuesta limpia
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'product' => $product,
+                'companies' => $companies,
+            ],
         ]);
     }
 
