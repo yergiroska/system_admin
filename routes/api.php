@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Api\AuthController;
@@ -18,6 +19,14 @@ Route::prefix('authenticate')
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/me', [AuthController::class, 'me'])->name('me');
+    });
+
+//Rutas para el controlador de Home
+Route::prefix('dashboard')
+    ->name('dashboard.')
+    //->middleware('api.auth')
+    ->group(function () {
+        Route::get('/', [HomeController::class, 'getCompaniesWithProducts'])->name('index');
     });
 
 
