@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,5 +64,11 @@ Route::prefix('customers')
         Route::post('/save', [CustomerController::class, 'store'])->name('store'); // Guardar nuevo
         Route::put('/{id}/update', [CustomerController::class, 'update'])->name('update');     // Actualizar
         Route::delete('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy'); // Eliminar
-});
+        Route::post('/{id}/buy', [CustomerController::class, 'buy'])->name('buy');
+        Route::get('/auth/customer', [CustomerController::class, 'getAuthenticatedCustomer'])->name('auth.customer');
+   });
+
+
+
+
 

@@ -24,7 +24,7 @@ class AuthController extends Controller
         ]);
 
         // Buscar al usuario por email
-        $user = User::where('email', $request->email)->first();
+        $user = User::with('customer')->where('email', $request->email)->first();
 
         // Verificar si el usuario existe y la contraseña es correcta
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -45,6 +45,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'customer' => $user->customer,
             ],
             'api_token' => $user->api_token,
         ], 200);
