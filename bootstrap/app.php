@@ -12,8 +12,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Registrar nuestro middleware personalizado
+        $middleware->alias([
+            'api.auth' => \App\Http\Middleware\CheckApiAuth::class,
+        ]);
+
+        // Habilitar sesiones para rutas API
+        $middleware->api(prepend: [
+            \Illuminate\Session\Middleware\StartSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
+
+

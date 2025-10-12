@@ -1,60 +1,76 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Log;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
-use App\Models\User;
 
-/**
- * Controlador para la gestión de empresas en el sistema.
- *
- * Este controlador maneja todas las operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
- * relacionadas con las empresas, incluyendo:
- * - Listado de empresas
- * - Creación de nuevas empresas
- * - Actualización de información de empresas
- * - Eliminación de empresas
- * - Gestión de relaciones con productos
- *
- * También se encarga de:
- * - Validación de datos de entrada
- * - Registro de logs para operaciones críticas
- * - Manejo de respuestas JSON para operaciones AJAX
- * - Verificación de autenticación mediante middleware
- */
 class CompanyController extends Controller
 {
-
     /**
-     * Muestra la lista de todas las empresas.
+     * Devuelve una lista de todas las empresas en formato JSON.
+     * Incluye URLs para acceder a los detalles de cada empresa.
      *
-     * @return View Vista con la lista de empresas
+     * @return JsonResponse Lista de empresas con sus detalles
      */
-    public function index()
+    final public function listCompanies(): JsonResponse
     {
-        $companies = Company::all();
-        return view('companies.index', [
-            'companies' => $companies
+        $companies = Company::with('products')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $companies,
         ]);
     }
 
-    /**
-     * Muestra el formulario para crear una nueva empresa.
-     * Incluye la lista de todos los productos disponibles para asociar.
-     *
-     * @return View Vista del formulario de creación
-     */
-    public function create()
+    final public function showCompany(int $id): JsonResponse
     {
-        $products = Product::all();
-        return view('companies.create', [
-            'products' => $products,
+        // Busca la compañía por ID y carga sus productos
+        $company = Company::with('products')->findOrFail($id);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $company,
+        ]);
+    }
+
+    final public function editCompany(int $id): JsonResponse
+    {
+        // 1. Cargar compañía con productos asociados
+        $company = Company::with('products')->findOrFail($id);
+
+        // 2. Cargar todos los productos
+        $allProducts = Product::all();
+
+        // 3. Preparar los productos con información de asociación (¡fuera del response!)
+        $products = [];
+        foreach ($allProducts as $product) {
+            $associatedProduct = $company?->products->firstWhere('id', $product->id);
+            $products[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'image_url' => $product->image_url,
+                'is_associated' => $associatedProduct !== null,
+                'price' => $associatedProduct ? $associatedProduct->companyProduct->price : 0.00,
+            ];
+        }
+
+        $company = $company?->toArray();
+        unset($company['products']);
+        // 4. Devolver la respuesta limpia
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'company' => $company,
+                'products' => $products,
+            ],
         ]);
     }
 
@@ -71,7 +87,7 @@ class CompanyController extends Controller
      * @param Request $request Contiene los datos del formulario de creación
      * @return JsonResponse Respuesta con el estado de la operación
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         // Validación de campos requeridos
         $request->validate([
@@ -119,53 +135,13 @@ class CompanyController extends Controller
     }
 
     /**
-     * Muestra la vista para visualizar empresas.
-     *
-     * @return View Vista de empresas
-     */
-    public function viewCompanies()
-    {
-        return view('companies.view_companies');
-    }
-
-    /**
-     * Muestra los detalles de una empresa específica.
-     *
-     * @param int $id ID de la empresa a mostrar
-     * @return View Vista con los detalles de la empresa
-     */
-    public function show($id)
-    {
-        $company = Company::find($id);
-        return view('companies.show', [
-            'company' => $company,
-        ]);
-    }
-
-    /**
-     * Muestra el formulario para editar una empresa existente.
-     *
-     * @param int $id ID de la empresa a editar
-     * @return View Vista del formulario de edición
-     */
-    public function edit($id)
-    {
-        $company = Company::find($id);
-        $products = Product::all();
-        return view('companies.edit', [
-            'company' => $company,
-            'products' => $products,
-        ]);
-    }
-
-    /**
      * Actualiza la información de una empresa existente.
      *
      * @param int $id ID de la empresa a actualizar
      * @param Request $request Datos actualizados de la empresa
      * @return JsonResponse Respuesta con el resultado de la operación
      */
-    public function update($id, Request $request)
+    public function update(int $id, Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required',
@@ -204,7 +180,7 @@ class CompanyController extends Controller
      * @param int $id ID de la empresa a eliminar
      * @return JsonResponse Respuesta con el resultado de la operación
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         $company = Company::find($id);
 
@@ -212,9 +188,9 @@ class CompanyController extends Controller
             Storage::disk('public')->delete('images/'.$company->image_name);
         }
 
-		// Registro de la eliminación en el log
+        // Registro de la eliminación en el log
         $user = User::first();
-		$userId = auth()->user() ? auth()->user()->id : $user->id;
+        $userId = auth()->user() ? auth()->user()->id : $user->id;
         $log = new Log();
         $log->action = 'ELIMINAR';
         $log->objeto = 'Empresas';
@@ -224,7 +200,7 @@ class CompanyController extends Controller
         $log->user_id = $userId;
         $log->save();
 
-		// Eliminación del producto
+        // Eliminación del producto
         $company->delete();
 
         return response()->json([

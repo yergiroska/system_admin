@@ -1,59 +1,75 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Company;
 use App\Models\Log;
 use App\Models\Product;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\ProductRequest;
-use Illuminate\Support\Facades\Storage; // ← Agregar esta línea
 use App\Models\User;
-use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
-/**
- * Controlador para la gestión de productos en el sistema.
- *
- * Este controlador maneja todas las operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
- * relacionadas con los productos, incluyendo:
- * - Listado de productos
- * - Creación de nuevos productos
- * - Actualización de información de productos
- * - Eliminación de productos
- * - Gestión de relaciones con compañías
- *
- * También se encarga de:
- * - Validación de datos de entrada
- * - Registro de logs para operaciones críticas (crear, eliminar)
- * - Manejo de respuestas JSON para operaciones AJAX
- * - Verificación de autenticación de usuarios
- */
 class ProductController extends Controller
 {
-
     /**
-     * Muestra la lista de todos los productos.
+     * Devuelve una lista de todos los productos en formato JSON.
      *
-     * @return View Vista con la lista de productos
+     * Utilizado para peticiones AJAX en la interfaz de usuario.
+     *
+     * @return JsonResponse Lista de productos en formato JSON
      */
-    public function index(): View
+    public function listProducts(): JsonResponse
     {
         $products = Product::all();
-        return view('products.index', [
-            'products' => $products,
+        return response()->json([
+            'status' => 'success',
+            'data' => $products,
         ]);
     }
 
-    /**
-     * Muestra el formulario para crear un nuevo producto.
-     *
-     * @return View Vista con el formulario de creación y lista de compañías
-     */
-    public function create(): View
+    public function showProduct($id): JsonResponse
     {
-        $companies = Company::all();
-        return view('products.create', [
-            'companies' => $companies,
+        // Busca al producto por ID y carga sus companies
+        $product = Product::with('companies')->find($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $product,
+        ]);
+    }
+
+    final public function editProduct(int $id): JsonResponse
+    {
+        // 1. Cargar el producto con companies asociados
+        $product = Product::with('companies')->findOrFail($id);
+
+        // 2. Cargar todas las companies
+        $allCompanies = Company::all();
+
+        // 3. Prepara las compañías con información de asociación (¡fuera del response!)
+        $companies = [];
+        foreach ($allCompanies as $company) {
+            $associatedCompany = $product?->companies->firstWhere('id', $company->id);
+            $companies[] = [
+                'id' => $company->id,
+                'name' => $company->name,
+                'description' => $company->description,
+                'image_url' => $company->image_url,
+                'is_associated' => $associatedCompany !== null,
+                'price' => $associatedCompany ? $associatedCompany->companyProduct->price : 0.00,
+            ];
+        }
+
+        $product = $product?->toArray();
+        unset($product['companies']);
+        // 4. Devolver la respuesta limpia
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'product' => $product,
+                'companies' => $companies,
+            ],
         ]);
     }
 
@@ -115,39 +131,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Muestra la vista para visualizar productos.
-     *
-     * @return View Vista para visualización de productos
-     */
-    public function viewProducts(): View
-    {
-        return view('products.view_products');
-    }
-
-    /**
-     * Muestra el formulario para editar un producto existente.
-     *
-     * @param int $id ID del producto a editar
-     * @return View Vista con el formulario de edición y datos del producto
-     */
-    public function edit(int $id): View
-    {
-        $product = Product::find($id);
-        $companies = Company::all();
-        return view('products.edit', [
-            'product' => $product,
-            'companies' => $companies,
-        ]);
-    }
-
-    /**
      * Actualiza la información de un producto existente.
      *
      * @param int $id ID del producto a actualizar
      * @param ProductRequest $request Los datos actualizados del producto
      * @return JsonResponse Respuesta JSON con el estado de la operación
      */
-    public function update(int $id, ProductRequest $request): JsonResponse
+    public function update($id, ProductRequest $request)
     {
         // Validación de campos requeridos
         $data = $request->validated();
@@ -184,7 +174,7 @@ class ProductController extends Controller
      * @param int $id ID del producto a eliminar
      * @return JsonResponse Respuesta JSON con el estado de la operación
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy($id)
     {
         $product = Product::find($id);
 
@@ -206,12 +196,11 @@ class ProductController extends Controller
         $log->save();
 
         // Eliminación del producto
-       $product->delete();
+        $product->delete();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Producto eliminado con éxito.',
         ]);
     }
-
 }
