@@ -21,7 +21,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('customers.update', $customer) }}" id="form_customer" method="POST">
+                <form action="{{ route('customers.update', $customer) }}" id="form_customer" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -86,7 +86,6 @@
                         // Manejar errores
                     }
                 });
-
             })
         });
     </script>
