@@ -26,8 +26,8 @@
                             <input
                                 type="checkbox"
                                 class="form-check-input product-checkbox"
-                                name="products[{!! $product->id !!}][__checked]"
-                                id="product_{{ $product->id }}"
+                                name="companies_products[{!! $product->id !!}][company_product_id]"
+                                id="company_product{{ $product->id }}"
                                 value="{!! $product->id !!}"
                                 {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
                                 {{--{{ isset($product) && $product?->companies?->contains($company->id) ? 'checked' : '' }}--}}
@@ -44,14 +44,14 @@
 
                 <div class="col-md-6">
                     <div class="input-group mb-2">
-                        <label for="productprice-{{ $product->id }}"></label>
+                        <label for="company_product{{ $product->id }}_price"></label>
                         <input
                             class="form-control"
-                            id="product_{{ $product->id }}_price"
+                            id="company_product{{ $product->id }}_price"
                             type="number"
                             step="0.01"
                             min="0"
-                            name="products[{{ $product->id }}][price]"
+                            name="companies_products[{{ $product->id }}][price]"
                             value="{{ $price ?? '' }}"
                             placeholder="0.00"
                             @disabled(!$checked)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Models\Log;
 use App\Models\Product;
@@ -87,19 +88,16 @@ class CompanyController extends Controller
      * @param Request $request Contiene los datos del formulario de creación
      * @return JsonResponse Respuesta con el estado de la operación
      */
-    public function store(Request $request): JsonResponse
+    public function store(CompanyRequest $request): JsonResponse
     {
         // Validación de campos requeridos
-        $request->validate([
-            'name' => 'required|unique:companies,name',
-            'description' => 'required',   // Descripción de la empresa: campo obligatorio
-        ]);
+        $request->validated();
 
 
         // Creación de nueva instancia de Company y asignación de valores
         $company = new Company();
-        $company->name = $request->name;         // Asigna el nombre de la empresa
-        $company->description = $request->description; // Asigna la descripción
+        $company->name = $request->getName();         // Asigna el nombre de la empresa
+        $company->description = $request->getDescription(); // Asigna la descripción
         // Subida de imagen (opcional)
         if ($request->hasFile('image')) {
             // Guardar en storage/app/public/
@@ -112,7 +110,7 @@ class CompanyController extends Controller
         $company->save();   // Guarda la empresa en la base de datos
 
         // Asocia los productos seleccionados a la empresa (si hay alguno)
-        $company->products()->attach($request->products ?? []);
+        $company->products()->attach($request->getCompaniesProducts() ?? []);
 
         // Registro de la acción en el sistema de logs
         $user = User::first();
@@ -141,16 +139,13 @@ class CompanyController extends Controller
      * @param Request $request Datos actualizados de la empresa
      * @return JsonResponse Respuesta con el resultado de la operación
      */
-    public function update(int $id, Request $request): JsonResponse
+    public function update(int $id, CompanyRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-        ]);
+        $request->validated();
 
         $company = Company::find($id);
-        $company->name = $request->name;
-        $company->description = $request->description;
+        $company->name = $request->getName();
+        $company->description = $request->getDescription();
         // Si se sube una nueva imagen, opcionalmente elimina la anterior y actualiza
         if ($request->hasFile('image')) {
             // Eliminar imagen anterior si existe
@@ -165,7 +160,7 @@ class CompanyController extends Controller
         }
         $company->save();
 
-        $company->products()->sync($request->products ?? []);
+        $company->products()->sync($request->getCompaniesProducts() ?? []);
 
         return response()->json([
             'status' => 'success',

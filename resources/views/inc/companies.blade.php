@@ -19,8 +19,8 @@
                         <input
                             type="checkbox"
                             class="form-check-input company-checkbox"
-                            name="companies[{!! $company->id !!}][company_id]"
-                            id="company_{{ $company->id }}"
+                            name="companies_products[{!! $company->id !!}][company_product_id]"
+                            id="company_product{{ $company->id }}"
                             value="{!! $company->id !!}"
                             {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
                             {{--                {{ isset($product) && $product?->companies?->contains($company->id) ? 'checked' : '' }}--}}
@@ -37,14 +37,14 @@
 
             <div class="col-md-6">
                 <div class="input-group mb-2">
-                    <label for="companyprice-{{ $company->id }}"></label>
+                    <label for="company_product{{ $company->id }}_price"></label>
                     <input
                         class="form-control"
-                        id="company_{{ $company->id }}_price"
+                        id="company_product{{ $company->id }}_price"
                         type="number"
                         step="0.01"
                         min="0"
-                        name="companies[{{ $company->id }}][price]"
+                        name="companies_products[{{ $company->id }}][price]"
                         value="{{ $price ?? '' }}"
                         placeholder="0.00"
                         @disabled(!isset($price))
@@ -63,6 +63,7 @@
         $(document).ready(function () {
             $('.company-checkbox').on('change', function (evento) {
                 const companyId = $(this).attr('id');
+                console.log(companyId);
                 const checked = $(this).is(':checked');
                 const $priceId = $('#' + companyId + '_price')
                 $priceId.prop('disabled', !checked);

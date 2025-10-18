@@ -73,11 +73,11 @@ class ProductController extends Controller
     public function store(ProductRequest $request): JsonResponse
     {
         // Los datos ya están validados por ProductRequest
-        $data = $request->validated();
+        $request->validated();
         // Creación de una nueva instancia del modelo Product y asignación de valores
         $product = new Product();
-        $product->name =$data['name'];           // Establece el nombre del producto
-        $product->description = $data['description']; // Establece la descripción del producto
+        $product->name = $request->getName();           // Establece el nombre del producto
+        $product->description = $request->getDescription(); // Establece la descripción del producto
         // Subida de imagen (opcional)
         if ($request->hasFile('image')) {
             // Guardar en storage/app/public/
@@ -91,7 +91,7 @@ class ProductController extends Controller
 
         // Asocia las compañías seleccionadas al producto (si existen)
         // Si no se seleccionaron compañías, se asigna un array vacío
-        $product->companies()->attach($data['companies'] ?? []);
+        $product->companies()->attach($request->getCompaniesProducts() ?? []);
 
         // Registro de la acción en el sistema de logs
 
@@ -150,10 +150,10 @@ class ProductController extends Controller
     public function update(int $id, ProductRequest $request): JsonResponse
     {
         // Validación de campos requeridos
-        $data = $request->validated();
+        $request->validated();
         $product= Product::find($id);
-        $product->name = $data['name'];           // Establece el nombre del producto
-        $product->description = $data['description']; // Establece la descripción del producto
+        $product->name = $request->getName();           // Establece el nombre del producto
+        $product->description = $request->getDescription(); // Establece la descripción del producto
         // Si se sube una nueva imagen, opcionalmente elimina la anterior y actualiza
         if ($request->hasFile('image')) {
             // Eliminar imagen anterior si existe
@@ -168,7 +168,7 @@ class ProductController extends Controller
         }
         $product->save();
         // Sincronización de relaciones con compañías
-        $product->companies()->sync($data['companies'] ?? []);
+        $product->companies()->sync($request->getCompaniesProducts() ?? []);
 
         return response()->json([
             'status' => 'success',
