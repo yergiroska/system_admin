@@ -63,13 +63,6 @@ class Customer extends Model
             : ucfirst($value);
     }
 
-    final public function getLastNameAttribute($value): string
-    {
-        return is_null($value)
-            ? 'No tiene datos'
-            : ucfirst($value);
-    }
-
     final public function getFullNameAttribute(): string
     {
         $full_name = ucfirst($this->first_name); // ya procesado por laravel, llama a este metódo getFirstNameAttribute
@@ -80,7 +73,6 @@ class Customer extends Model
         }
         return $full_name;
     }
-
 
     final public function getBirthDateFormatAttribute($value): ?string
     {
@@ -93,13 +85,6 @@ class Customer extends Model
     final public function getBirthDateForm(): ?string
     {
         return $this->birth_date?->format('Y-m-d');
-    }
-
-    final public function getIdentityDocumentAttribute($value): string
-    {
-        return is_null($value)
-            ? 'No tiene datos'
-            : $value;
     }
 
     final public function setBirthDate(string $date): self

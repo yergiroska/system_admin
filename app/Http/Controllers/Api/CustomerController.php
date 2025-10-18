@@ -135,16 +135,17 @@ class CustomerController extends Controller
     }
 
     /**
-     * Muestra el formulario para editar un cliente existente.
+     * Busca el customer por id y lo retorna en formato JSON.
      *
      * @param int $id ID del cliente a editar
-     * @return View
+     * @return JsonResponse
      */
-    public function edit($id)
+    final public function editCustomer(int $id): JsonResponse
     {
         $customer = Customer::find($id);
-        return view('customers.edit', [
-            'customer' => $customer
+        return response()->json([
+            'status' => 'success',
+            'data' => $customer,
         ]);
     }
 

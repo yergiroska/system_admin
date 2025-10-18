@@ -58,10 +58,11 @@ Route::prefix('companies')
 
 Route::prefix('customers')
     ->name('customers.')
-    ->middleware('api.auth')
+    //->middleware('api.auth')
     ->group(function () {
         Route::get('/', [CustomerController::class, 'listCustomers'])->name('lists');  // Listar
         Route::post('/save', [CustomerController::class, 'store'])->name('store'); // Guardar nuevo
+        Route::get('/{id}/edit', [CustomerController::class, 'editCustomer'])->name('edit');
         Route::put('/{id}/update', [CustomerController::class, 'update'])->name('update');     // Actualizar
         Route::delete('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy'); // Eliminar
         Route::post('/{id}/buy', [CustomerController::class, 'buy'])->name('buy');
