@@ -17,16 +17,16 @@
                     </div>
                 @endif
                 {{-- Formulario --}}
-                <form action="{{ route('products.update', $product) }}" id="form_product" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('products.update', $pivot_company_product) }}" id="form_product" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
                         <label for="name" class="form-label">Nombre del Producto:</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}" required>
+                        <input type="text" name="name" class="form-control" value="{{ old('name', $pivot_company_product->name) }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Descripción del Producto:</label>
-                        <textarea name="description" class="form-control" rows="3">{{ old('description', $product->description) }}</textarea>
+                        <textarea name="description" class="form-control" rows="3">{{ old('description', $pivot_company_product->description) }}</textarea>
                     </div>
 
                     <div class="mb-3">

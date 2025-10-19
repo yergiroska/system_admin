@@ -1,13 +1,13 @@
 <label class="form-label fw-semibold">Empresas</label>
 <div class="list-group">
-@foreach ($companies as $company_product)
+@foreach ($companies_products as $company_product)
 
     @php
         // Si existe el producto, busco la compañía que tenga ese producto con el company_id actual
         // luego accedo a la tabla pivot que tenga ese product_id y company_id y obtengo el precio
         // Si no existe product_id ni company_id devuelvo null
-        $price = isset($product)
-        ? $product->companiesProducts->firstWhere('id', $company_product->id)?->companyProduct?->price
+        $price = isset($pivot_company_product)
+        ? $pivot_company_product->companiesProducts->firstWhere('id', $company_product->id)?->companyProduct?->price
         : null
     @endphp
 
@@ -26,7 +26,7 @@
                             {{--                {{ isset($product) && $product?->companies?->contains($company->id) ? 'checked' : '' }}--}}
 
                             {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
-                            @checked(isset($product) && $product?->companiesProducts?->contains($company_product->id))
+                            @checked(isset($pivot_company_product) && $pivot_company_product?->companiesProducts?->contains($company_product->id))
                         >
                         <label class="form-check-label ms-1" for="product-{{ $company_product->id }}">
                             {{ $company_product->name }}

@@ -53,7 +53,7 @@ class ProductController extends Controller
     {
         $companies = Company::all();
         return view('products.create', [
-            'companies' => $companies,
+            'companies_products' => $companies,
         ]);
     }
 
@@ -135,8 +135,8 @@ class ProductController extends Controller
         $product = Product::find($id);
         $companies = Company::all();
         return view('products.edit', [
-            'product' => $product,
-            'companies' => $companies,
+            'pivot_company_product' => $product,
+            'companies_products' => $companies,
         ]);
     }
 

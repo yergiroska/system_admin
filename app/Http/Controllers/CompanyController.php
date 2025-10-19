@@ -55,7 +55,7 @@ class CompanyController extends Controller
     {
         $products = Product::all();
         return view('companies.create', [
-            'products' => $products,
+            'companies_products' => $products,
         ]);
     }
 
@@ -151,8 +151,13 @@ class CompanyController extends Controller
         $company = Company::find($id);
         $products = Product::all();
         return view('companies.edit', [
-            'company' => $company,
-            'products' => $products,
+            'pivot_company_product' => $company,
+            'companies_products' => $products,
+            'name_title' => 'Editar Empresa',
+            'name_form_title' => 'Nombre de la Empresa',
+            'description_form_title' => 'Descripción',
+            'image_form_title' => 'Imagen de la empresa',
+            'url_form' => route('companies.update', $company)
         ]);
     }
 

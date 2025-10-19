@@ -3,7 +3,7 @@
     <div class="container mt-5" style="max-width: 600px;">
         <div class="card shadow">
             <div class="card-header bg-warning text-dark">
-                <h4 class="mb-0"><i class="fas fa-edit"></i> Editar Empresa</h4>
+                <h4 class="mb-0"><i class="fas fa-edit"></i> {{ $name_title  }}</h4>
             </div>
             <div class="card-body">
                 {{-- Errores --}}
@@ -18,21 +18,21 @@
                 @endif
 
                 {{-- Formulario --}}
-                <form action="{{ route('companies.update', $company) }}" id="form_company" method="POST">
+                <form action="{{ $url_form }}" id="form_company" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nombre de la Empresa:</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name', $company->name) }}"><br>
+                        <label for="name" class="form-label">{{ $name_form_title  }}:</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name', $pivot_company_product->name) }}"><br>
                     </div>
 
                     <div class="mb-3">
-                        <label for="description" class="form-label">Descripción:</label>
-                        <textarea name="description" class="form-control" rows="3">{{ old('description', $company->description) }}</textarea><br>
+                        <label for="description" class="form-label">{{ $description_form_title }}:</label>
+                        <textarea name="description" class="form-control" rows="3">{{ old('description', $pivot_company_product->description) }}</textarea><br>
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label">Imagen de la Empresa:</label>
+                        <label for="image" class="form-label">{{ $image_form_title }}:</label>
                         <input type="file" id="image" name="image" class="form-control" accept="image/*">
                     </div>
 
