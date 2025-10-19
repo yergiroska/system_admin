@@ -22,7 +22,7 @@ class CompanyController extends Controller
      */
     final public function listCompanies(): JsonResponse
     {
-        $companies = Company::with('products')->get();
+        $companies = Company::with('companiesProducts')->get();
 
         return response()->json([
             'status' => 'success',
@@ -44,7 +44,7 @@ class CompanyController extends Controller
     final public function editCompany(int $id): JsonResponse
     {
         // 1. Cargar compañía con productos asociados
-        $company = Company::with('products')->findOrFail($id);
+        $company = Company::with('companiesProducts')->findOrFail($id);
 
         // 2. Cargar todos los productos
         $allProducts = Product::all();
@@ -52,7 +52,7 @@ class CompanyController extends Controller
         // 3. Preparar los productos con información de asociación (¡fuera del response!)
         $products = [];
         foreach ($allProducts as $product) {
-            $associatedProduct = $company?->products->firstWhere('id', $product->id);
+            $associatedProduct = $company?->companiesProducts->firstWhere('id', $product->id);
             $products[] = [
                 'id' => $product->id,
                 'name' => $product->name,
@@ -110,7 +110,7 @@ class CompanyController extends Controller
         $company->save();   // Guarda la empresa en la base de datos
 
         // Asocia los productos seleccionados a la empresa (si hay alguno)
-        $company->products()->attach($request->getCompaniesProducts() ?? []);
+        $company->companiesProducts()->attach($request->getCompaniesProducts() ?? []);
 
         // Registro de la acción en el sistema de logs
         $user = User::first();
@@ -160,7 +160,7 @@ class CompanyController extends Controller
         }
         $company->save();
 
-        $company->products()->sync($request->getCompaniesProducts() ?? []);
+        $company->companiesProducts()->sync($request->getCompaniesProducts() ?? []);
 
         return response()->json([
             'status' => 'success',

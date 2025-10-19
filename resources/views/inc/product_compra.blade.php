@@ -1,7 +1,7 @@
 <form action="{{ route('customers.buy', $customer->id) }}" id="form_customer" method="POST">
     @csrf
     @foreach($companies as $company)
-        @if($company->products->isNotEmpty())
+        @if($company->companiesProducts->isNotEmpty())
             <div class="card mb-4 shadow-sm">
                 {{--<div class="col-12">Compañía</div>--}}
                 <div class="card-header bg-primary text-white">
@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h6 class="text-muted"><i class="fas fa-boxes"></i> Productos</h6>
 
-                    @foreach($company->products as $product)
+                    @foreach($company->companiesProducts as $product)
                         <div class="row">
                             @php
                                 $price = $product->companyProduct?->getPrice(); // Precio desde el pivote

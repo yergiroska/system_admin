@@ -1,6 +1,6 @@
 <label class="form-label fw-semibold">Productos</label>
 <div class="list-group">
-@foreach ($products as $product)
+@foreach ($products as $company_product)
         @php
             // Calcula el precio del producto para una compañía específica
             // Si la compañía está definida:
@@ -8,7 +8,7 @@
             //   - Accede a la relación pivot (companyProduct) para obtener el precio
             // Si la compañía no está definida, devuelve null
             $price = isset($company)
-            ? $company->products->firstWhere('id', $product->id)?->companyProduct?->price
+            ? $company->companiesProducts->firstWhere('id', $company_product->id)?->companyProduct?->price
             : null;
 
             // Verifica si el producto está asociado a la compañía actual
@@ -16,7 +16,7 @@
             //   - La compañía está definida (isset($company)) Y
             //   - El producto existe en la colección de productos de la compañía (contains())
             // En caso contrario devuelve false
-            $checked = isset($company) && $company?->products?->contains($product->id)
+            $checked = isset($company) && $company?->companiesProducts?->contains($company_product->id)
         @endphp
         <div class="list-group-item">
             <div class="row g-3 align-items-center">
@@ -26,17 +26,17 @@
                             <input
                                 type="checkbox"
                                 class="form-check-input product-checkbox"
-                                name="companies_products[{!! $product->id !!}][company_product_id]"
-                                id="company_product{{ $product->id }}"
-                                value="{!! $product->id !!}"
+                                name="companies_products[{!! $company_product->id !!}][company_product_id]"
+                                id="company_product{{ $company_product->id }}"
+                                value="{!! $company_product->id !!}"
                                 {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
                                 {{--{{ isset($product) && $product?->companies?->contains($company->id) ? 'checked' : '' }}--}}
 
                                 {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
                                 @checked($checked)
                             >
-                            <label class="form-check-label ms-1" for="product-{{ $product->id }}">
-                                {{ $product->name }}
+                            <label class="form-check-label ms-1" for="product-{{ $company_product->id }}">
+                                {{ $company_product->name }}
                             </label>
                         </label>
                     </div>
@@ -44,14 +44,14 @@
 
                 <div class="col-md-6">
                     <div class="input-group mb-2">
-                        <label for="company_product{{ $product->id }}_price"></label>
+                        <label for="company_product{{ $company_product->id }}_price"></label>
                         <input
                             class="form-control"
-                            id="company_product{{ $product->id }}_price"
+                            id="company_product{{ $company_product->id }}_price"
                             type="number"
                             step="0.01"
                             min="0"
-                            name="companies_products[{{ $product->id }}][price]"
+                            name="companies_products[{{ $company_product->id }}][price]"
                             value="{{ $price ?? '' }}"
                             placeholder="0.00"
                             @disabled(!$checked)

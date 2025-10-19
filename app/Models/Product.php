@@ -40,7 +40,7 @@ class Product extends Model
         return $this->description;
     }
 
-    public function companies(): BelongsToMany
+    public function companiesProducts(): BelongsToMany
     {
         return $this->belongsToMany(Company::class)
             ->using(CompanyProduct::class) // modelo pivot

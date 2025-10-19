@@ -94,7 +94,7 @@ class CompanyController extends Controller
         $company->save();   // Guarda la empresa en la base de datos
 
         // Asocia los productos seleccionados a la empresa (si hay alguno)
-        $company->products()->attach($request->getCompaniesProducts() ?? []);
+        $company->companiesProducts()->attach($request->getCompaniesProducts() ?? []);
 
         // Registro de la acción en el sistema de logs
         $user = User::first();
@@ -184,7 +184,7 @@ class CompanyController extends Controller
         }
         $company->save();
 
-        $company->products()->sync($request->getCompaniesProducts() ?? []);
+        $company->companiesProducts()->sync($request->getCompaniesProducts() ?? []);
 
         return response()->json([
             'status' => 'success',

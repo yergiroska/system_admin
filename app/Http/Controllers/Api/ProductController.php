@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function showProduct($id): JsonResponse
     {
         // Busca al producto por ID y carga sus companies
-        $product = Product::with('companies')->find($id);
+        $product = Product::with('companiesProducts')->find($id);
         return response()->json([
             'status' => 'success',
             'data' => $product,
@@ -42,7 +42,7 @@ class ProductController extends Controller
     final public function editProduct(int $id): JsonResponse
     {
         // 1. Cargar el producto con companies asociados
-        $product = Product::with('companies')->findOrFail($id);
+        $product = Product::with('companiesProducts')->findOrFail($id);
 
         // 2. Cargar todas las companies
         $allCompanies = Company::all();
@@ -50,7 +50,7 @@ class ProductController extends Controller
         // 3. Prepara las compañías con información de asociación (¡fuera del response!)
         $companies = [];
         foreach ($allCompanies as $company) {
-            $associatedCompany = $product?->companies->firstWhere('id', $company->id);
+            $associatedCompany = $product?->companiesProducts->firstWhere('id', $company->id);
             $companies[] = [
                 'id' => $company->id,
                 'name' => $company->name,
@@ -107,7 +107,7 @@ class ProductController extends Controller
 
         // Asocia las compañías seleccionadas al producto (si existen)
         // Si no se seleccionaron compañías, se asigna un array vacío
-        $product->companies()->attach($request->getCompaniesProducts() ?? []);
+        $product->companiesProducts()->attach($request->getCompaniesProducts() ?? []);
 
         // Registro de la acción en el sistema de logs
 
@@ -158,7 +158,7 @@ class ProductController extends Controller
         }
         $product->save();
         // Sincronización de relaciones con compañías
-        $product->companies()->sync($request->getCompaniesProducts() ?? []);
+        $product->companiesProducts()->sync($request->getCompaniesProducts() ?? []);
 
         return response()->json([
             'status' => 'success',

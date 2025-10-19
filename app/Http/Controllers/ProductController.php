@@ -91,7 +91,7 @@ class ProductController extends Controller
 
         // Asocia las compañías seleccionadas al producto (si existen)
         // Si no se seleccionaron compañías, se asigna un array vacío
-        $product->companies()->attach($request->getCompaniesProducts() ?? []);
+        $product->companiesProducts()->attach($request->getCompaniesProducts() ?? []);
 
         // Registro de la acción en el sistema de logs
 
@@ -168,7 +168,7 @@ class ProductController extends Controller
         }
         $product->save();
         // Sincronización de relaciones con compañías
-        $product->companies()->sync($request->getCompaniesProducts() ?? []);
+        $product->companiesProducts()->sync($request->getCompaniesProducts() ?? []);
 
         return response()->json([
             'status' => 'success',

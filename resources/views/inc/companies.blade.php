@@ -1,13 +1,13 @@
 <label class="form-label fw-semibold">Empresas</label>
 <div class="list-group">
-@foreach ($companies as $company)
+@foreach ($companies as $company_product)
 
     @php
         // Si existe el producto, busco la compañía que tenga ese producto con el company_id actual
         // luego accedo a la tabla pivot que tenga ese product_id y company_id y obtengo el precio
         // Si no existe product_id ni company_id devuelvo null
         $price = isset($product)
-        ? $product->companies->firstWhere('id', $company->id)?->companyProduct?->price
+        ? $product->companiesProducts->firstWhere('id', $company_product->id)?->companyProduct?->price
         : null
     @endphp
 
@@ -19,17 +19,17 @@
                         <input
                             type="checkbox"
                             class="form-check-input company-checkbox"
-                            name="companies_products[{!! $company->id !!}][company_product_id]"
-                            id="company_product{{ $company->id }}"
-                            value="{!! $company->id !!}"
+                            name="companies_products[{!! $company_product->id !!}][company_product_id]"
+                            id="company_product{{ $company_product->id }}"
+                            value="{!! $company_product->id !!}"
                             {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
                             {{--                {{ isset($product) && $product?->companies?->contains($company->id) ? 'checked' : '' }}--}}
 
                             {{-- Verifica si el producto existe y si contiene esta empresa para marcarlo como seleccionado --}}
-                            @checked(isset($product) && $product?->companies?->contains($company->id))
+                            @checked(isset($product) && $product?->companiesProducts?->contains($company_product->id))
                         >
-                        <label class="form-check-label ms-1" for="product-{{ $company->id }}">
-                            {{ $company->name }}
+                        <label class="form-check-label ms-1" for="product-{{ $company_product->id }}">
+                            {{ $company_product->name }}
                         </label>
                     </label>
                 </div>
@@ -37,14 +37,14 @@
 
             <div class="col-md-6">
                 <div class="input-group mb-2">
-                    <label for="company_product{{ $company->id }}_price"></label>
+                    <label for="company_product{{ $company_product->id }}_price"></label>
                     <input
                         class="form-control"
-                        id="company_product{{ $company->id }}_price"
+                        id="company_product{{ $company_product->id }}_price"
                         type="number"
                         step="0.01"
                         min="0"
-                        name="companies_products[{{ $company->id }}][price]"
+                        name="companies_products[{{ $company_product->id }}][price]"
                         value="{{ $price ?? '' }}"
                         placeholder="0.00"
                         @disabled(!isset($price))
