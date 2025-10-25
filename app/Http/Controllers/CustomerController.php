@@ -257,7 +257,7 @@ class CustomerController extends Controller
     public function getProducts(int $id)
     {
         $customer = Customer::find($id);
-        $companies = Company::with('products')->get();
+        $companies = Company::with('companiesProducts')->get();
         return view('customers.products', [
             'customer' => $customer,
             'companies' => $companies,

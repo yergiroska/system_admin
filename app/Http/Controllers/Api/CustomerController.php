@@ -433,32 +433,53 @@ class CustomerController extends Controller
         }
     }*/
 
-    /**
-     * Muestra los detalles de un cliente específico.
-     *
-     * Este método se encarga de:
-     * 1. Obtener el cliente desde la base de datos utilizando su ID
-     * 2. Cargar las relaciones necesarias para mostrar información adicional:
-     *    - Compras relacionadas con los productos de la empresa y su respectiva compañía
-     * 3. Retornar una vista con los datos del cliente y sus relaciones.
-     *
-     * @param int $id ID del cliente que se desea visualizar
-     * @return View Vista con los detalles del cliente
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException Si no se encuentra el cliente con el ID especificado
-     */
-    public function show($id)
+/**
+ * Obtener detalles del cliente con historial de compras
+ *
+ * @param int $id
+ * @return JsonResponse
+ */
+
+// Muestra los detalles de un cliente específico junto con su historial de compras.
+    final public function details($id): JsonResponse
     {
-        // Relaciones a precargar para mejorar legibilidad y mantenimiento
-        $relations = [
-            'purchases.companyProduct.company',
-            'purchases.companyProduct.product',
-        ];
+        try {
+            // Cargar cliente con sus compras y relaciones
+            $customer = Customer::with([
+                'purchases.companyProduct.company',
+                'purchases.companyProduct.product',
+            ])->findOrFail($id);
 
-        $customer = Customer::with($relations)->findOrFail($id);
+            // Formatear las compras para la respuesta
+            $purchases = $customer->purchases->map(function ($purchase) {
+                return [
+                    'company_name' => $purchase->companyProduct->company->name ?? 'N/A',
+                    'product_name' => $purchase->companyProduct->product->name ?? 'N/A',
+                    'price' => $purchase->unit_price,
+                    'quantity' => $purchase->quantity,
+                    'total' => $purchase->total,
+                    'date' => $purchase->created_at->format('d-m-Y'),
+                ];
+            });
 
-        return view('customers.show', [
-            'customer' => $customer,
-        ]);
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'customer' => [
+                        'id' => $customer->id,
+                        'first_name' => $customer->first_name,
+                        'last_name' => $customer->last_name,
+                        'full_name' => $customer->full_name,
+                    ],
+                    'purchases' => $purchases
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al cargar detalles del cliente: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     // Usuario autenticado
