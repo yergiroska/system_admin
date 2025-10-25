@@ -19,6 +19,7 @@ Route::prefix('authenticate')
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/me', [AuthController::class, 'me'])->name('me');
+        Route::post('/register', [AuthController::class, 'register'])->name('post.register');
     });
 
 //Rutas para el controlador de Home
@@ -67,6 +68,7 @@ Route::prefix('customers')
         Route::delete('/{id}/delete', [CustomerController::class, 'destroy'])->name('destroy'); // Eliminar
         Route::post('/{id}/buy', [CustomerController::class, 'buy'])->name('buy');
         Route::get('/auth/customer', [CustomerController::class, 'getAuthenticatedCustomer'])->name('auth.customer');
+        Route::get('/{id}/details', [CustomerController::class, 'details'])->name('details');
    });
 
 
